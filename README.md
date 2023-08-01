@@ -44,38 +44,40 @@ _Table of Required Input Parameters:_
 
 ## Function Description
 
-Each method has a set of functions for calculating the statistical power, required number of clusters, or cluster size given a set of input parameters. The names and required input parameters for each function is listed below, organized by study design method. 
+Each method has a set of functions for calculating the statistical power ($\pi$), required number of clusters per treatment group ($K$), or cluster size ($m$) given a set of input parameters. The names of all functions offered in this package are listed below, organized by study design method.
 
 ### 1. P-Value Adjustments for Multiple Testing
 
-- `calc_pwr_pval_adj`
-- `calc_K_pval_adj`
-- `calc_m_pval_adj`
+- `calc_pwr_pval_adj()` calculates power for this method
+- `calc_K_pval_adj()` calculates number of clusters per treatment group for this method
+- `calc_m_pval_adj()` calculates cluster size for this method
 
 ### 2. Combined Outcomes Approach
 
-- `calc_pwr_comb_outcome`
-- `calc_K_comb_outcome`
-- `calc_m_comb_outcome`
+- `calc_pwr_comb_outcome()` calculates power for this method
+- `calc_K_comb_outcome()` calculates number of clusters per treatment group for this method
+- `calc_m_comb_outcome()` calculates cluster size for this method
 
 ### 3. Single 1-Degree of Freedom (DF) Combined Test for Two Outcomes
 
-- `calc_pwr_single_1dftest`
-- `calc_K_single_1dftest`
-- `calc_m_single_1dftest`
+- `calc_pwr_single_1dftest()` calculates power for this method
+- `calc_K_single_1dftest()` calculates number of clusters per treatment group for this method
+- `calc_m_single_1dftest()` calculates cluster size for this method
 
 ### 4. Disjunctive 2-DF Test for Two Outcomes
 
-- `calc_pwr_disj_2dftest`
-- `calc_K_disj_2dftest`
-- `calc_m_disj_2dftest`
+- `calc_pwr_disj_2dftest()` calculates power for this method
+- `calc_K_disj_2dftest()` calculates number of clusters per treatment group for this method
+- `calc_m_disj_2dftest()` calculates cluster size for this method
 
 ### 5. Conjunctive Intersection-Union Test for Two outcomes
 
-- `calc_pwr_conj_test`
-- `calc_K_conj_test`
-- `calc_m_conj_test`
+- `calc_pwr_conj_test()` calculates power for this method
+- `calc_K_conj_test()` calculates number of clusters per treatment group for this method
+- `calc_m_conj_test()` calculates cluster size for this method
 
 ## Usage 
 
 ## Contact
+
+For questions or comments, please email Melody Owen at melody.owen@yale.edu, or submit an issue to this repository. 
