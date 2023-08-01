@@ -48,32 +48,33 @@ Each method has a set of functions for calculating the statistical power, requir
 
 ### 1. P-Value Adjustments for Multiple Testing
 
-**Hypothesis Test Framework**:  &nbsp;  &nbsp; $H_0$: $\beta_1^* = 0$ and $\beta_2^* = 0$  &nbsp;  &nbsp; vs.  &nbsp;  &nbsp;  $H_A$: $\beta_1^* \neq 0$ or $\beta_2^* \neq 0$
-
-- `_pwr_pvalue`
-- `calc_`
-- `CalculateNumberOfClusters_Method1`
+- `calc_pwr_pval_adj`
+- `calc_K_pval_adj`
+- `calc_m_pval_adj`
 
 ### 2. Combined Outcomes Approach
 
-**Hypothesis Test Framework**:  &nbsp;  &nbsp; $H_0$: $\beta_c^* = 0$  &nbsp;  &nbsp; vs.  &nbsp;  &nbsp;  $H_A$: $\beta_c^* \neq 0$
-
-- `CalculatePower_Combined`
-- `CalculateClusterSize_Method1`
-- `CalculateNumberOfClusters_Method1`
+- `calc_pwr_comb_outcome`
+- `calc_K_comb_outcome`
+- `calc_m_comb_outcome`
 
 ### 3. Single 1-Degree of Freedom (DF) Combined Test for Two Outcomes
 
-**Hypothesis Test Framework**:  &nbsp;  &nbsp; $H_0$: $\beta_1^* = \beta_2^* = 0$  &nbsp;  &nbsp; vs.  &nbsp;  &nbsp;  $H_A$: $\beta_1^* \neq 0$ or $\beta_2^* \neq 0$
+- `calc_pwr_single_1dftest`
+- `calc_K_single_1dftest`
+- `calc_m_single_1dftest`
 
 ### 4. Disjunctive 2-DF Test for Two Outcomes
 
-**Hypothesis Test Framework**:  &nbsp;  &nbsp; $H_0$: $\boldsymbol{L} \boldsymbol{\beta}^* = 0$ &nbsp;  &nbsp; vs.  &nbsp;  &nbsp;  $\boldsymbol{L} \boldsymbol{\beta}^* \neq 0$
+- `calc_pwr_disj_2dftest`
+- `calc_K_disj_2dftest`
+- `calc_m_disj_2dftest`
 
 ### 5. Conjunctive Intersection-Union Test for Two outcomes
 
-**Hypothesis Test Framework**:  &nbsp;  &nbsp; $H_0$: $\beta_1^* = 0$ and $\beta_2^* = 0$  &nbsp;  &nbsp; vs.  &nbsp;  &nbsp;  $H_A$: $\beta_1^* \neq 0$ or $\beta_2^* \neq 0$
-
+- `calc_pwr_conj_test`
+- `calc_K_conj_test`
+- `calc_m_conj_test`
 
 ## Usage 
 
