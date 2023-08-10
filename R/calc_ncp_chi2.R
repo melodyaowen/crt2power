@@ -1,5 +1,14 @@
-# @description
-# `calc_ncp_chi2()`
+#' Find the non-centrality parameter corresponding to Type I error rate and statistical power
+#'
+#' @description
+#' Allows user to find the corresponding non-centrality parameter for power analysis based on the Type I error rate, statistical power, and degrees of freedom.
+#'
+#' @param alpha Type I error rate; numeric.
+#' @param power Desired statistical power in decimal form; numeric.
+#' @param df Degrees of freedom; numeric.
+#' @returns A number.
+#' @examples
+#' calc_ncp_chi2(alpha = 0.05, power = 0.8, df = 1)
 calc_ncp_chi2 <- function(alpha, power, df = 1){
 
   # First compute critical value based on alpha level and DF
@@ -18,4 +27,4 @@ calc_ncp_chi2 <- function(alpha, power, df = 1){
 
   # Return exact NCP value
   return(ncp_out)
-}
+} # End calc_ncp_chi2()
