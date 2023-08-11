@@ -19,8 +19,4 @@ Imports:
     pracma (>= 2.4.2),
     rootSolve (>= 1.8.2.3),
     tidyverse (>= 2.0.0)
-    
-    
-    
-    
-    
+RoxygenNote: 7.2.3
