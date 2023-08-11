@@ -50,10 +50,10 @@ calc_pwr_pval_adj <- function(K,            # Number of clusters in each arm
                        1 - pchisq(cv_D, 1, ncp = lambda2, lower.tail = TRUE)), 4)
 
   # Final dataframe of power calculations by method and outcome
-  pwr_dat <- data.frame(type = c("Bonferroni", "Sidak", "D/AP"),
-                        power_Y1 = c(pwr_bonf[1], pwr_sidak[1], pwr_dap[1]),
-                        power_Y2 = c(pwr_bonf[2], pwr_sidak[2], pwr_dap[2]),
-                        final = c(min(pwr_bonf), min(pwr_sidak), min(pwr_dap)))
+  pwr_dat <- tibble(`P-Value Adjustment Type` = c("Bonferroni", "Sidak", "D/AP"),
+                    `Power (Y1)` = c(pwr_bonf[1], pwr_sidak[1], pwr_dap[1]),
+                    `Power (Y2)` = c(pwr_bonf[2], pwr_sidak[2], pwr_dap[2]),
+                    `Final Power` = c(min(pwr_bonf), min(pwr_sidak), min(pwr_dap)))
 
   return(pwr_dat) # Return dataframe of final power calculations
 } # End calc_pwr_pval_adj()
