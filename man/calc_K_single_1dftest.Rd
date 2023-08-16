@@ -15,7 +15,8 @@ calc_K_single_1dftest(
   rho01,
   rho02,
   rho1,
-  rho2
+  rho2,
+  r = 1
 )
 }
 \arguments{
@@ -40,6 +41,8 @@ calc_K_single_1dftest(
 \item{rho1}{Correlation between the first and second outcomes for two individuals in the same cluster; numeric.}
 
 \item{rho2}{Correlation between the first and second outcomes for the same individual; numeric.}
+
+\item{r}{Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.}
 }
 \value{
 A data frame of numerical values.
