@@ -14,7 +14,8 @@ calc_K_pval_adj(
   varY2,
   rho01,
   rho02,
-  rho2
+  rho2,
+  r = 1
 )
 }
 \arguments{
@@ -37,9 +38,11 @@ calc_K_pval_adj(
 \item{rho02}{Correlation of the second outcome for two different individuals in the same cluster; numeric.}
 
 \item{rho2}{Correlation between the first and second outcomes for the same individual; numeric.}
+
+\item{r}{Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.}
 }
 \value{
-A whole numer.
+A data frame of numerical values.
 }
 \description{
 Allows user to calculate the number of clusters per treatment arm of a hybrid type 2 cluster randomized trial given a set of study design input values, including the statistical power, and cluster size. Uses three common p-value adjustment methods.

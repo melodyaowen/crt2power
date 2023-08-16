@@ -5,6 +5,7 @@
 \title{Calculate statistical power for a cluster randomized trial with co-primary endpoints using a disjunctive 2-DF test approach.}
 \usage{
 calc_pwr_disj_2dftest(
+  dist = "Chi2",
   K,
   m,
   alpha = 0.05,
@@ -15,11 +16,14 @@ calc_pwr_disj_2dftest(
   rho01,
   rho02,
   rho1,
-  rho2
+  rho2,
+  r = 1
 )
 }
 \arguments{
-\item{K}{Number of clusters in each arm; numeric.}
+\item{dist}{Specification of which distribution to base calculation on, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.}
+
+\item{K}{Number of clusters in treatment arm, and control arm under equal allocation; numeric.}
 
 \item{m}{Individuals per cluster; numeric.}
 
@@ -40,12 +44,14 @@ calc_pwr_disj_2dftest(
 \item{rho1}{Correlation between the first and second outcomes for two individuals in the same cluster; numeric.}
 
 \item{rho2}{Correlation between the first and second outcomes for the same individual; numeric.}
+
+\item{r}{Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.}
 }
 \value{
-A data frame of numerical values.
+A numerical value.
 }
 \description{
-Allows user to calculate the statistical power of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses the disjunctive 2-DF test approach.
+Allows user to calculate the statistical power of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses the disjunctive 2-DF test approach. Code is adapted from "calPower_omnibus()" from https://github.com/siyunyang/coprimary_CRT.
 }
 \examples{
 calc_pwr_disj_2dftest(K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)

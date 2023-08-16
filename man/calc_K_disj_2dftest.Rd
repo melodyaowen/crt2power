@@ -5,6 +5,7 @@
 \title{Calculate required number of clusters per treatment group for a cluster randomized trial with co-primary endpoints using a disjunctive 2-DF test approach.}
 \usage{
 calc_K_disj_2dftest(
+  dist = "Chi2",
   power,
   m,
   alpha = 0.05,
@@ -15,10 +16,13 @@ calc_K_disj_2dftest(
   rho01,
   rho02,
   rho1,
-  rho2
+  rho2,
+  r = 1
 )
 }
 \arguments{
+\item{dist}{Specification of which distribution to base calculation on, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.}
+
 \item{power}{Desired statistical power in decimal form; numeric.}
 
 \item{m}{Individuals per cluster; numeric.}
@@ -40,12 +44,14 @@ calc_K_disj_2dftest(
 \item{rho1}{Correlation between the first and second outcomes for two individuals in the same cluster; numeric.}
 
 \item{rho2}{Correlation between the first and second outcomes for the same individual; numeric.}
+
+\item{r}{Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.}
 }
 \value{
 A data frame of numerical values.
 }
 \description{
-Allows user to calculate the number of clusters per treatment arm of a hybrid type 2 cluster randomized trial given a set of study design input values, including the statistical power, and cluster size. Uses the disjunctive 2-DF test approach.
+Allows user to calculate the number of clusters per treatment arm of a hybrid type 2 cluster randomized trial given a set of study design input values, including the statistical power, and cluster size. Uses the disjunctive 2-DF test approach. Code is adapted from "calSampleSize_omnibus()" from https://github.com/siyunyang/coprimary_CRT.
 }
 \examples{
 calc_K_disj_2dftest(power = 0.8, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)

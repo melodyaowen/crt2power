@@ -4,6 +4,7 @@
 #' Allows user to calculate either statistical power, number of clusters per treatment group (K), or cluster size (m), given a set of input values for all five study design approaches.
 #'
 #' @param output Parameter to calculate, either "power", "K", or "m"; character.
+#' @param dist Specification of which distribution to base calculation on for the disjunctive 2-DF test, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.
 #' @param power Desired statistical power; numeric.
 #' @param K Number of clusters in each arm; numeric.
 #' @param m Individuals per cluster; numeric.
@@ -16,10 +17,12 @@
 #' @param rho02 Correlation of the second outcome for two different individuals in the same cluster; numeric.
 #' @param rho1 Correlation between the first and second outcomes for two individuals in the same cluster; numeric.
 #' @param rho2 Correlation between the first and second outcomes for the same individual; numeric.
+#' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
 #' @returns A data frame of numerical values.
 #' @examples
 #' run_hybrid2_design(output = "power", K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 run_hybrid2_design <- function(output,       # Parameter to calculate
+                               dist = "Chi2",# Distribution for disjunctive 2-DF test
                                power = NA,   # Desired statistical power
                                K = NA,       # Number of clusters in each arm
                                m = NA,       # Individuals per cluster
@@ -31,7 +34,8 @@ run_hybrid2_design <- function(output,       # Parameter to calculate
                                rho01,        # ICC for outcome 1
                                rho02,        # ICC for outcome 2
                                rho1,         # Inter-subject between-endpoint ICC
-                               rho2          # Intra-subject between-endpoint ICC
+                               rho2,         # Intra-subject between-endpoint ICC
+                               r = 1         # Treatment allocation ratio
                                ){
 
   # Checks to make sure inputs are valid
@@ -88,6 +92,11 @@ run_hybrid2_design <- function(output,       # Parameter to calculate
   } else {
     stop("'output' parameter must either be 'power', 'K', or 'm'.")
   }
+  if(dist != "Chi2"){
+    if(dist != "F"){
+      stop("'dist' parameter must either be 'Chi2' or 'F'.")
+    }
+  }
 
   # Check to make sure variables are numeric
   if(!is.numeric(c(alpha, beta1, beta2, varY1, varY2, rho01, rho02, rho1, rho2))){
@@ -101,35 +110,36 @@ run_hybrid2_design <- function(output,       # Parameter to calculate
                               beta1 = beta1, beta2 = beta2,
                               varY1 = varY1, varY2 = varY2,
                               rho01 = rho01, rho02 = rho02,
-                              rho2  = rho2)
+                              rho2  = rho2, r = r)
 
     # Method 2: Combined Outcome
     out2 <- calc_pwr_comb_outcome(K = K, m = m, alpha = alpha,
                                   beta1 = beta1, beta2 = beta2,
                                   varY1 = varY1, varY2 = varY2,
                                   rho01 = rho01, rho02 = rho02,
-                                  rho1  = rho1, rho2  = rho2)
+                                  rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 3: Single 1-DF Test
     out3 <- calc_pwr_single_1dftest(K = K, m = m, alpha = alpha,
                                     beta1 = beta1, beta2 = beta2,
                                     varY1 = varY1, varY2 = varY2,
                                     rho01 = rho01, rho02 = rho02,
-                                    rho1  = rho1, rho2  = rho2)
+                                    rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 4: Disjunctive 2-DF Test
-    out4 <- calc_pwr_disj_2dftest(K = K, m = m, alpha = alpha,
+    out4 <- calc_pwr_disj_2dftest(dist = dist,
+                                  K = K, m = m, alpha = alpha,
                                   beta1 = beta1, beta2 = beta2,
                                   varY1 = varY1, varY2 = varY2,
                                   rho01 = rho01, rho02 = rho02,
-                                  rho1  = rho1, rho2  = rho2)
+                                  rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 5: Conjunctive IU Test
     out5 <- calc_pwr_conj_test(K = K, m = m, alpha = alpha,
                                 beta1 = beta1, beta2 = beta2,
                                 varY1 = varY1, varY2 = varY2,
                                 rho01 = rho01, rho02 = rho02,
-                                rho1  = rho1, rho2  = rho2)
+                                rho1  = rho1, rho2  = rho2, r = r)
 
   }
 
@@ -141,35 +151,36 @@ run_hybrid2_design <- function(output,       # Parameter to calculate
                             beta1 = beta1, beta2 = beta2,
                             varY1 = varY1, varY2 = varY2,
                             rho01 = rho01, rho02 = rho02,
-                            rho2  = rho2)
+                            rho2  = rho2, r = r)
 
     # Method 2: Combined Outcome
     out2 <- calc_K_comb_outcome(power = power, m = m, alpha = alpha,
                                 beta1 = beta1, beta2 = beta2,
                                 varY1 = varY1, varY2 = varY2,
                                 rho01 = rho01, rho02 = rho02,
-                                rho1  = rho1, rho2  = rho2)
+                                rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 3: Single 1-DF Test
     out3 <- calc_K_single_1dftest(power = power, m = m, alpha = alpha,
                                   beta1 = beta1, beta2 = beta2,
                                   varY1 = varY1, varY2 = varY2,
                                   rho01 = rho01, rho02 = rho02,
-                                  rho1  = rho1, rho2  = rho2)
+                                  rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 4: Disjunctive 2-DF Test
-    out4 <- calc_K_disj_2dftest(power = power, m = m, alpha = alpha,
+    out4 <- calc_K_disj_2dftest(dist = dist,
+                                power = power, m = m, alpha = alpha,
                                 beta1 = beta1, beta2 = beta2,
                                 varY1 = varY1, varY2 = varY2,
                                 rho01 = rho01, rho02 = rho02,
-                                rho1  = rho1, rho2  = rho2)
+                                rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 5: Conjunctive IU Test
     out5 <- calc_K_conj_test(power = power, m = m, alpha = alpha,
                              beta1 = beta1, beta2 = beta2,
                              varY1 = varY1, varY2 = varY2,
                              rho01 = rho01, rho02 = rho02,
-                             rho1  = rho1, rho2  = rho2)
+                             rho1  = rho1, rho2  = rho2, r = r)
 
   }
 
@@ -180,53 +191,84 @@ run_hybrid2_design <- function(output,       # Parameter to calculate
                             beta1 = beta1, beta2 = beta2,
                             varY1 = varY1, varY2 = varY2,
                             rho01 = rho01, rho02 = rho02,
-                            rho2  = rho2)
+                            rho2  = rho2, r = r)
 
     # Method 2: Combined Outcome
     out2 <- calc_m_comb_outcome(power = power, K = K, alpha = alpha,
                                 beta1 = beta1, beta2 = beta2,
                                 varY1 = varY1, varY2 = varY2,
                                 rho01 = rho01, rho02 = rho02,
-                                rho1  = rho1, rho2  = rho2)
+                                rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 3: Single 1-DF Test
     out3 <- calc_m_single_1dftest(power = power, K = K, alpha = alpha,
                                   beta1 = beta1, beta2 = beta2,
                                   varY1 = varY1, varY2 = varY2,
                                   rho01 = rho01, rho02 = rho02,
-                                  rho1  = rho1, rho2  = rho2)
+                                  rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 4: Disjunctive 2-DF Test
-    out4 <- calc_m_disj_2dftest(power = power, K = K, alpha = alpha,
+    out4 <- calc_m_disj_2dftest(dist = dist,
+                                power = power, K = K, alpha = alpha,
                                 beta1 = beta1, beta2 = beta2,
                                 varY1 = varY1, varY2 = varY2,
                                 rho01 = rho01, rho02 = rho02,
-                                rho1  = rho1, rho2  = rho2)
+                                rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 5: Conjunctive IU Test
     out5 <- calc_m_conj_test(power = power, K = K, alpha = alpha,
                              beta1 = beta1, beta2 = beta2,
                              varY1 = varY1, varY2 = varY2,
                              rho01 = rho01, rho02 = rho02,
-                             rho1  = rho1, rho2  = rho2)
+                             rho1  = rho1, rho2  = rho2, r = r)
   }
 
-  outputTable <- tibble(`Design Method` = c("1. P-Value Adjustments",
-                                     "a. Bonferroni",
-                                     "b. Sidak",
-                                     "c. D/AP",
-                                     "2. Combined Outcomes",
-                                     "3. Single 1-df Combined Test",
-                                     "4. Disjunctive 2-df Test",
-                                     "5. Conjunctive IU Test"),
-                        `Output`  = c(NA, out1[, ncol(out1)] , out2,
-                                      out3, out4, out5))
+
 
   # Rename "Output" column to be named what the output parameter is
   if(output == "power"){
-    names(outputTable)[names(outputTable) == "Output"] <- "Power"
-  } else {
-    names(outputTable)[names(outputTable) == "Output"] <- output
+    outputTable <- tibble(`Design Method` = c("1. P-Value Adjustments",
+                                              "a. Bonferroni",
+                                              "b. Sidak",
+                                              "c. D/AP",
+                                              "2. Combined Outcomes",
+                                              "3. Single 1-df Combined Test",
+                                              "4. Disjunctive 2-df Test",
+                                              "5. Conjunctive IU Test"),
+                          `Power`  = c(NA, pull(out1[, ncol(out1)]),
+                                        out2, out3, out4, out5))
+  } else if(output == "K"){
+    outputTable <- tibble(`Design Method` = c("1. P-Value Adjustments",
+                                              "a. Bonferroni",
+                                              "b. Sidak",
+                                              "c. D/AP",
+                                              "2. Combined Outcomes",
+                                              "3. Single 1-df Combined Test",
+                                              "4. Disjunctive 2-df Test",
+                                              "5. Conjunctive IU Test"),
+                          `K1` = c(NA, pull(dplyr::select(out1, contains("Final Treatment"))),
+                                   pull(dplyr::select(out2, contains("Treatment"))),
+                                   pull(dplyr::select(out3, contains("Treatment"))),
+                                   pull(dplyr::select(out4, contains("Treatment"))),
+                                   pull(dplyr::select(out5, contains("Treatment")))),
+                          `K2` = c(NA, pull(dplyr::select(out1, contains("Final Control"))),
+                                   pull(dplyr::select(out2, contains("Control"))),
+                                   pull(dplyr::select(out3, contains("Control"))),
+                                   pull(dplyr::select(out4, contains("Control"))),
+                                   pull(dplyr::select(out5, contains("Control"))))
+                          )
+
+  } else if(output == "m"){
+    outputTable <- tibble(`Design Method` = c("1. P-Value Adjustments",
+                                              "a. Bonferroni",
+                                              "b. Sidak",
+                                              "c. D/AP",
+                                              "2. Combined Outcomes",
+                                              "3. Single 1-df Combined Test",
+                                              "4. Disjunctive 2-df Test",
+                                              "5. Conjunctive IU Test"),
+                          `m`  = c(NA, pull(out1[, ncol(out1)]),
+                                       out2, out3, out4, out5))
   }
 
   return(outputTable)

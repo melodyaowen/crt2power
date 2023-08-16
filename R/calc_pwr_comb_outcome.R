@@ -3,7 +3,7 @@
 #' @description
 #' Allows user to calculate the statistical power of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses a combined outcomes approach where the two outcome effects are summed together.
 #'
-#' @param K Number of clusters in each arm; numeric.
+#' @param K Number of clusters in treatment arm, and control arm under equal allocation; numeric.
 #' @param m Individuals per cluster; numeric.
 #' @param alpha Type I error rate; numeric.
 #' @param beta1 Effect size for the first outcome; numeric.
@@ -14,10 +14,11 @@
 #' @param rho02 Correlation of the second outcome for two different individuals in the same cluster; numeric.
 #' @param rho1 Correlation between the first and second outcomes for two individuals in the same cluster; numeric.
 #' @param rho2 Correlation between the first and second outcomes for the same individual; numeric.
-#' @returns A data frame of numerical values.
+#' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
+#' @returns A numerical value.
 #' @examples
 #' calc_pwr_comb_outcome(K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
-calc_pwr_comb_outcome <- function(K,            # Number of clusters in each arm
+calc_pwr_comb_outcome <- function(K,            # Number of clusters in treatment arm
                                   m,            # Individuals per cluster
                                   alpha = 0.05, # Significance level
                                   beta1,        # Effect for outcome 1
@@ -27,8 +28,22 @@ calc_pwr_comb_outcome <- function(K,            # Number of clusters in each arm
                                   rho01,        # ICC for outcome 1
                                   rho02,        # ICC for outcome 2
                                   rho1,         # Inter-subject between-endpoint ICC
-                                  rho2          # Intra-subject between-endpoint ICC
+                                  rho2,         # Intra-subject between-endpoint ICC
+                                  r = 1         # Treatment allocation ratio
                                   ){
+  # Check that input values are valid
+  if(!is.numeric(c(K, m, alpha, beta1, beta2, varY1, varY2, rho01, rho02, rho1, rho2, r))){
+    stop("All input parameters must be numeric values.")
+  }
+  if(r <= 0){
+    stop("Treatment allocation ratio should be a number greater than 0.")
+  }
+  if(K < 1 | K != round(K)){
+    stop("'K' must be a positive whole number.")
+  }
+  if(m < 1 | m != round(m)){
+    stop("'m' must be a positive whole number.")
+  }
 
   # Calculate combined outcome effect size
   betaC <- beta1 + beta2
@@ -44,7 +59,7 @@ calc_pwr_comb_outcome <- function(K,            # Number of clusters in each arm
   cv <- qchisq(p = alpha, df = 1, lower.tail = FALSE)
 
   # Power for Method 2
-  lambda <- (betaC^2)/(2*(varYC/(K*m))*(1 + (m - 1)*rho0C))
+  lambda <- (betaC^2)/((1 + 1/r)*(varYC/(K*m))*(1 + (m - 1)*rho0C))
   power <- round(1 - pchisq(cv, 1, ncp = lambda, lower.tail = TRUE), 4)
 
   return(power)
@@ -73,6 +88,7 @@ calc_pwr_comb_outcome <- function(K,            # Number of clusters in each arm
 #' @param rho02 Correlation of the second outcome for two different individuals in the same cluster; numeric.
 #' @param rho1 Correlation between the first and second outcomes for two individuals in the same cluster; numeric.
 #' @param rho2 Correlation between the first and second outcomes for the same individual; numeric.
+#' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
 #' @returns A data frame of numerical values.
 #' @examples
 #' calc_K_comb_outcome(power = 0.8, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
@@ -86,8 +102,23 @@ calc_K_comb_outcome <- function(power,        # Desired statistical power
                                 rho01,        # ICC for outcome 1
                                 rho02,        # ICC for outcome 2
                                 rho1,         # Inter-subject between-endpoint ICC
-                                rho2          # Intra-subject between-endpoint ICC
+                                rho2,         # Intra-subject between-endpoint ICC
+                                r = 1         # Treatment allocation ratio
                                 ){
+
+  # Check that input values are valid
+  if(!is.numeric(c(power, m, alpha, beta1, beta2, varY1, varY2, rho01, rho02, rho1, rho2, r))){
+    stop("All input parameters must be numeric values.")
+  }
+  if(r <= 0){
+    stop("Treatment allocation ratio should be a number greater than 0.")
+  }
+  if(power > 1 | power < 0){
+    stop("'power' must be a number between 0 and 1.")
+  }
+  if(m < 1 | m != round(m)){
+    stop("'m' must be a positive whole number.")
+  }
 
   # Calculate combined outcome effect size
   betaC <- beta1 + beta2
@@ -103,7 +134,17 @@ calc_K_comb_outcome <- function(power,        # Desired statistical power
   ncp <- calc_ncp_chi2(alpha, power, df = 1)
 
   # K for Method 2
-  K <- ceiling((2*ncp*varYC*(1 + (m - 1)*rho0C))/(m*(betaC^2)))
+  if(r == 1){ # When treatment allocation is even
+    K1 <- ceiling((2*ncp*varYC*(1 + (m - 1)*rho0C))/(m*(betaC^2)))
+    K <- tibble(`Treatment (K)` = K1,
+                `Control (K)` = K1)
+  } else{ # Unequal treatment allocation
+    K1 <- ceiling(((1 + 1/r)*ncp*varYC*(1 + (m - 1)*rho0C))/(m*(betaC^2)))
+    #K2 <- ceiling(((1 + r)*ncp*varYC*(1 + (m - 1)*rho0C))/(m*(betaC^2)))
+    K2 <- ceiling(r*K1)
+    K <- tibble(`Treatment (K1)` = K1,
+                `Control (K2)` = K2)
+  }
 
   return(K)
 } # End calc_K_comb_outcome()
@@ -122,7 +163,7 @@ calc_K_comb_outcome <- function(power,        # Desired statistical power
 #' Allows user to calculate the cluster size of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses a combined outcomes approach where the two outcome effects are summed together.
 #'
 #' @param power Desired statistical power in decimal form; numeric.
-#' @param K Number of clusters in each arm; numeric.
+#' @param K Number of clusters in treatment arm, and control arm under equal allocation; numeric.
 #' @param alpha Type I error rate; numeric.
 #' @param beta1 Effect size for the first outcome; numeric.
 #' @param beta2 Effect size for the second outcome; numeric.
@@ -132,11 +173,12 @@ calc_K_comb_outcome <- function(power,        # Desired statistical power
 #' @param rho02 Correlation of the second outcome for two different individuals in the same cluster; numeric.
 #' @param rho1 Correlation between the first and second outcomes for two individuals in the same cluster; numeric.
 #' @param rho2 Correlation between the first and second outcomes for the same individual; numeric.
-#' @returns A data frame of numerical values.
+#' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
+#' @returns A numerical value.
 #' @examples
 #' calc_m_comb_outcome(power = 0.8, K = 15, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 calc_m_comb_outcome <- function(power,        # Desired statistical power
-                                K,            # Number of clusters in each arm
+                                K,            # Number of clusters in treatment arm
                                 alpha = 0.05, # Significance level
                                 beta1,        # Effect for outcome 1
                                 beta2,        # Effect for outcome 2
@@ -145,8 +187,23 @@ calc_m_comb_outcome <- function(power,        # Desired statistical power
                                 rho01,        # ICC for outcome 1
                                 rho02,        # ICC for outcome 2
                                 rho1,         # Inter-subject between-endpoint ICC
-                                rho2          # Intra-subject between-endpoint ICC
+                                rho2,         # Intra-subject between-endpoint ICC
+                                r = 1         # Treatment allocation ratio
                                 ){
+
+  # Check that input values are valid
+  if(!is.numeric(c(power, K, alpha, beta1, beta2, varY1, varY2, rho01, rho02, rho1, rho2, r))){
+    stop("All input parameters must be numeric values.")
+  }
+  if(r <= 0){
+    stop("Treatment allocation ratio should be a number greater than 0.")
+  }
+  if(power > 1 | power < 0){
+    stop("'power' must be a number between 0 and 1.")
+  }
+  if(K < 1 | K != round(K)){
+    stop("'K' must be a positive whole number.")
+  }
 
   # Calculate combined outcome effect size
   betaC <- beta1 + beta2
@@ -162,7 +219,7 @@ calc_m_comb_outcome <- function(power,        # Desired statistical power
   ncp <- calc_ncp_chi2(alpha, power, df = 1)
 
   # m for Method 2
-  m <- ceiling((2*ncp*varYC*(1 - rho0C))/((betaC^2)*K - (2*ncp*varYC*rho0C)))
+  m <- ceiling(((1 + 1/r)*ncp*varYC*(1 - rho0C))/((betaC^2)*K - ((1 + 1/r)*ncp*varYC*rho0C)))
 
   return(m)
 } # End calc_m_comb_outcome()

@@ -14,13 +14,14 @@ calc_m_pval_adj(
   varY2,
   rho01,
   rho02,
-  rho2
+  rho2,
+  r = 1
 )
 }
 \arguments{
 \item{power}{Desired statistical power in decimal form; numeric.}
 
-\item{K}{Number of clusters in each arm; numeric.}
+\item{K}{Number of clusters in treatment arm, and control arm under equal allocation; numeric.}
 
 \item{alpha}{Type I error rate; numeric.}
 
@@ -37,9 +38,11 @@ calc_m_pval_adj(
 \item{rho02}{Correlation of the second outcome for two different individuals in the same cluster; numeric.}
 
 \item{rho2}{Correlation between the first and second outcomes for the same individual; numeric.}
+
+\item{r}{Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.}
 }
 \value{
-A whole number.
+A data frame of numerical values.
 }
 \description{
 #' @description

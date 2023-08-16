@@ -18,5 +18,7 @@ Imports:
     MASS (>= 7.3.60),
     pracma (>= 2.4.2),
     rootSolve (>= 1.8.2.3),
-    tidyverse (>= 2.0.0)
+    tidyverse (>= 2.0.0),
+    tableone (>= 0.13.2),
+    foreach (>= 1.5.2)
 RoxygenNote: 7.2.3

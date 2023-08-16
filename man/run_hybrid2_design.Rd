@@ -6,6 +6,7 @@
 \usage{
 run_hybrid2_design(
   output,
+  dist = "Chi2",
   power = NA,
   K = NA,
   m = NA,
@@ -17,11 +18,14 @@ run_hybrid2_design(
   rho01,
   rho02,
   rho1,
-  rho2
+  rho2,
+  r = 1
 )
 }
 \arguments{
 \item{output}{Parameter to calculate, either "power", "K", or "m"; character.}
+
+\item{dist}{Specification of which distribution to base calculation on for the disjunctive 2-DF test, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.}
 
 \item{power}{Desired statistical power; numeric.}
 
@@ -46,6 +50,8 @@ run_hybrid2_design(
 \item{rho1}{Correlation between the first and second outcomes for two individuals in the same cluster; numeric.}
 
 \item{rho2}{Correlation between the first and second outcomes for the same individual; numeric.}
+
+\item{r}{Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.}
 }
 \value{
 A data frame of numerical values.

@@ -5,6 +5,7 @@
 \title{Calculate cluster size for a cluster randomized trial with co-primary endpoints using a disjunctive 2-DF test approach.}
 \usage{
 calc_m_disj_2dftest(
+  dist = "Chi2",
   power,
   K,
   alpha = 0.05,
@@ -15,13 +16,16 @@ calc_m_disj_2dftest(
   rho01,
   rho02,
   rho1,
-  rho2
+  rho2,
+  r = 1
 )
 }
 \arguments{
+\item{dist}{Specification of which distribution to base calculation on, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.}
+
 \item{power}{Desired statistical power in decimal form; numeric.}
 
-\item{K}{Number of clusters in each arm; numeric.}
+\item{K}{Number of clusters in treatment arm, and control arm under equal allocation; numeric.}
 
 \item{alpha}{Type I error rate; numeric.}
 
@@ -40,9 +44,11 @@ calc_m_disj_2dftest(
 \item{rho1}{Correlation between the first and second outcomes for two individuals in the same cluster; numeric.}
 
 \item{rho2}{Correlation between the first and second outcomes for the same individual; numeric.}
+
+\item{r}{Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.}
 }
 \value{
-A data frame of numerical values.
+A numerical value.
 }
 \description{
 Allows user to calculate the cluster size of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses the disjunctive 2-DF test approach.
