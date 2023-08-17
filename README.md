@@ -18,29 +18,27 @@ The five key study design approaches are included in this package that can be us
 ```
 install.packages("devtools")
 require(devtools)
-install_github("hybrid2power")
+install_github("https://github.com/melodyaowen/hybrid2power")
 ```
 
 ## Required Input Parameters
 
-_Table of Required Input Parameters:_
+_Table of Key Required Input Parameters:_
 | Parameter | Statistical Notation | Variable Name | Description |
-| ---                             | ---           | --- | --- |
-| Number of clusters              | $K$              | `K_input`     | Number of clusters in each treatment arm |
-| Cluster size                    | $m$              | `m_input`     | Number of individuals in each cluster |
-| Statistical Power               | $\pi$            | `power_input` | Probability of detecting a true effect under $H_A$ |
-| Family-wise false positive rate | $\alpha$         | `alpha_input` | Probability of one or more Type I error(s) |
-| Effect for $Y_1$                | $\beta_1^*$      | `beta1_input` | Estimated intervention effect on the first outcome ($Y_1$) |
-| Effect for $Y_2$                | $\beta_2^*$      | `beta2_input` | Estimated intervention effect on the second outcome ($Y_2$) |
-| Effect for $Y_c$                | $\beta_c^*$      | `betaC_input` | Estimated intervention effect on the combined outcome ($Y_c$) |
-| Endpoint-specific ICC for $Y_1$ | $\rho_0^{(1)}$   | `rho01_input` | Correlation for $Y_1$ for two different individuals in the same cluster |
-| Endpoint-specific ICC for $Y_2$ | $\rho_0^{(2)}$   | `rho02_input` | Correlation for $Y_2$ for two different individuals in the same cluster |
-| Endpoint-specific ICC for $Y_c$ | $\rho_0^{(c)}$   | `rho0C_input` | Correlation for $Y_c$ for two different individuals in the same cluster |
-| Inter-subject between-endpoint ICC | $\rho_1^{(1,2)}$ | `rho1_input`  | Correlation between $Y_1$ and $Y_2$ for two different individuals in the same cluster |
-| Intra-subject between-endpoint ICC | $\rho_2^{(1,2)}$ | `rho2_input`  | Correlation between $Y_1$ and $Y_2$ for the same individual |
-| Total variance of $Y_1$ | $\sigma_1^2$     | `varY1_input` | Total variance of the first outcome, $Y_1$ |
-| Total variance of $Y_2$ | $\sigma_2^2$     | `varY2_input` | Total variance of the second outcome, $Y_2$ |
-| Total variance of $Y_c$ | $\sigma_c^2$     | `varYC_input` | Total variance of the combined outcome, $Y_c$ |
+| ---                             | ---              | ---     | --- |
+| Statistical power               | $\pi$            | `power` | Probability of detecting a true effect under $H_A$ |
+| Number of clusters              | $K$              | `K`     | Number of clusters in each treatment arm |
+| Cluster size                    | $m$              | `m`     | Number of individuals in each cluster |
+| Family-wise false positive rate | $\alpha$         | `alpha` | Probability of one or more Type I error(s) |
+| Effect for $Y_1$                | $\beta_1^*$      | `beta1` | Estimated intervention effect on the first outcome ($Y_1$) |
+| Effect for $Y_2$                | $\beta_2^*$      | `beta2` | Estimated intervention effect on the second outcome ($Y_2$) |
+| Total variance of $Y_1$         | $\sigma_1^2$     | `varY1` | Total variance of the first outcome, $Y_1$ |
+| Total variance of $Y_2$         | $\sigma_2^2$     | `varY2` | Total variance of the second outcome, $Y_2$ |
+| Endpoint-specific ICC for $Y_1$ | $\rho_0^{(1)}$   | `rho01` | Correlation for $Y_1$ for two different individuals in the same cluster |
+| Endpoint-specific ICC for $Y_2$ | $\rho_0^{(2)}$   | `rho02` | Correlation for $Y_2$ for two different individuals in the same cluster |
+| Inter-subject between-endpoint ICC | $\rho_1^{(1,2)}$ | `rho1`  | Correlation between $Y_1$ and $Y_2$ for two different individuals in the same cluster |
+| Intra-subject between-endpoint ICC | $\rho_2^{(1,2)}$ | `rho2`  | Correlation between $Y_1$ and $Y_2$ for the same individual |
+| Treatment allocation ratio      | $r$              | `r`      | Treatment allocation ratio; $K_2 = rK_1$ where $K_1$ is number of clusters in experimental group |
 
 ## Function Description
 
@@ -77,6 +75,36 @@ Each method has a set of functions for calculating the statistical power ($\pi$)
 - `calc_m_conj_test()` calculates cluster size for this method
 
 ## Usage 
+
+```
+# Example of using Method 1 for a power calculation
+calc_pwr_pval_adj(K = 15, m = 300, alpha = 0.05,
+                  beta1 = 0.1, beta2 = 0.1,
+                  varY1 = 0.23, varY2 = 0.25,
+                  rho01 = 0.025, rho02 = 0.025,
+                  rho2  = 0.05, r = 1)
+
+# Example of using Method 3 for number of clusters in treatment group (K) calculation
+calc_K_single_1dftest(K = 15, m = 300, alpha = 0.05,
+                      beta1 = 0.1, beta2 = 0.1,
+                      varY1 = 0.23, varY2 = 0.25,
+                      rho01 = 0.025, rho02 = 0.025,
+                      rho1 = 0.01, rho2  = 0.05, r = 1)
+
+# Example of using Method 5 for cluster size (m) calculation
+calc_m_conj_test(power = 0.8, K = 15, alpha = 0.05,
+                 beta1 = 0.1, beta2 = 0.1,
+                 varY1 = 0.23, varY2 = 0.25,
+                 rho01 = 0.025, rho02 = 0.025,
+                 rho1 = 0.01, rho2  = 0.05, r = 1)
+
+# Example of calculating power based on all five methods
+run_hybrid2_design(output = "power", K = 15, m = 300, alpha = 0.05,
+                   beta1 = 0.1, beta2 = 0.1,
+                   varY1 = 0.23, varY2 = 0.25,
+                   rho01 = 0.025, rho02 = 0.025,
+                   rho1 = 0.01, rho2 = 0.05, r = 1)
+```
 
 ## Contact
 
