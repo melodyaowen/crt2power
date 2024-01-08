@@ -55,8 +55,6 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
   Q = 2
   message("Using ", K_total, " as the total number of clusters for IU test.")
 
-  #-------
-
   # Variance of trt assignment
   sigmaz.square <- r_alt*(1 - r_alt)
 
@@ -304,29 +302,24 @@ calc_m_conj_test <- function(power,        # Desired statistical power
   K_total <- ceiling(K/r_alt)
   message("Using ", K_total, " as the total number of clusters for IU test.")
 
-  # Sourcing external function from GitHub
-  #devtools::source_url("https://github.com/siyunyang/coprimary_CRT/blob/main/powerSampleCal_varCluster_ttest.R?raw=TRUE")
-
   # Initialize m and predictive power
   m <- 0
   pred.power <- 0
   while(pred.power < power){
     m <- m + 1
-    pred.power <- calPower_ttestIU(betas = c(beta1, beta2),
-                                   K = 2, # In this function, K = # of outcomes
-                                   m = m,
-                                   deltas = c(0, 0),
-                                   vars = c(varY1, varY2),
-                                   rho01 = matrix(c(rho01, rho1,
-                                                    rho1, rho02),
-                                                  2, 2),
-                                   rho2 = matrix(c(1, rho2,
-                                                   rho2, 1),
-                                                 2, 2),
-                                   r = r_alt,
-                                   N = K_total, # In this function, N = total clusters
-                                   alpha = alpha
-                                   )
+    pred.power <- calc_pwr_conj_test(K = K,
+                                     m = m,
+                                     alpha = alpha,
+                                     beta1 = beta1,
+                                     beta2 = beta2,
+                                     varY1 = varY1,
+                                     varY2 = varY2,
+                                     rho01 = rho01,
+                                     rho02 = rho02,
+                                     rho1 = rho1,
+                                     rho2 = rho2,
+                                     r = r
+                                     )
     if(m > 100000){
       m <- Inf
       message("Cannot find large enough 'm' to reach study specifications for IU test. Please lower power or increase value for 'K'.")
@@ -335,5 +328,5 @@ calc_m_conj_test <- function(power,        # Desired statistical power
   }
   return(ceiling(m))
 
-} # End calc_m_conj_test
+} # End calc_m_conj_test()
 

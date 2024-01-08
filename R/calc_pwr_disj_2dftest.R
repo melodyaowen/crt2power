@@ -349,6 +349,6 @@ calc_m_disj_2dftest <- function(dist = "Chi2",# Distribution to base calculation
     }
   }
   return(m)
-}
+} # End calc_m_disj_2dftest()
 
 
