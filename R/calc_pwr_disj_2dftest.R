@@ -1,7 +1,7 @@
 #' Calculate statistical power for a cluster randomized trial with co-primary endpoints using a disjunctive 2-DF test approach.
 #'
 #' @description
-#' Allows user to calculate the statistical power of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses the disjunctive 2-DF test approach. Code is adapted from "calPower_omnibus()" from https://github.com/siyunyang/coprimary_CRT.
+#' Allows user to calculate the statistical power of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses the disjunctive 2-DF test approach. Code is adapted from "calPower_omnibus()" from https://github.com/siyunyang/coprimary_CRT written by Siyun Yang.
 #'
 #' @param dist Specification of which distribution to base calculation on, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.
 #' @param K Number of clusters in treatment arm, and control arm under equal allocation; numeric.
