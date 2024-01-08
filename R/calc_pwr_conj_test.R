@@ -53,7 +53,7 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
   message("Using ", K_total, " as the total number of clusters for IU test.")
 
   # Sourcing external function from GitHub
-  devtools::source_url("https://github.com/siyunyang/coprimary_CRT/blob/main/powerSampleCal_varCluster_ttest.R?raw=TRUE")
+  #devtools::source_url("https://github.com/siyunyang/coprimary_CRT/blob/main/powerSampleCal_varCluster_ttest.R?raw=TRUE")
   power <-  calPower_ttestIU(betas = c(beta1, beta2),
                              K = 2, # In this function, K = # of outcomes
                              m = m,
@@ -134,7 +134,7 @@ calc_K_conj_test <- function(power,        # Desired statistical power
   r_alt = 1/(r + 1)
 
   # Sourcing external function from GitHub
-  devtools::source_url("https://github.com/siyunyang/coprimary_CRT/blob/main/powerSampleCal_varCluster_ttest.R?raw=TRUE")
+  #devtools::source_url("https://github.com/siyunyang/coprimary_CRT/blob/main/powerSampleCal_varCluster_ttest.R?raw=TRUE")
   K_total <- calSampleSize_ttestIU(betas = c(beta1, beta2),
                                    m = m,
                                    power = power,
