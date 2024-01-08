@@ -307,19 +307,19 @@ calc_m_conj_test <- function(power,        # Desired statistical power
   pred.power <- 0
   while(pred.power < power){
     m <- m + 1
-    pred.power <- calc_pwr_conj_test(K = K,
-                                     m = m,
-                                     alpha = alpha,
-                                     beta1 = beta1,
-                                     beta2 = beta2,
-                                     varY1 = varY1,
-                                     varY2 = varY2,
-                                     rho01 = rho01,
-                                     rho02 = rho02,
-                                     rho1 = rho1,
-                                     rho2 = rho2,
-                                     r = r
-                                     )
+    pred.power <- suppressMessages(calc_pwr_conj_test(K = K,
+                                                      m = m,
+                                                      alpha = alpha,
+                                                      beta1 = beta1,
+                                                      beta2 = beta2,
+                                                      varY1 = varY1,
+                                                      varY2 = varY2,
+                                                      rho01 = rho01,
+                                                      rho02 = rho02,
+                                                      rho1 = rho1,
+                                                      rho2 = rho2,
+                                                      r = r
+                                                      ))
     if(m > 100000){
       m <- Inf
       message("Cannot find large enough 'm' to reach study specifications for IU test. Please lower power or increase value for 'K'.")

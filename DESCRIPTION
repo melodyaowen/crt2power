@@ -19,7 +19,8 @@ Depends:
     rootSolve (>= 1.8.2.3),
     tidyverse (>= 2.0.0),
     tableone (>= 0.13.2),
-    foreach (>= 1.5.2)
+    foreach (>= 1.5.2),
+    mvtnorm (>= 1.2)
 Imports:
     devtools (>= 2.4.5),
     kableExtra (>= 1.3.4),

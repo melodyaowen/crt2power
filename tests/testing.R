@@ -20,8 +20,8 @@ calc_pwr_pval_adj(K     = 15,
                   rho01 = 0.025,
                   rho02 = 0.025,
                   rho2  = 0.05,
-                  #r = 1
-                  r = 0.5
+                  r = 1
+                  #r = 0.5
                   )
 calc_K_pval_adj(power = 0.8,
                 m     = 300,
@@ -33,8 +33,8 @@ calc_K_pval_adj(power = 0.8,
                 rho01 = 0.025,
                 rho02 = 0.025,
                 rho2  = 0.05,
-                #r = 1
-                r = 0.5
+                r = 1
+                #r = 0.5
                 )
 calc_m_pval_adj(power = 0.8,
                 K     = 15,
@@ -46,8 +46,8 @@ calc_m_pval_adj(power = 0.8,
                 rho01 = 0.025,
                 rho02 = 0.025,
                 rho2  = 0.05,
-                #r = 1
-                r = 0.5
+                r = 1
+                #r = 0.5
                 )
 
 
@@ -63,8 +63,8 @@ calc_pwr_comb_outcome(K     = 15,
                       rho02 = 0.025,
                       rho1  = 0.01,
                       rho2  = 0.05,
-                      #r = 1
-                      r = 0.5
+                      r = 1
+                      #r = 0.5
                       )
 calc_K_comb_outcome(power = 0.8,
                     m     = 300,
@@ -77,8 +77,8 @@ calc_K_comb_outcome(power = 0.8,
                     rho02 = 0.025,
                     rho1  = 0.01,
                     rho2  = 0.05,
-                    #r = 1
-                    r = 0.5
+                    r = 1
+                    #r = 0.5
                     )
 calc_m_comb_outcome(power = 0.8,
                     K     = 15,
@@ -91,8 +91,8 @@ calc_m_comb_outcome(power = 0.8,
                     rho02 = 0.025,
                     rho1  = 0.01,
                     rho2  = 0.05,
-                    #r = 1
-                    r = 0.5
+                    r = 1
+                    #r = 0.5
                     )
 
 # Method 3: Single 1-DF Test
@@ -107,8 +107,8 @@ calc_pwr_single_1dftest(K     = 15,
                         rho02 = 0.025,
                         rho1  = 0.01,
                         rho2  = 0.05,
-                        #r = 1
-                        r = 0.5
+                        r = 1
+                        #r = 0.5
                         )
 calc_K_single_1dftest(power = 0.8,
                       m     = 300,
@@ -121,8 +121,8 @@ calc_K_single_1dftest(power = 0.8,
                       rho02 = 0.025,
                       rho1  = 0.01,
                       rho2  = 0.05,
-                      #r = 1
-                      r = 0.5
+                      r = 1
+                      #r = 0.5
                       )
 calc_m_single_1dftest(power = 0.8,
                       K     = 15,
@@ -135,8 +135,8 @@ calc_m_single_1dftest(power = 0.8,
                       rho02 = 0.025,
                       rho1  = 0.01,
                       rho2  = 0.05,
-                      #r = 1
-                      r = 0.5
+                      r = 1
+                      #r = 0.5
                       )
 
 # Method 4: Disjunctive 2-DF Test
@@ -150,7 +150,9 @@ calc_pwr_disj_2dftest(K     = 15,
                       rho01 = 0.025,
                       rho02 = 0.025,
                       rho1  = 0.01,
-                      rho2  = 0.05)
+                      rho2  = 0.05,
+                      r = 1
+                      )
 calc_K_disj_2dftest(power = 0.8,
                     m     = 300,
                     alpha = 0.05,
@@ -161,7 +163,9 @@ calc_K_disj_2dftest(power = 0.8,
                     rho01 = 0.025,
                     rho02 = 0.025,
                     rho1  = 0.01,
-                    rho2  = 0.05)
+                    rho2  = 0.05,
+                    r = 1
+                    )
 calc_m_disj_2dftest(power = 0.8,
                     K     = 15,
                     alpha = 0.05,
@@ -172,7 +176,9 @@ calc_m_disj_2dftest(power = 0.8,
                     rho01 = 0.025,
                     rho02 = 0.025,
                     rho1  = 0.01,
-                    rho2  = 0.05)
+                    rho2  = 0.05,
+                    r = 1
+                    )
 
 # Method 5: Conjunctive IU Test
 calc_pwr_conj_test(K     = 15,
@@ -186,7 +192,8 @@ calc_pwr_conj_test(K     = 15,
                    rho02 = 0.025,
                    rho1  = 0.01,
                    rho2  = 0.05,
-                   r = 0.5)
+                   r = 1
+                   )
 calc_K_conj_test(power = 0.8,
                  m     = 300,
                  alpha = 0.05,
@@ -198,7 +205,8 @@ calc_K_conj_test(power = 0.8,
                  rho02 = 0.025,
                  rho1  = 0.01,
                  rho2  = 0.05,
-                 r = 0.5)
+                 r = 1
+                 )
 calc_m_conj_test(power = 0.8,
                  K     = 15,
                  alpha = 0.05,
@@ -210,7 +218,8 @@ calc_m_conj_test(power = 0.8,
                  rho02 = 0.025,
                  rho1  = 0.01,
                  rho2  = 0.05,
-                 r = 1)
+                 r = 1
+                 )
 
 
 
