@@ -49,7 +49,7 @@ calc_pwr_comb_outcome <- function(K,            # Number of clusters in treatmen
   betaC <- beta1 + beta2
 
   # Calculate variance for combined outcome
-  varYC <- round(varY1 + varY2 + 2*rho2*sqrt(varY1)*sqrt(varY2), 2)
+  varYC <- round(varY1 + varY2 + 2*rho2*sqrt(varY1)*sqrt(varY2), 4)
 
   # Calculate ICC for combined outcome
   rho0C  <- (rho01*varY1 + rho02*varY2 + 2*rho1*sqrt(varY1*varY2))/
@@ -124,7 +124,7 @@ calc_K_comb_outcome <- function(power,        # Desired statistical power
   betaC <- beta1 + beta2
 
   # Calculate variance for combined outcome
-  varYC <- round(varY1 + varY2 + 2*rho2*sqrt(varY1)*sqrt(varY2), 2)
+  varYC <- round(varY1 + varY2 + 2*rho2*sqrt(varY1)*sqrt(varY2), 4)
 
   # Calculate ICC for combined outcome
   rho0C  <- (rho01*varY1 + rho02*varY2 + 2*rho1*sqrt(varY1*varY2))/
@@ -209,7 +209,7 @@ calc_m_comb_outcome <- function(power,        # Desired statistical power
   betaC <- beta1 + beta2
 
   # Calculate variance for combined outcome
-  varYC <- round(varY1 + varY2 + 2*rho2*sqrt(varY1)*sqrt(varY2), 2)
+  varYC <- round(varY1 + varY2 + 2*rho2*sqrt(varY1)*sqrt(varY2), 4)
 
   # Calculate ICC for combined outcome
   rho0C  <- (rho01*varY1 + rho02*varY2 + 2*rho1*sqrt(varY1*varY2))/
