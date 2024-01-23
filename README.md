@@ -19,6 +19,7 @@ The five key study design approaches are included in this package that can be us
 install.packages("devtools")
 require(devtools)
 install_github("https://github.com/melodyaowen/hybrid2power")
+require(hybrid2power)
 ```
 
 ## Required Input Parameters
