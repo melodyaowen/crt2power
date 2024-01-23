@@ -1,5 +1,19 @@
 #' Calculate statistical power for a cluster randomized trial with co-primary endpoints using the conjunctive intersection-union test approach.
 #'
+#' @import devtools
+#' @import kableExtra
+#' @import knitr
+#' @import MASS
+#' @import pracma
+#' @import rootSolve
+#' @import tidyverse
+#' @import tableone
+#' @import foreach
+#' @import mvtnorm
+#' @import tibble
+#' @import dplyr
+#' @import tidyr
+#'
 #' @description
 #' Allows user to calculate the statistical power of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses the conjunctive intersection-union test approach. Code is adapted from "calPower_ttestIU()" from https://github.com/siyunyang/coprimary_CRT written by Siyun Yang.
 #'
@@ -18,6 +32,7 @@
 #' @returns A numerical value.
 #' @examples
 #' calc_pwr_conj_test(K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' @export
 calc_pwr_conj_test <- function(K,            # Number of clusters in treatment arm
                                m,            # Individuals per cluster
                                alpha = 0.05, # Significance level
@@ -64,10 +79,8 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
     rho0k <- diag(rho01)
     sigmak.square <- (1+(m-1)*rho0k)*vars/(m*sigmaz.square)
     covMatrix <- diag(sigmak.square)
-    for(row in 1:K )
-    {
-      for(col in 1:K)
-      {
+    for(row in 1:K ){
+      for(col in 1:K){
         if(row != col){
           covMatrix[row,col] <- sqrt(vars[row])*sqrt(vars[col])*(rho2[row,col]+(m-1)*rho01[row,col])/(m*sigmaz.square)
         }
@@ -77,14 +90,11 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
   }
 
   # Dependent Function 2: Calculates correlation between test statistics
-  calCorWks <- function(vars, rho01, rho2, sigmaz.square, m, K)
-  {
+  calCorWks <- function(vars, rho01, rho2, sigmaz.square, m, K){
     top <- calCovbetas(vars,rho01,rho2, sigmaz.square, m, K)
     wCor <- diag(K)
-    for(row in 1:K )
-    {
-      for(col in 1:K)
-      {
+    for(row in 1:K){
+      for(col in 1:K){
         if(row != col){
           wCor[row,col] <- top[row,col]/sqrt(top[row,row]*top[col,col])
         }
@@ -158,6 +168,7 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
 #' @returns A data frame of numerical values.
 #' @examples
 #' calc_K_conj_test(power = 0.8, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' @export
 calc_K_conj_test <- function(power,        # Desired statistical power
                              m,            # Individuals per cluster
                              alpha = 0.05, # Significance level
@@ -207,21 +218,17 @@ calc_K_conj_test <- function(power,        # Desired statistical power
                                                       rho2 = rho2,
                                                       r = r
                                                       ))
-    if(power_temp < power)
-    {
+    if(power_temp < power){
       lowerBound <- middle
     }
-    if(power_temp > power)
-    {
+    if(power_temp > power){
       upperBound <- middle
     }
-    if(power_temp == power)
-    {
+    if(power_temp == power){
       return(middle)
       break
     }
-    if((lowerBound-upperBound) == -1)
-    {
+    if((lowerBound-upperBound) == -1){
       K <- upperBound
       break
     }
@@ -268,6 +275,7 @@ calc_K_conj_test <- function(power,        # Desired statistical power
 #' @returns A numerical value.
 #' @examples
 #' calc_m_conj_test(power = 0.8, K = 15, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' @export
 calc_m_conj_test <- function(power,        # Desired statistical power
                              K,            # Number of clusters in treatment arm
                              alpha = 0.05, # Significance level

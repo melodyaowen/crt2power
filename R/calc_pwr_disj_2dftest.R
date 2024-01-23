@@ -1,5 +1,19 @@
 #' Calculate statistical power for a cluster randomized trial with co-primary endpoints using a disjunctive 2-DF test approach.
 #'
+#' @import devtools
+#' @import kableExtra
+#' @import knitr
+#' @import MASS
+#' @import pracma
+#' @import rootSolve
+#' @import tidyverse
+#' @import tableone
+#' @import foreach
+#' @import mvtnorm
+#' @import tibble
+#' @import dplyr
+#' @import tidyr
+#'
 #' @description
 #' Allows user to calculate the statistical power of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses the disjunctive 2-DF test approach. Code is adapted from "calPower_omnibus()" from https://github.com/siyunyang/coprimary_CRT written by Siyun Yang.
 #'
@@ -19,6 +33,7 @@
 #' @returns A numerical value.
 #' @examples
 #' calc_pwr_disj_2dftest(K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' @export
 calc_pwr_disj_2dftest <- function(dist = "Chi2",# Distribution to base calculation from
                                   K,            # Number of clusters in treatment arm
                                   m,            # Individuals per cluster
@@ -145,6 +160,7 @@ calc_pwr_disj_2dftest <- function(dist = "Chi2",# Distribution to base calculati
 #' @returns A data frame of numerical values.
 #' @examples
 #' calc_K_disj_2dftest(power = 0.8, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' @export
 calc_K_disj_2dftest <- function(dist = "Chi2",# Distribution to base calculation from
                                 power,        # Desired statistical power
                                 m,            # Individuals per cluster
@@ -292,6 +308,7 @@ calc_K_disj_2dftest <- function(dist = "Chi2",# Distribution to base calculation
 #' @returns A numerical value.
 #' @examples
 #' calc_m_disj_2dftest(power = 0.8, K = 15, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' @export
 calc_m_disj_2dftest <- function(dist = "Chi2",# Distribution to base calculation from
                                 power,        # Desired statistical power
                                 K,            # Number of clusters in treatment arm

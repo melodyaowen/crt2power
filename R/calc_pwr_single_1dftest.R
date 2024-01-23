@@ -1,5 +1,19 @@
 #' Calculate statistical power for a cluster randomized trial with co-primary endpoints using the single 1-DF combined test approach.
 #'
+#' @import devtools
+#' @import kableExtra
+#' @import knitr
+#' @import MASS
+#' @import pracma
+#' @import rootSolve
+#' @import tidyverse
+#' @import tableone
+#' @import foreach
+#' @import mvtnorm
+#' @import tibble
+#' @import dplyr
+#' @import tidyr
+#'
 #' @description
 #' Allows user to calculate the statistical power of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses the single 1-DF combined test approach for clustered data and two outcomes.
 #'
@@ -18,6 +32,7 @@
 #' @returns A numerical value.
 #' @examples
 #' calc_pwr_single_1dftest(K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' @export
 calc_pwr_single_1dftest <- function(K,            # Number of clusters in treatment arm
                                     m,            # Individuals per cluster
                                     alpha = 0.05, # Significance level
@@ -92,6 +107,7 @@ calc_pwr_single_1dftest <- function(K,            # Number of clusters in treatm
 #' @returns A data frame of numerical values.
 #' @examples
 #' calc_K_single_1dftest(K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' @export
 calc_K_single_1dftest <- function(power,        # Desired statistical power
                                   m,            # Individuals per cluster
                                   alpha = 0.05, # Significance level
@@ -172,6 +188,7 @@ calc_K_single_1dftest <- function(power,        # Desired statistical power
 #' @returns A numerical value.
 #' @examples
 #' calc_m_single_1dftest(power = 0.8, K = 15, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' @export
 calc_m_single_1dftest <- function(power,        # Desired statistical power
                                   K,            # Number of clusters in treatment arm
                                   alpha = 0.05, # Significance level

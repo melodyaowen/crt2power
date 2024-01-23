@@ -1,5 +1,19 @@
 #' Find study design output specifications based on all five hybrid type 2 design methods.
 #'
+#' @import devtools
+#' @import kableExtra
+#' @import knitr
+#' @import MASS
+#' @import pracma
+#' @import rootSolve
+#' @import tidyverse
+#' @import tableone
+#' @import foreach
+#' @import mvtnorm
+#' @import tibble
+#' @import dplyr
+#' @import tidyr
+#'
 #' @description
 #' Allows user to calculate either statistical power, number of clusters per treatment group (K), or cluster size (m), given a set of input values for all five study design approaches.
 #'
@@ -21,6 +35,7 @@
 #' @returns A data frame of numerical values.
 #' @examples
 #' run_hybrid2_design(output = "power", K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' @export
 run_hybrid2_design <- function(output,       # Parameter to calculate
                                dist = "Chi2",# Distribution for disjunctive 2-DF test
                                power = NA,   # Desired statistical power

@@ -1,5 +1,19 @@
 #' Find the non-centrality parameter corresponding to Type I error rate and statistical power
 #'
+#' @import devtools
+#' @import kableExtra
+#' @import knitr
+#' @import MASS
+#' @import pracma
+#' @import rootSolve
+#' @import tidyverse
+#' @import tableone
+#' @import foreach
+#' @import mvtnorm
+#' @import tibble
+#' @import dplyr
+#' @import tidyr
+#'
 #' @description
 #' Allows user to find the corresponding non-centrality parameter for power analysis based on the Type I error rate, statistical power, and degrees of freedom.
 #'
