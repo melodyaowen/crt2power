@@ -117,10 +117,10 @@ calc_pwr_disj_2dftest <- function(dist = "Chi2",# Distribution to base calculati
   omega <- calCovbetas(vars, rho01_mat, rho2_mat, clus_var, sigmaz.square, m, Q)
   tau <- K_total*t(betas) %*% solve(omega) %*% betas
 
-  if(dist == "Chi2"){
+  if(dist == "Chi2"){ # Using Chi2
     cv <- qchisq(1 - alpha, df = 2, ncp = 0, lower.tail = TRUE, log.p = FALSE)
     power <- round(1 - pchisq(cv, df = 2, ncp = tau, lower.tail = TRUE), 4)
-  } else if(dist == "F"){
+  } else if(dist == "F"){ # Using F
     Fscore <- qf(1 - alpha, df1 = Q, df2 = K_total - 2*Q, ncp = 0,
                  lower.tail = TRUE, log.p = FALSE)
     power <- round(1 - pf(Fscore, df1 = Q, df2 = K_total - 2*Q, tau,
