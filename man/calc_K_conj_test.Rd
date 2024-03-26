@@ -16,7 +16,9 @@ calc_K_conj_test(
   rho02,
   rho1,
   rho2,
-  r = 1
+  r = 1,
+  cv = 0,
+  deltas = c(0, 0)
 )
 }
 \arguments{
@@ -43,6 +45,10 @@ calc_K_conj_test(
 \item{rho2}{Correlation between the first and second outcomes for the same individual; numeric.}
 
 \item{r}{Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.}
+
+\item{cv}{Cluster variation parameter, set to 0 if assuming all cluster sizes are equal; numeric.}
+
+\item{deltas}{Vector of non-inferiority margins, set to delta_1 = delta_2 = 0; numeric vector.}
 }
 \value{
 A data frame of numerical values.

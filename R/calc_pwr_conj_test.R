@@ -29,6 +29,8 @@
 #' @param rho1 Correlation between the first and second outcomes for two individuals in the same cluster; numeric.
 #' @param rho2 Correlation between the first and second outcomes for the same individual; numeric.
 #' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
+#' @param cv Cluster variation parameter, set to 0 if assuming all cluster sizes are equal; numeric.
+#' @param deltas Vector of non-inferiority margins, set to delta_1 = delta_2 = 0; numeric vector.
 #' @returns A numerical value.
 #' @examples
 #' calc_pwr_conj_test(K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
@@ -44,11 +46,13 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
                                rho02,        # ICC for outcome 2
                                rho1,         # Inter-subject between-endpoint ICC
                                rho2,         # Intra-subject between-endpoint ICC
-                               r = 1         # Treatment allocation ratio
+                               r = 1,        # Treatment allocation ratio
+                               cv = 0,       # If equal cluster size, cv=0
+                               deltas = c(0,0)
                                ){
 
   # Check that input values are valid
-  if(!is.numeric(c(K, m, alpha, beta1, beta2, varY1, varY2, rho01, rho02, rho1, rho2, r))){
+  if(!is.numeric(c(K, m, alpha, beta1, beta2, varY1, varY2, rho01, rho02, rho1, rho2, r, cv))){
     stop("All input parameters must be numeric values.")
   }
   if(r <= 0){
@@ -61,40 +65,69 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
     stop("'m' must be a positive whole number.")
   }
 
-  # Function below requires ratio be defined as K1/K rather than K2/K1,
+  # Helper functions requirer ratio be defined as K1/K rather than K2/K1,
   # so define new ratio variable based on the one that was inputted by user
   r_alt <- 1/(r + 1)
   K_total <- ceiling(K/r_alt)
   betas = c(beta1, beta2)
-  deltas = c(0, 0)
   Q = 2
   message("Using ", K_total, " as the total number of clusters for IU test.")
 
   # Variance of trt assignment
   sigmaz.square <- r_alt*(1 - r_alt)
 
-  # Define small dependent functions -------------------------------------------
-  # Dependent Function 1: Calculates covariance between betas
-  calCovbetas <- function(vars, rho01, rho2, sigmaz.square, m, K){
-    rho0k <- diag(rho01)
-    sigmak.square <- (1+(m-1)*rho0k)*vars/(m*sigmaz.square)
-    covMatrix <- diag(sigmak.square)
-    for(row in 1:K ){
-      for(col in 1:K){
+  # Helper Function 1: Construct covariance matrix Sigma_E for Y_k -------------
+  constrRiE <- function(rho01, rho2, Q, vars){
+    rho0q <- diag(rho01)
+    SigmaE_Matrix <- diag((1-rho0q)*vars)
+    for(row in 1:Q){
+      for(col in 1:Q){
         if(row != col){
-          covMatrix[row,col] <- sqrt(vars[row])*sqrt(vars[col])*(rho2[row,col]+(m-1)*rho01[row,col])/(m*sigmaz.square)
+          SigmaE_Matrix[row,col] <- sqrt(vars[row])*sqrt(vars[col])*(rho2[row,col]-rho01[row,col])
         }
       }
     }
+    # Check for matrix positive definite
+    if(min(eigen(SigmaE_Matrix)$values) <= 1e-08){
+      print("Warning: the resulting covariance matrix Sigma_E is not positive definite. Check the inputs for the correlation values.")
+    }
+  return(SigmaE_Matrix)
+  }
+
+  # Helper Function 2: Construct covariance matrix Sigma_phi for Y_k -----------
+  constrRiP <- function(rho01, Q, vars){
+    rho0q <- diag(rho01)
+    SigmaP_Matrix <- diag(rho0q*vars)
+    for(row in 1:Q){
+      for(col in 1:Q){
+        if(row != col){
+          SigmaP_Matrix[row,col] <- sqrt(vars[row])*sqrt(vars[col])*rho01[row,col]
+        }
+      }
+    }
+    # Check for matrix positive definite
+    if(min(eigen(SigmaP_Matrix)$values) <= 1e-08){
+      print("Warning: the resulting covariance matrix Sigma_phi is not positive definite. Check the input of rho01 and rho2.")
+    }
+  return(SigmaP_Matrix)
+  }
+
+  # Helper Function 3: Calculate covariance between betas ----------------------
+  calCovbetas <- function(vars, rho01, rho2, cv, sigmaz.square, m, Q){
+    sigmaE <- constrRiE(rho01, rho2, Q, vars)
+    sigmaP <- constrRiP(rho01, Q, vars)
+    tmp <- solve(diag(1,Q) - cv^2*(m*sigmaP %*% solve(sigmaE + m*sigmaP) %*% sigmaE %*% solve(sigmaE + m*sigmaP)))
+    covMatrix <- 1/(m*sigmaz.square)*(sigmaE + m*sigmaP)%*%tmp
+    covMatrix <- (covMatrix + t(covMatrix))/2  # symmerize the off-diagonal
     return(covMatrix)
   }
 
-  # Dependent Function 2: Calculates correlation between test statistics
-  calCorWks <- function(vars, rho01, rho2, sigmaz.square, m, K){
-    top <- calCovbetas(vars,rho01,rho2, sigmaz.square, m, K)
-    wCor <- diag(K)
-    for(row in 1:K){
-      for(col in 1:K){
+  # Helper Function 4: Calculate correlation between test statistics -----------
+  calCorWks <- function(vars, rho01, rho2, sigmaz.square, cv, m, Q){
+    top <- calCovbetas(vars, rho01, rho2, cv, sigmaz.square, m, Q)
+    wCor <- diag(Q)
+    for(row in 1:Q){
+      for(col in 1:Q){
         if(row != col){
           wCor[row,col] <- top[row,col]/sqrt(top[row,row]*top[col,col])
         }
@@ -103,7 +136,7 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
     return(wCor)
   }
 
-  # Define sigma matrix
+  # Define necessary parameters
   sigmaks.sq <- diag(calCovbetas(vars = c(varY1, varY2),
                                  rho01 = matrix(c(rho01, rho1,
                                                   rho1, rho02),
@@ -111,12 +144,10 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
                                  rho2 = matrix(c(1, rho2,
                                                  rho2, 1),
                                                2, 2),
-                                 sigmaz.square,
+                                 cv = cv,
+                                 sigmaz.square = sigmaz.square,
                                  m = m,
-                                 K = Q # Number of outcomes
-                                 ))
-
-  # Define mean vector
+                                 Q = Q))
   meanVector <- sqrt(K_total)*(betas - deltas)/sqrt(sigmaks.sq)
   wCor <- calCorWks(vars = c(varY1, varY2),
                     rho01 = matrix(c(rho01, rho1,
@@ -125,19 +156,21 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
                     rho2 = matrix(c(1, rho2,
                                     rho2, 1),
                                   2, 2),
-                    sigmaz.square,
+                    sigmaz.square = sigmaz.square,
+                    cv = cv,
                     m = m,
-                    K = Q # Number of outcomes
-                    )
+                    Q = Q)
 
   # Calculate critical value
-  criticalValue <- qt(p = (1 - alpha), df = (K_total - 2*Q))
+  criticalValue <- qt(p = (1 - alpha),
+                      df = (K_total - 2*Q))
 
-  # Calculate power
+  # Calculate power based on T distribution
   power <- pmvt(lower = rep(criticalValue, Q),
-                upper = rep(Inf, Q), df = (K_total - 2*Q),
-                sigma = wCor, delta = meanVector)[1]
-
+                upper = rep(Inf, Q),
+                df = (K_total - 2*Q),
+                sigma = wCor,
+                delta = meanVector)[1]
   return(round(power, 4))
 } # End calc_pwr_conj_test()
 
@@ -165,6 +198,8 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
 #' @param rho1 Correlation between the first and second outcomes for two individuals in the same cluster; numeric.
 #' @param rho2 Correlation between the first and second outcomes for the same individual; numeric.
 #' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
+#' @param cv Cluster variation parameter, set to 0 if assuming all cluster sizes are equal; numeric.
+#' @param deltas Vector of non-inferiority margins, set to delta_1 = delta_2 = 0; numeric vector.
 #' @returns A data frame of numerical values.
 #' @examples
 #' calc_K_conj_test(power = 0.8, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
@@ -180,11 +215,13 @@ calc_K_conj_test <- function(power,        # Desired statistical power
                              rho02,        # ICC for outcome 2
                              rho1,         # Inter-subject between-endpoint ICC
                              rho2,         # Intra-subject between-endpoint ICC
-                             r = 1         # Treatment allocation ratio
+                             r = 1,        # Treatment allocation ratio
+                             cv = 0,
+                             deltas = c(0,0)
                              ){
 
   # Check that input values are valid
-  if(!is.numeric(c(power, m, alpha, beta1, beta2, varY1, varY2, rho01, rho02, rho1, rho2, r))){
+  if(!is.numeric(c(power, m, alpha, beta1, beta2, varY1, varY2, rho01, rho02, rho1, rho2, r, cv))){
     stop("All input parameters must be numeric values.")
   }
   if(r <= 0){
@@ -216,7 +253,9 @@ calc_K_conj_test <- function(power,        # Desired statistical power
                                                       rho02 = rho02,
                                                       rho1 = rho1,
                                                       rho2 = rho2,
-                                                      r = r
+                                                      r = r,
+                                                      cv = cv,
+                                                      deltas = deltas
                                                       ))
     if(power_temp < power){
       lowerBound <- middle
@@ -272,6 +311,8 @@ calc_K_conj_test <- function(power,        # Desired statistical power
 #' @param rho1 Correlation between the first and second outcomes for two individuals in the same cluster; numeric.
 #' @param rho2 Correlation between the first and second outcomes for the same individual; numeric.
 #' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
+#' @param cv Cluster variation parameter, set to 0 if assuming all cluster sizes are equal; numeric.
+#' @param deltas Vector of non-inferiority margins, set to delta_1 = delta_2 = 0; numeric vector.
 #' @returns A numerical value.
 #' @examples
 #' calc_m_conj_test(power = 0.8, K = 15, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
@@ -287,11 +328,13 @@ calc_m_conj_test <- function(power,        # Desired statistical power
                              rho02,        # ICC for outcome 2
                              rho1,         # Inter-subject between-endpoint ICC
                              rho2,         # Intra-subject between-endpoint ICC
-                             r = 1         # Treatment allocation ratio
+                             r = 1,        # Treatment allocation ratio
+                             cv = 0,
+                             deltas = c(0, 0)
                              ){
 
   # Check that input values are valid
-  if(!is.numeric(c(power, K, alpha, beta1, beta2, varY1, varY2, rho01, rho02, rho1, rho2, r))){
+  if(!is.numeric(c(power, K, alpha, beta1, beta2, varY1, varY2, rho01, rho02, rho1, rho2, r, cv))){
     stop("All input parameters must be numeric values.")
   }
   if(r <= 0){
@@ -326,7 +369,9 @@ calc_m_conj_test <- function(power,        # Desired statistical power
                                                       rho02 = rho02,
                                                       rho1 = rho1,
                                                       rho2 = rho2,
-                                                      r = r
+                                                      r = r,
+                                                      cv = cv,
+                                                      deltas = deltas
                                                       ))
     if(m > 100000){
       m <- Inf
