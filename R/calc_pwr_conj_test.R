@@ -31,6 +31,7 @@
 #' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
 #' @param cv Cluster variation parameter, set to 0 if assuming all cluster sizes are equal; numeric.
 #' @param deltas Vector of non-inferiority margins, set to delta_1 = delta_2 = 0; numeric vector.
+#' @param dist Specification of which distribution to base calculation on, either 'T' for T-Distribution or 'MVN' for Multivariate Normal Distribution. Default is T-Distribution.
 #' @returns A numerical value.
 #' @examples
 #' calc_pwr_conj_test(K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
@@ -48,7 +49,8 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
                                rho2,         # Intra-subject between-endpoint ICC
                                r = 1,        # Treatment allocation ratio
                                cv = 0,       # If equal cluster size, cv=0
-                               deltas = c(0,0)
+                               deltas = c(0,0),
+                               dist = "T"    # Distribution to be used
                                ){
 
   # Check that input values are valid
@@ -65,7 +67,7 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
     stop("'m' must be a positive whole number.")
   }
 
-  # Helper functions requirer ratio be defined as K1/K rather than K2/K1,
+  # Helper functions requires ratio be defined as K1/K rather than K2/K1,
   # so define new ratio variable based on the one that was inputted by user
   r_alt <- 1/(r + 1)
   K_total <- ceiling(K/r_alt)
@@ -161,16 +163,27 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
                     m = m,
                     Q = Q)
 
-  # Calculate critical value
-  criticalValue <- qt(p = (1 - alpha),
-                      df = (K_total - 2*Q))
-
-  # Calculate power based on T distribution
-  power <- pmvt(lower = rep(criticalValue, Q),
-                upper = rep(Inf, Q),
-                df = (K_total - 2*Q),
-                sigma = wCor,
-                delta = meanVector)[1]
+  if(dist == "T"){ # Using T-distribution
+    # Calculate critical value and power
+    criticalValue <- qt(p = (1 - alpha),
+                        df = (K_total - 2*Q))
+    power <- pmvt(lower = rep(criticalValue, Q),
+                  upper = rep(Inf, Q),
+                  df = (K_total - 2*Q),
+                  sigma = wCor,
+                  delta = meanVector)[1]
+  } else if(dist == "MVN"){ # Using multivariate normal distribution
+    # Calculate critical value and power
+    criticalValue <- qnorm(p = 1 - alpha,
+                           mean = 0,
+                           sd = 1)
+    power <- pmvnorm(lower = rep(criticalValue, Q),
+                     upper = rep(Inf, Q),
+                     corr = wCor,
+                     mean = meanVector)[1]
+  } else{
+    stop("Please choose a valid input parameter for 'dist', either 'T' for T-distribution or 'MVN' for Multivariate Normal Distribution.")
+  }
   return(round(power, 4))
 } # End calc_pwr_conj_test()
 
@@ -200,6 +213,7 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
 #' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
 #' @param cv Cluster variation parameter, set to 0 if assuming all cluster sizes are equal; numeric.
 #' @param deltas Vector of non-inferiority margins, set to delta_1 = delta_2 = 0; numeric vector.
+#' @param dist Specification of which distribution to base calculation on, either 'T' for T-Distribution or 'MVN' for Multivariate Normal Distribution. Default is T-Distribution.
 #' @returns A data frame of numerical values.
 #' @examples
 #' calc_K_conj_test(power = 0.8, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
@@ -217,7 +231,8 @@ calc_K_conj_test <- function(power,        # Desired statistical power
                              rho2,         # Intra-subject between-endpoint ICC
                              r = 1,        # Treatment allocation ratio
                              cv = 0,
-                             deltas = c(0,0)
+                             deltas = c(0,0),
+                             dist = "T"
                              ){
 
   # Check that input values are valid
@@ -255,7 +270,8 @@ calc_K_conj_test <- function(power,        # Desired statistical power
                                                       rho2 = rho2,
                                                       r = r,
                                                       cv = cv,
-                                                      deltas = deltas
+                                                      deltas = deltas,
+                                                      dist = dist
                                                       ))
     if(power_temp < power){
       lowerBound <- middle
@@ -313,6 +329,7 @@ calc_K_conj_test <- function(power,        # Desired statistical power
 #' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
 #' @param cv Cluster variation parameter, set to 0 if assuming all cluster sizes are equal; numeric.
 #' @param deltas Vector of non-inferiority margins, set to delta_1 = delta_2 = 0; numeric vector.
+#' @param dist Specification of which distribution to base calculation on, either 'T' for T-Distribution or 'MVN' for Multivariate Normal Distribution. Default is T-Distribution.
 #' @returns A numerical value.
 #' @examples
 #' calc_m_conj_test(power = 0.8, K = 15, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
@@ -330,7 +347,8 @@ calc_m_conj_test <- function(power,        # Desired statistical power
                              rho2,         # Intra-subject between-endpoint ICC
                              r = 1,        # Treatment allocation ratio
                              cv = 0,
-                             deltas = c(0, 0)
+                             deltas = c(0, 0),
+                             dist = "T"
                              ){
 
   # Check that input values are valid
@@ -371,7 +389,8 @@ calc_m_conj_test <- function(power,        # Desired statistical power
                                                       rho2 = rho2,
                                                       r = r,
                                                       cv = cv,
-                                                      deltas = deltas
+                                                      deltas = deltas,
+                                                      dist = dist
                                                       ))
     if(m > 100000){
       m <- Inf

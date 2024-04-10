@@ -18,7 +18,8 @@ calc_K_conj_test(
   rho2,
   r = 1,
   cv = 0,
-  deltas = c(0, 0)
+  deltas = c(0, 0),
+  dist = "T"
 )
 }
 \arguments{
@@ -49,6 +50,8 @@ calc_K_conj_test(
 \item{cv}{Cluster variation parameter, set to 0 if assuming all cluster sizes are equal; numeric.}
 
 \item{deltas}{Vector of non-inferiority margins, set to delta_1 = delta_2 = 0; numeric vector.}
+
+\item{dist}{Specification of which distribution to base calculation on, either 'T' for T-Distribution or 'MVN' for Multivariate Normal Distribution. Default is T-Distribution.}
 }
 \value{
 A data frame of numerical values.
