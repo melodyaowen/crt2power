@@ -189,32 +189,32 @@ run_hybrid2_design <- function(output,       # Parameter to calculate
                                   rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 4: Disjunctive 2-DF Test
-    out4.Chi2 <- calc_pwr_disj_2dftest(dist = "Chi2",
-                                       power = power, m = m, alpha = alpha,
-                                       beta1 = beta1, beta2 = beta2,
-                                       varY1 = varY1, varY2 = varY2,
-                                       rho01 = rho01, rho02 = rho02,
-                                       rho1  = rho1, rho2  = rho2, r = r)
-    out4.F <- calc_pwr_disj_2dftest(dist = "F",
-                                    power = power, m = m, alpha = alpha,
-                                    beta1 = beta1, beta2 = beta2,
-                                    varY1 = varY1, varY2 = varY2,
-                                    rho01 = rho01, rho02 = rho02,
-                                    rho1  = rho1, rho2  = rho2, r = r)
+    out4.Chi2 <- calc_K_disj_2dftest(dist = "Chi2",
+                                     power = power, m = m, alpha = alpha,
+                                     beta1 = beta1, beta2 = beta2,
+                                     varY1 = varY1, varY2 = varY2,
+                                     rho01 = rho01, rho02 = rho02,
+                                     rho1  = rho1, rho2  = rho2, r = r)
+    out4.F <- calc_K_disj_2dftest(dist = "F",
+                                  power = power, m = m, alpha = alpha,
+                                  beta1 = beta1, beta2 = beta2,
+                                  varY1 = varY1, varY2 = varY2,
+                                  rho01 = rho01, rho02 = rho02,
+                                  rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 5: Conjunctive IU Test
-    out5.T <- calc_pwr_conj_test(dist = "T",
+    out5.T <- calc_K_conj_test(dist = "T",
+                               power = power, m = m, alpha = alpha,
+                               beta1 = beta1, beta2 = beta2,
+                               varY1 = varY1, varY2 = varY2,
+                               rho01 = rho01, rho02 = rho02,
+                               rho1  = rho1, rho2  = rho2, r = r)
+    out5.MVN <- calc_K_conj_test(dist = "MVN",
                                  power = power, m = m, alpha = alpha,
                                  beta1 = beta1, beta2 = beta2,
                                  varY1 = varY1, varY2 = varY2,
                                  rho01 = rho01, rho02 = rho02,
                                  rho1  = rho1, rho2  = rho2, r = r)
-    out5.MVN <- calc_pwr_conj_test(dist = "MVN",
-                                   power = power, m = m, alpha = alpha,
-                                   beta1 = beta1, beta2 = beta2,
-                                   varY1 = varY1, varY2 = varY2,
-                                   rho01 = rho01, rho02 = rho02,
-                                   rho1  = rho1, rho2  = rho2, r = r)
   }
 
   # When desired output is m
@@ -241,32 +241,32 @@ run_hybrid2_design <- function(output,       # Parameter to calculate
                                   rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 4: Disjunctive 2-DF Test
-    out4.Chi2 <- calc_pwr_disj_2dftest(dist = "Chi2",
-                                       power = power, K = K, alpha = alpha,
-                                       beta1 = beta1, beta2 = beta2,
-                                       varY1 = varY1, varY2 = varY2,
-                                       rho01 = rho01, rho02 = rho02,
-                                       rho1  = rho1, rho2  = rho2, r = r)
-    out4.F <- calc_pwr_disj_2dftest(dist = "F",
-                                    power = power, K = K, alpha = alpha,
-                                    beta1 = beta1, beta2 = beta2,
-                                    varY1 = varY1, varY2 = varY2,
-                                    rho01 = rho01, rho02 = rho02,
-                                    rho1  = rho1, rho2  = rho2, r = r)
+    out4.Chi2 <- calc_m_disj_2dftest(dist = "Chi2",
+                                     power = power, K = K, alpha = alpha,
+                                     beta1 = beta1, beta2 = beta2,
+                                     varY1 = varY1, varY2 = varY2,
+                                     rho01 = rho01, rho02 = rho02,
+                                     rho1  = rho1, rho2  = rho2, r = r)
+    out4.F <- calc_m_disj_2dftest(dist = "F",
+                                  power = power, K = K, alpha = alpha,
+                                  beta1 = beta1, beta2 = beta2,
+                                  varY1 = varY1, varY2 = varY2,
+                                  rho01 = rho01, rho02 = rho02,
+                                  rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 5: Conjunctive IU Test
-    out5.T <- calc_pwr_conj_test(dist = "T",
+    out5.T <- calc_m_conj_test(dist = "T",
+                               power = power, K = K, alpha = alpha,
+                               beta1 = beta1, beta2 = beta2,
+                               varY1 = varY1, varY2 = varY2,
+                               rho01 = rho01, rho02 = rho02,
+                               rho1  = rho1, rho2  = rho2, r = r)
+    out5.MVN <- calc_m_conj_test(dist = "MVN",
                                  power = power, K = K, alpha = alpha,
                                  beta1 = beta1, beta2 = beta2,
                                  varY1 = varY1, varY2 = varY2,
                                  rho01 = rho01, rho02 = rho02,
                                  rho1  = rho1, rho2  = rho2, r = r)
-    out5.MVN <- calc_pwr_conj_test(dist = "MVN",
-                                   power = power, K = K, alpha = alpha,
-                                   beta1 = beta1, beta2 = beta2,
-                                   varY1 = varY1, varY2 = varY2,
-                                   rho01 = rho01, rho02 = rho02,
-                                   rho1  = rho1, rho2  = rho2, r = r)
   }
 
 
