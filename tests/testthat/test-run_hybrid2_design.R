@@ -4,7 +4,6 @@
 # Cases for when we want to calculate K ----------------------------------------
 test_that("Inconsistent inputs results in error", {
   expect_error(run_hybrid2_design(output = "K",       # Parameter to calculate
-                                  dist = "Chi2",# Distribution for disjunctive 2-DF test
                                   power = 0.9,   # Desired statistical power
                                   K = 10,       # Number of clusters in each arm
                                   m = 10,       # Individuals per cluster
@@ -23,7 +22,6 @@ test_that("Inconsistent inputs results in error", {
 
 test_that("Inconsistent inputs results in error", {
   expect_error(run_hybrid2_design(output = "K",       # Parameter to calculate
-                                  dist = "Chi2",# Distribution for disjunctive 2-DF test
                                   power = NA,   # Desired statistical power
                                   K = NA,       # Number of clusters in each arm
                                   m = 10,       # Individuals per cluster
@@ -42,7 +40,6 @@ test_that("Inconsistent inputs results in error", {
 
 test_that("Inconsistent inputs results in error", {
   expect_error(run_hybrid2_design(output = "K",       # Parameter to calculate
-                                  dist = "Chi2",# Distribution for disjunctive 2-DF test
                                   power = 0.9,   # Desired statistical power
                                   K = NA,       # Number of clusters in each arm
                                   m = NA,       # Individuals per cluster
@@ -62,7 +59,6 @@ test_that("Inconsistent inputs results in error", {
 # Cases for when we want to calculate power ------------------------------------
 test_that("Inconsistent inputs results in error", {
   expect_error(run_hybrid2_design(output = "power",       # Parameter to calculate
-                                  dist = "Chi2",# Distribution for disjunctive 2-DF test
                                   power = 0.9,   # Desired statistical power
                                   K = 10,       # Number of clusters in each arm
                                   m = 10,       # Individuals per cluster
@@ -81,7 +77,6 @@ test_that("Inconsistent inputs results in error", {
 
 test_that("Inconsistent inputs results in error", {
   expect_error(run_hybrid2_design(output = "power",       # Parameter to calculate
-                                  dist = "Chi2",# Distribution for disjunctive 2-DF test
                                   power = NA,   # Desired statistical power
                                   K = NA,       # Number of clusters in each arm
                                   m = 10,       # Individuals per cluster
@@ -100,7 +95,6 @@ test_that("Inconsistent inputs results in error", {
 
 test_that("Inconsistent inputs results in error", {
   expect_error(run_hybrid2_design(output = "power",       # Parameter to calculate
-                                  dist = "Chi2",# Distribution for disjunctive 2-DF test
                                   power = NA,   # Desired statistical power
                                   K = 10,       # Number of clusters in each arm
                                   m = NA,       # Individuals per cluster
@@ -121,7 +115,6 @@ test_that("Inconsistent inputs results in error", {
 
 test_that("Inconsistent inputs results in error", {
   expect_error(run_hybrid2_design(output = "m",       # Parameter to calculate
-                                  dist = "Chi2",# Distribution for disjunctive 2-DF test
                                   power = 0.9,   # Desired statistical power
                                   K = 10,       # Number of clusters in each arm
                                   m = 10,       # Individuals per cluster
@@ -140,7 +133,6 @@ test_that("Inconsistent inputs results in error", {
 
 test_that("Inconsistent inputs results in error", {
   expect_error(run_hybrid2_design(output = "m",       # Parameter to calculate
-                                  dist = "Chi2",# Distribution for disjunctive 2-DF test
                                   power = NA,   # Desired statistical power
                                   K = 10,       # Number of clusters in each arm
                                   m = NA,       # Individuals per cluster
@@ -159,7 +151,6 @@ test_that("Inconsistent inputs results in error", {
 
 test_that("Inconsistent inputs results in error", {
   expect_error(run_hybrid2_design(output = "m",       # Parameter to calculate
-                                  dist = "Chi2",# Distribution for disjunctive 2-DF test
                                   power = 0.9,   # Desired statistical power
                                   K = NA,       # Number of clusters in each arm
                                   m = NA,       # Individuals per cluster

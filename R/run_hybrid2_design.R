@@ -18,7 +18,6 @@
 #' Allows user to calculate either statistical power, number of clusters per treatment group (K), or cluster size (m), given a set of input values for all five study design approaches.
 #'
 #' @param output Parameter to calculate, either "power", "K", or "m"; character.
-#' @param dist Specification of which distribution to base calculation on for the disjunctive 2-DF test, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.
 #' @param power Desired statistical power; numeric.
 #' @param K Number of clusters in each arm; numeric.
 #' @param m Individuals per cluster; numeric.
@@ -37,7 +36,6 @@
 #' run_hybrid2_design(output = "power", K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
 run_hybrid2_design <- function(output,       # Parameter to calculate
-                               dist = "Chi2",# Distribution for disjunctive 2-DF test
                                power = NA,   # Desired statistical power
                                K = NA,       # Number of clusters in each arm
                                m = NA,       # Individuals per cluster
@@ -107,11 +105,6 @@ run_hybrid2_design <- function(output,       # Parameter to calculate
   } else {
     stop("'output' parameter must either be 'power', 'K', or 'm'.")
   }
-  if(dist != "Chi2"){
-    if(dist != "F"){
-      stop("'dist' parameter must either be 'Chi2' or 'F'.")
-    }
-  }
 
   # Check to make sure variables are numeric
   if(!is.numeric(c(alpha, beta1, beta2, varY1, varY2, rho01, rho02, rho1, rho2))){
@@ -142,19 +135,32 @@ run_hybrid2_design <- function(output,       # Parameter to calculate
                                     rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 4: Disjunctive 2-DF Test
-    out4 <- calc_pwr_disj_2dftest(dist = dist,
-                                  K = K, m = m, alpha = alpha,
-                                  beta1 = beta1, beta2 = beta2,
-                                  varY1 = varY1, varY2 = varY2,
-                                  rho01 = rho01, rho02 = rho02,
-                                  rho1  = rho1, rho2  = rho2, r = r)
+    out4.Chi2 <- calc_pwr_disj_2dftest(dist = "Chi2",
+                                       K = K, m = m, alpha = alpha,
+                                       beta1 = beta1, beta2 = beta2,
+                                       varY1 = varY1, varY2 = varY2,
+                                       rho01 = rho01, rho02 = rho02,
+                                       rho1  = rho1, rho2  = rho2, r = r)
+    out4.F <- calc_pwr_disj_2dftest(dist = "F",
+                                    K = K, m = m, alpha = alpha,
+                                    beta1 = beta1, beta2 = beta2,
+                                    varY1 = varY1, varY2 = varY2,
+                                    rho01 = rho01, rho02 = rho02,
+                                    rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 5: Conjunctive IU Test
-    out5 <- calc_pwr_conj_test(K = K, m = m, alpha = alpha,
-                                beta1 = beta1, beta2 = beta2,
-                                varY1 = varY1, varY2 = varY2,
-                                rho01 = rho01, rho02 = rho02,
-                                rho1  = rho1, rho2  = rho2, r = r)
+    out5.T <- calc_pwr_conj_test(dist = "T",
+                                 K = K, m = m, alpha = alpha,
+                                 beta1 = beta1, beta2 = beta2,
+                                 varY1 = varY1, varY2 = varY2,
+                                 rho01 = rho01, rho02 = rho02,
+                                 rho1  = rho1, rho2  = rho2, r = r)
+    out5.MVN <- calc_pwr_conj_test(dist = "MVN",
+                                   K = K, m = m, alpha = alpha,
+                                   beta1 = beta1, beta2 = beta2,
+                                   varY1 = varY1, varY2 = varY2,
+                                   rho01 = rho01, rho02 = rho02,
+                                   rho1  = rho1, rho2  = rho2, r = r)
 
   }
 
@@ -183,20 +189,32 @@ run_hybrid2_design <- function(output,       # Parameter to calculate
                                   rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 4: Disjunctive 2-DF Test
-    out4 <- calc_K_disj_2dftest(dist = dist,
-                                power = power, m = m, alpha = alpha,
-                                beta1 = beta1, beta2 = beta2,
-                                varY1 = varY1, varY2 = varY2,
-                                rho01 = rho01, rho02 = rho02,
-                                rho1  = rho1, rho2  = rho2, r = r)
+    out4.Chi2 <- calc_pwr_disj_2dftest(dist = "Chi2",
+                                       power = power, m = m, alpha = alpha,
+                                       beta1 = beta1, beta2 = beta2,
+                                       varY1 = varY1, varY2 = varY2,
+                                       rho01 = rho01, rho02 = rho02,
+                                       rho1  = rho1, rho2  = rho2, r = r)
+    out4.F <- calc_pwr_disj_2dftest(dist = "F",
+                                    power = power, m = m, alpha = alpha,
+                                    beta1 = beta1, beta2 = beta2,
+                                    varY1 = varY1, varY2 = varY2,
+                                    rho01 = rho01, rho02 = rho02,
+                                    rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 5: Conjunctive IU Test
-    out5 <- calc_K_conj_test(power = power, m = m, alpha = alpha,
-                             beta1 = beta1, beta2 = beta2,
-                             varY1 = varY1, varY2 = varY2,
-                             rho01 = rho01, rho02 = rho02,
-                             rho1  = rho1, rho2  = rho2, r = r)
-
+    out5.T <- calc_pwr_conj_test(dist = "T",
+                                 power = power, m = m, alpha = alpha,
+                                 beta1 = beta1, beta2 = beta2,
+                                 varY1 = varY1, varY2 = varY2,
+                                 rho01 = rho01, rho02 = rho02,
+                                 rho1  = rho1, rho2  = rho2, r = r)
+    out5.MVN <- calc_pwr_conj_test(dist = "MVN",
+                                   power = power, m = m, alpha = alpha,
+                                   beta1 = beta1, beta2 = beta2,
+                                   varY1 = varY1, varY2 = varY2,
+                                   rho01 = rho01, rho02 = rho02,
+                                   rho1  = rho1, rho2  = rho2, r = r)
   }
 
   # When desired output is m
@@ -223,19 +241,32 @@ run_hybrid2_design <- function(output,       # Parameter to calculate
                                   rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 4: Disjunctive 2-DF Test
-    out4 <- calc_m_disj_2dftest(dist = dist,
-                                power = power, K = K, alpha = alpha,
-                                beta1 = beta1, beta2 = beta2,
-                                varY1 = varY1, varY2 = varY2,
-                                rho01 = rho01, rho02 = rho02,
-                                rho1  = rho1, rho2  = rho2, r = r)
+    out4.Chi2 <- calc_pwr_disj_2dftest(dist = "Chi2",
+                                       power = power, K = K, alpha = alpha,
+                                       beta1 = beta1, beta2 = beta2,
+                                       varY1 = varY1, varY2 = varY2,
+                                       rho01 = rho01, rho02 = rho02,
+                                       rho1  = rho1, rho2  = rho2, r = r)
+    out4.F <- calc_pwr_disj_2dftest(dist = "F",
+                                    power = power, K = K, alpha = alpha,
+                                    beta1 = beta1, beta2 = beta2,
+                                    varY1 = varY1, varY2 = varY2,
+                                    rho01 = rho01, rho02 = rho02,
+                                    rho1  = rho1, rho2  = rho2, r = r)
 
     # Method 5: Conjunctive IU Test
-    out5 <- calc_m_conj_test(power = power, K = K, alpha = alpha,
-                             beta1 = beta1, beta2 = beta2,
-                             varY1 = varY1, varY2 = varY2,
-                             rho01 = rho01, rho02 = rho02,
-                             rho1  = rho1, rho2  = rho2, r = r)
+    out5.T <- calc_pwr_conj_test(dist = "T",
+                                 power = power, K = K, alpha = alpha,
+                                 beta1 = beta1, beta2 = beta2,
+                                 varY1 = varY1, varY2 = varY2,
+                                 rho01 = rho01, rho02 = rho02,
+                                 rho1  = rho1, rho2  = rho2, r = r)
+    out5.MVN <- calc_pwr_conj_test(dist = "MVN",
+                                   power = power, K = K, alpha = alpha,
+                                   beta1 = beta1, beta2 = beta2,
+                                   varY1 = varY1, varY2 = varY2,
+                                   rho01 = rho01, rho02 = rho02,
+                                   rho1  = rho1, rho2  = rho2, r = r)
   }
 
 
@@ -249,9 +280,15 @@ run_hybrid2_design <- function(output,       # Parameter to calculate
                                               "2. Combined Outcomes",
                                               "3. Single 1-df Combined Test",
                                               "4. Disjunctive 2-df Test",
-                                              "5. Conjunctive IU Test"),
+                                              "a. Chi-Squared Distribution",
+                                              "b. F Distribution",
+                                              "5. Conjunctive IU Test",
+                                              "a. T Distribution",
+                                              "b. MVN Distribution"),
                           `Power`  = c(NA, pull(out1[, ncol(out1)]),
-                                        out2, out3, out4, out5))
+                                        out2, out3,
+                                       NA, out4.Chi2, out4.F,
+                                       NA, out5.T, out5.MVN))
   } else if(output == "K"){
     outputTable <- tibble(`Design Method` = c("1. P-Value Adjustments",
                                               "a. Bonferroni",
@@ -264,13 +301,21 @@ run_hybrid2_design <- function(output,       # Parameter to calculate
                           `K1` = c(NA, pull(dplyr::select(out1, contains("Final Treatment"))),
                                    pull(dplyr::select(out2, contains("Treatment"))),
                                    pull(dplyr::select(out3, contains("Treatment"))),
-                                   pull(dplyr::select(out4, contains("Treatment"))),
-                                   pull(dplyr::select(out5, contains("Treatment")))),
+                                   NA,
+                                   pull(dplyr::select(out4.Chi2, contains("Treatment"))),
+                                   pull(dplyr::select(out4.F, contains("Treatment"))),
+                                   NA,
+                                   pull(dplyr::select(out5.T, contains("Treatment"))),
+                                   pull(dplyr::select(out5.MVN, contains("Treatment")))),
                           `K2` = c(NA, pull(dplyr::select(out1, contains("Final Control"))),
                                    pull(dplyr::select(out2, contains("Control"))),
                                    pull(dplyr::select(out3, contains("Control"))),
-                                   pull(dplyr::select(out4, contains("Control"))),
-                                   pull(dplyr::select(out5, contains("Control"))))
+                                   NA,
+                                   pull(dplyr::select(out4.Chi2, contains("Control"))),
+                                   pull(dplyr::select(out4.F, contains("Control"))),
+                                   NA,
+                                   pull(dplyr::select(out5.T, contains("Control"))),
+                                   pull(dplyr::select(out5.MVN, contains("Control"))))
                           )
 
   } else if(output == "m"){
@@ -283,7 +328,9 @@ run_hybrid2_design <- function(output,       # Parameter to calculate
                                               "4. Disjunctive 2-df Test",
                                               "5. Conjunctive IU Test"),
                           `m`  = c(NA, pull(out1[, ncol(out1)]),
-                                       out2, out3, out4, out5))
+                                       out2, out3,
+                                   NA, out4.Chi2, out4.F,
+                                   NA, out5.T, out5.MVN))
   }
 
   return(outputTable)

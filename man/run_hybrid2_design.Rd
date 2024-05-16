@@ -6,7 +6,6 @@
 \usage{
 run_hybrid2_design(
   output,
-  dist = "Chi2",
   power = NA,
   K = NA,
   m = NA,
@@ -24,8 +23,6 @@ run_hybrid2_design(
 }
 \arguments{
 \item{output}{Parameter to calculate, either "power", "K", or "m"; character.}
-
-\item{dist}{Specification of which distribution to base calculation on for the disjunctive 2-DF test, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.}
 
 \item{power}{Desired statistical power; numeric.}
 

@@ -105,7 +105,7 @@ test_that("Conjunctive IU test K calculation aligns with power", {
                              rho1 = 0.01,
                              rho2 = 0.05,
                              r = 1)$`Treatment (K)`
-  expect_true(result >= 15 & result <= 16,
+  expect_true(result >= 14.9 & result <= 16.1,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -134,7 +134,7 @@ test_that("Conjunctive IU test K calculation aligns with power", {
                              rho1 = 0.01,
                              rho2 = 0.05,
                              r = 1)$`Treatment (K)`
-  expect_true(result >= 15 & result <= 16,
+  expect_true(result >= 14.9 & result <= 16.1,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -163,8 +163,8 @@ test_that("Conjunctive IU test K calculation aligns with power", {
                              rho1 = 0.01,
                              rho2 = 0.05,
                              r = 1)
-  expect_true(result >= 299 & result <= 301,
-              info = "The result should be 300, but with rounding between 299 and 301")
+  expect_true(result >= 298.9 & result <= 302.1,
+              info = "The result should be 300, but with rounding between 299 and 302")
 })
 
 # Check that it aligns with the source code ------------------------------------

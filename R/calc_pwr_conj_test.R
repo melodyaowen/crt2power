@@ -166,7 +166,7 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
   if(dist == "T"){ # Using T-distribution
     # Calculate critical value and power
     criticalValue <- qt(p = (1 - alpha),
-                        df = (K_total - 2*Q))
+                        df = (K_total - 2*Q)) # lower.tail = TRUE is default
     power <- pmvt(lower = rep(criticalValue, Q),
                   upper = rep(Inf, Q),
                   df = (K_total - 2*Q),
@@ -176,7 +176,7 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
     # Calculate critical value and power
     criticalValue <- qnorm(p = 1 - alpha,
                            mean = 0,
-                           sd = 1)
+                           sd = 1) # lower.tail = TRUE is default
     power <- pmvnorm(lower = rep(criticalValue, Q),
                      upper = rep(Inf, Q),
                      corr = wCor,
