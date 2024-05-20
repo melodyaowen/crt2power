@@ -1,4 +1,4 @@
-#' Calculate statistical power for a cluster randomized trial with co-primary endpoints using the single 1-DF combined test approach.
+#' Calculate statistical power for a cluster-randomized trial with co-primary endpoints using the single 1-DF combined test approach.
 #'
 #' @import devtools
 #' @import kableExtra
@@ -15,7 +15,7 @@
 #' @import tidyr
 #'
 #' @description
-#' Allows user to calculate the statistical power of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses the single 1-DF combined test approach for clustered data and two outcomes.
+#' Allows user to calculate the statistical power of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses the single 1-DF combined test approach for clustered data and two outcomes.
 #'
 #' @param K Number of clusters in treatment arm, and control arm under equal allocation; numeric.
 #' @param m Individuals per cluster; numeric.
@@ -87,10 +87,10 @@ calc_pwr_single_1dftest <- function(K,            # Number of clusters in treatm
 
 
 
-#' Calculate required number of clusters per treatment group for a cluster randomized trial with co-primary endpoints using the single 1-DF combined test approach.
+#' Calculate required number of clusters per treatment group for a cluster-randomized trial with co-primary endpoints using the single 1-DF combined test approach.
 #'
 #' @description
-#' Allows user to calculate the number of clusters per treatment arm of a hybrid type 2 cluster randomized trial given a set of study design input values, including the statistical power, and cluster size. Uses the single 1-DF combined test approach for clustered data and two outcomes.
+#' Allows user to calculate the number of clusters per treatment arm of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the statistical power, and cluster size. Uses the single 1-DF combined test approach for clustered data and two outcomes.
 #'
 #' @param power Desired statistical power in decimal form; numeric.
 #' @param m Individuals per cluster; numeric.
@@ -168,10 +168,10 @@ calc_K_single_1dftest <- function(power,        # Desired statistical power
 
 
 
-#' Calculate cluster size for a cluster randomized trial with co-primary endpoints using the single 1-DF combined test approach.
+#' Calculate cluster size for a cluster-randomized trial with co-primary endpoints using the single 1-DF combined test approach.
 #'
 #' @description
-#' Allows user to calculate the cluster size of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses the single 1-DF combined test approach for clustered data and two outcomes.
+#' Allows user to calculate the cluster size of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses the single 1-DF combined test approach for clustered data and two outcomes.
 #'
 #' @param power Desired statistical power in decimal form; numeric.
 #' @param K Number of clusters in treatment arm, and control arm under equal allocation; numeric.

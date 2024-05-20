@@ -1,4 +1,4 @@
-#' Calculate statistical power for a cluster randomized trial with co-primary endpoints using a combined outcomes approach.
+#' Calculate statistical power for a cluster-randomized trial with co-primary endpoints using a combined outcomes approach.
 #'
 #' @import devtools
 #' @import kableExtra
@@ -15,7 +15,7 @@
 #' @import tidyr
 #'
 #' @description
-#' Allows user to calculate the statistical power of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses a combined outcomes approach where the two outcome effects are summed together.
+#' Allows user to calculate the statistical power of a cluster-randomized trial with two co-primary outcomes given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses a combined outcomes approach where the two outcome effects are summed together.
 #'
 #' @param K Number of clusters in treatment arm, and control arm under equal allocation; numeric.
 #' @param m Individuals per cluster; numeric.
@@ -87,10 +87,10 @@ calc_pwr_comb_outcome <- function(K,            # Number of clusters in treatmen
 
 
 
-#' Calculate required number of clusters per treatment group for a cluster randomized trial with co-primary endpoints using a combined outcomes approach.
+#' Calculate required number of clusters per treatment group for a cluster-randomized trial with co-primary endpoints using a combined outcomes approach.
 #'
 #' @description
-#' Allows user to calculate the number of clusters per treatment arm of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses a combined outcomes approach where the two outcome effects are summed together.
+#' Allows user to calculate the number of clusters per treatment arm of a cluster-randomized trial with two co-primary outcomes given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses a combined outcomes approach where the two outcome effects are summed together.
 #'
 #' @param power Desired statistical power in decimal form; numeric.
 #' @param m Individuals per cluster; numeric.
@@ -173,10 +173,10 @@ calc_K_comb_outcome <- function(power,        # Desired statistical power
 
 
 
-#' Calculate cluster size for a cluster randomized trial with co-primary endpoints using a combined outcomes approach.
+#' Calculate cluster size for a cluster-randomized trial with co-primary endpoints using a combined outcomes approach.
 #'
 #' @description
-#' Allows user to calculate the cluster size of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses a combined outcomes approach where the two outcome effects are summed together.
+#' Allows user to calculate the cluster size of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses a combined outcomes approach where the two outcome effects are summed together.
 #'
 #' @param power Desired statistical power in decimal form; numeric.
 #' @param K Number of clusters in treatment arm, and control arm under equal allocation; numeric.

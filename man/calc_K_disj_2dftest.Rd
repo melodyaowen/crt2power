@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_pwr_disj_2dftest.R
 \name{calc_K_disj_2dftest}
 \alias{calc_K_disj_2dftest}
-\title{Calculate required number of clusters per treatment group for a cluster randomized trial with co-primary endpoints using a disjunctive 2-DF test approach.}
+\title{Calculate required number of clusters per treatment group for a cluster-randomized trial with co-primary endpoints using a disjunctive 2-DF test approach.}
 \usage{
 calc_K_disj_2dftest(
   dist = "Chi2",
@@ -51,7 +51,7 @@ calc_K_disj_2dftest(
 A data frame of numerical values.
 }
 \description{
-Allows user to calculate the number of clusters per treatment arm of a hybrid type 2 cluster randomized trial given a set of study design input values, including the statistical power, and cluster size. Uses the disjunctive 2-DF test approach. Code is adapted from "calSampleSize_omnibus()" from https://github.com/siyunyang/coprimary_CRT.
+Allows user to calculate the number of clusters per treatment arm of a cluster-randomized trial with two co-primary outcomes given a set of study design input values, including the statistical power, and cluster size. Uses the disjunctive 2-DF test approach. Code is adapted from "calSampleSize_omnibus()" from https://github.com/siyunyang/coprimary_CRT.
 }
 \examples{
 calc_K_disj_2dftest(power = 0.8, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)

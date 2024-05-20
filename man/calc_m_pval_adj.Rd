@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_pwr_pval_adj.R
 \name{calc_m_pval_adj}
 \alias{calc_m_pval_adj}
-\title{Calculate cluster size for a cluster randomized trial with co-primary endpoints using three common p-value adjustment methods}
+\title{Calculate cluster size for a cluster-randomized trial with co-primary endpoints using three common p-value adjustment methods}
 \usage{
 calc_m_pval_adj(
   power,
@@ -46,7 +46,7 @@ A data frame of numerical values.
 }
 \description{
 #' @description
-Allows user to calculate the cluster size of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses three common p-value adjustment methods.
+Allows user to calculate the cluster size of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses three common p-value adjustment methods.
 }
 \examples{
 calc_m_pval_adj(power = 0.8, K = 15, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho2  = 0.05)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_pwr_comb_outcome.R
 \name{calc_m_comb_outcome}
 \alias{calc_m_comb_outcome}
-\title{Calculate cluster size for a cluster randomized trial with co-primary endpoints using a combined outcomes approach.}
+\title{Calculate cluster size for a cluster-randomized trial with co-primary endpoints using a combined outcomes approach.}
 \usage{
 calc_m_comb_outcome(
   power,
@@ -48,7 +48,7 @@ calc_m_comb_outcome(
 A numerical value.
 }
 \description{
-Allows user to calculate the cluster size of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses a combined outcomes approach where the two outcome effects are summed together.
+Allows user to calculate the cluster size of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses a combined outcomes approach where the two outcome effects are summed together.
 }
 \examples{
 calc_m_comb_outcome(power = 0.8, K = 15, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)

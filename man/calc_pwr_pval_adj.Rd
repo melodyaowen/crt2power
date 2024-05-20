@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_pwr_pval_adj.R
 \name{calc_pwr_pval_adj}
 \alias{calc_pwr_pval_adj}
-\title{Calculate statistical power for a cluster randomized trial with co-primary endpoints using three common p-value adjustment methods}
+\title{Calculate statistical power for a cluster-randomized trial with co-primary endpoints using three common p-value adjustment methods}
 \usage{
 calc_pwr_pval_adj(
   K,
@@ -45,7 +45,7 @@ calc_pwr_pval_adj(
 A data frame of numerical values.
 }
 \description{
-Allows user to calculate the statistical power of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses three common p-value adjustment methods.
+Allows user to calculate the statistical power of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses three common p-value adjustment methods.
 }
 \examples{
 calc_pwr_pval_adj(K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho2  = 0.05)

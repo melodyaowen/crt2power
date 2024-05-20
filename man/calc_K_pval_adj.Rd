@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_pwr_pval_adj.R
 \name{calc_K_pval_adj}
 \alias{calc_K_pval_adj}
-\title{Calculate required number of clusters per treatment group for a cluster randomized trial with co-primary endpoints using three common p-value adjustment methods}
+\title{Calculate required number of clusters per treatment group for a cluster-randomized trial with co-primary endpoints using three common p-value adjustment methods}
 \usage{
 calc_K_pval_adj(
   power,
@@ -45,7 +45,7 @@ calc_K_pval_adj(
 A data frame of numerical values.
 }
 \description{
-Allows user to calculate the number of clusters per treatment arm of a hybrid type 2 cluster randomized trial given a set of study design input values, including the statistical power, and cluster size. Uses three common p-value adjustment methods.
+Allows user to calculate the number of clusters per treatment arm of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the statistical power, and cluster size. Uses three common p-value adjustment methods.
 }
 \examples{
 calc_K_pval_adj(power = 0.8, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho2  = 0.05)

@@ -1,4 +1,4 @@
-#' Calculate statistical power for a cluster randomized trial with co-primary endpoints using the conjunctive intersection-union test approach.
+#' Calculate statistical power for a cluster-randomized trial with co-primary endpoints using the conjunctive intersection-union test approach.
 #'
 #' @import devtools
 #' @import kableExtra
@@ -15,7 +15,7 @@
 #' @import tidyr
 #'
 #' @description
-#' Allows user to calculate the statistical power of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses the conjunctive intersection-union test approach. Code is adapted from "calPower_ttestIU()" from https://github.com/siyunyang/coprimary_CRT written by Siyun Yang.
+#' Allows user to calculate the statistical power of a cluster-randomized trial with two co-primary outcomes given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses the conjunctive intersection-union test approach. Code is adapted from "calPower_ttestIU()" from https://github.com/siyunyang/coprimary_CRT written by Siyun Yang.
 #'
 #' @param K Number of clusters in treatment arm, and control arm under equal allocation; numeric.
 #' @param m Individuals per cluster; numeric.
@@ -194,10 +194,10 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
 
 
 
-#' Calculate required number of clusters per treatment group for a cluster randomized trial with co-primary endpoints using the conjunctive intersection-union test approach.
+#' Calculate required number of clusters per treatment group for a cluster-randomized trial with co-primary endpoints using the conjunctive intersection-union test approach.
 #'
 #' @description
-#' Allows user to calculate the required number of clusters per treatment group of a hybrid type 2 cluster randomized trial given a set of study design input values, including the statistical power, and cluster size. Uses the conjunctive intersection-union test approach.Code is adapted from "calSampleSize_ttestIU()" from https://github.com/siyunyang/coprimary_CRT written by Siyun Yang.
+#' Allows user to calculate the required number of clusters per treatment group of a cluster-randomized trial with two co-primary outcomes given a set of study design input values, including the statistical power, and cluster size. Uses the conjunctive intersection-union test approach.Code is adapted from "calSampleSize_ttestIU()" from https://github.com/siyunyang/coprimary_CRT written by Siyun Yang.
 #'
 #' @param power Desired statistical power in decimal form; numeric.
 #' @param m Individuals per cluster; numeric.
@@ -310,10 +310,10 @@ calc_K_conj_test <- function(power,        # Desired statistical power
 
 
 
-#' Calculate cluster size for a cluster randomized trial with co-primary endpoints using the conjunctive intersection-union test approach.
+#' Calculate cluster size for a cluster-randomized trial with co-primary endpoints using the conjunctive intersection-union test approach.
 #'
 #' @description
-#' Allows user to calculate the cluster size of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses the conjunctive intersection-union test approach.
+#' Allows user to calculate the cluster size of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses the conjunctive intersection-union test approach.
 #'
 #' @param power Desired statistical power in decimal form; numeric.
 #' @param K Number of clusters in treatment arm, and control arm under equal allocation; numeric.

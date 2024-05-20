@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_pwr_single_1dftest.R
 \name{calc_m_single_1dftest}
 \alias{calc_m_single_1dftest}
-\title{Calculate cluster size for a cluster randomized trial with co-primary endpoints using the single 1-DF combined test approach.}
+\title{Calculate cluster size for a cluster-randomized trial with co-primary endpoints using the single 1-DF combined test approach.}
 \usage{
 calc_m_single_1dftest(
   power,
@@ -48,7 +48,7 @@ calc_m_single_1dftest(
 A numerical value.
 }
 \description{
-Allows user to calculate the cluster size of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses the single 1-DF combined test approach for clustered data and two outcomes.
+Allows user to calculate the cluster size of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses the single 1-DF combined test approach for clustered data and two outcomes.
 }
 \examples{
 calc_m_single_1dftest(power = 0.8, K = 15, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)

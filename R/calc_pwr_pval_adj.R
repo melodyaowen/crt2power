@@ -1,4 +1,4 @@
-#' Calculate statistical power for a cluster randomized trial with co-primary endpoints using three common p-value adjustment methods
+#' Calculate statistical power for a cluster-randomized trial with co-primary endpoints using three common p-value adjustment methods
 #'
 #' @import devtools
 #' @import kableExtra
@@ -15,7 +15,7 @@
 #' @import tidyr
 #'
 #' @description
-#' Allows user to calculate the statistical power of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses three common p-value adjustment methods.
+#' Allows user to calculate the statistical power of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses three common p-value adjustment methods.
 #'
 #' @param K Number of clusters in treatment arm, and control arm under equal allocation; numeric.
 #' @param m Individuals per cluster; numeric.
@@ -98,10 +98,10 @@ calc_pwr_pval_adj <- function(K,            # Number of clusters in treatment ar
 
 
 
-#' Calculate required number of clusters per treatment group for a cluster randomized trial with co-primary endpoints using three common p-value adjustment methods
+#' Calculate required number of clusters per treatment group for a cluster-randomized trial with co-primary endpoints using three common p-value adjustment methods
 #'
 #' @description
-#' Allows user to calculate the number of clusters per treatment arm of a hybrid type 2 cluster randomized trial given a set of study design input values, including the statistical power, and cluster size. Uses three common p-value adjustment methods.
+#' Allows user to calculate the number of clusters per treatment arm of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the statistical power, and cluster size. Uses three common p-value adjustment methods.
 #'
 #' @param power Desired statistical power in decimal form; numeric.
 #' @param m Individuals per cluster; numeric.
@@ -199,10 +199,10 @@ calc_K_pval_adj <- function(power,        # Desired statistical power
 
 
 
-#' Calculate cluster size for a cluster randomized trial with co-primary endpoints using three common p-value adjustment methods
+#' Calculate cluster size for a cluster-randomized trial with co-primary endpoints using three common p-value adjustment methods
 #'
 #'#' @description
-#' Allows user to calculate the cluster size of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses three common p-value adjustment methods.
+#' Allows user to calculate the cluster size of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses three common p-value adjustment methods.
 #'
 #' @param power Desired statistical power in decimal form; numeric.
 #' @param K Number of clusters in treatment arm, and control arm under equal allocation; numeric.

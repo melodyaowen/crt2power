@@ -86,7 +86,7 @@ calc_pwr_pval_adj(K = 15, m = 300, alpha = 0.05,
                   rho2  = 0.05, r = 1)
 
 # Example of using Method 3 for number of clusters in treatment group (K) calculation
-calc_K_single_1dftest(K = 15, m = 300, alpha = 0.05,
+calc_K_single_1dftest(power = 0.8, m = 300, alpha = 0.05,
                       beta1 = 0.1, beta2 = 0.1,
                       varY1 = 0.23, varY2 = 0.25,
                       rho01 = 0.025, rho02 = 0.025,

@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(hybrid2power)
+library(crt2power)
 
-test_check("hybrid2power")
+test_check("crt2power")

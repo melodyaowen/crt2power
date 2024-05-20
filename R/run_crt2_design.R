@@ -1,4 +1,4 @@
-#' Find study design output specifications based on all five hybrid type 2 design methods.
+#' Find study design output specifications based on all five CRT co-primary design methods.
 #'
 #' @import devtools
 #' @import kableExtra
@@ -33,23 +33,23 @@
 #' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
 #' @returns A data frame of numerical values.
 #' @examples
-#' run_hybrid2_design(output = "power", K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' run_crt2_design(output = "power", K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
-run_hybrid2_design <- function(output,       # Parameter to calculate
-                               power = NA,   # Desired statistical power
-                               K = NA,       # Number of clusters in each arm
-                               m = NA,       # Individuals per cluster
-                               alpha = 0.05, # Significance level
-                               beta1,        # Effect for outcome 1
-                               beta2,        # Effect for outcome 2
-                               varY1,        # Variance for outcome 1
-                               varY2,        # Variance for outcome 2
-                               rho01,        # ICC for outcome 1
-                               rho02,        # ICC for outcome 2
-                               rho1,         # Inter-subject between-endpoint ICC
-                               rho2,         # Intra-subject between-endpoint ICC
-                               r = 1         # Treatment allocation ratio
-                               ){
+run_crt2_design <- function(output,       # Parameter to calculate
+                            power = NA,   # Desired statistical power
+                            K = NA,       # Number of clusters in each arm
+                            m = NA,       # Individuals per cluster
+                            alpha = 0.05, # Significance level
+                            beta1,        # Effect for outcome 1
+                            beta2,        # Effect for outcome 2
+                            varY1,        # Variance for outcome 1
+                            varY2,        # Variance for outcome 2
+                            rho01,        # ICC for outcome 1
+                            rho02,        # ICC for outcome 2
+                            rho1,         # Inter-subject between-endpoint ICC
+                            rho2,         # Intra-subject between-endpoint ICC
+                            r = 1         # Treatment allocation ratio
+                            ){
 
   # Checks to make sure inputs are valid
   if(output == "power"){ # When output is power
@@ -342,4 +342,4 @@ run_hybrid2_design <- function(output,       # Parameter to calculate
   }
 
   return(outputTable)
-} # End run_hybrid2_design()
+} # End run_crt2_design()

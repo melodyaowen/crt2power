@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_pwr_conj_test.R
 \name{calc_m_conj_test}
 \alias{calc_m_conj_test}
-\title{Calculate cluster size for a cluster randomized trial with co-primary endpoints using the conjunctive intersection-union test approach.}
+\title{Calculate cluster size for a cluster-randomized trial with co-primary endpoints using the conjunctive intersection-union test approach.}
 \usage{
 calc_m_conj_test(
   power,
@@ -57,7 +57,7 @@ calc_m_conj_test(
 A numerical value.
 }
 \description{
-Allows user to calculate the cluster size of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses the conjunctive intersection-union test approach.
+Allows user to calculate the cluster size of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses the conjunctive intersection-union test approach.
 }
 \examples{
 calc_m_conj_test(power = 0.8, K = 15, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)

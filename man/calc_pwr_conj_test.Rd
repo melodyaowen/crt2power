@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_pwr_conj_test.R
 \name{calc_pwr_conj_test}
 \alias{calc_pwr_conj_test}
-\title{Calculate statistical power for a cluster randomized trial with co-primary endpoints using the conjunctive intersection-union test approach.}
+\title{Calculate statistical power for a cluster-randomized trial with co-primary endpoints using the conjunctive intersection-union test approach.}
 \usage{
 calc_pwr_conj_test(
   K,
@@ -57,7 +57,7 @@ calc_pwr_conj_test(
 A numerical value.
 }
 \description{
-Allows user to calculate the statistical power of a hybrid type 2 cluster randomized trial given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses the conjunctive intersection-union test approach. Code is adapted from "calPower_ttestIU()" from https://github.com/siyunyang/coprimary_CRT written by Siyun Yang.
+Allows user to calculate the statistical power of a cluster-randomized trial with two co-primary outcomes given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses the conjunctive intersection-union test approach. Code is adapted from "calPower_ttestIU()" from https://github.com/siyunyang/coprimary_CRT written by Siyun Yang.
 }
 \examples{
 calc_pwr_conj_test(K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
