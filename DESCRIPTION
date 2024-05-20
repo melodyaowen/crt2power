@@ -1,6 +1,6 @@
 Package: crt2power
 Type: Package
-Title: Designing Cluster Randomized Trials with Two Co-Primary Outcomes
+Title: Designing Cluster-Randomized Trials with Two Co-Primary Outcomes
 Version: 0.1.0
 Author: Melody Owen
 Maintainer: Melody Owen <melody.owen@yale.edu>
