@@ -1,8 +1,8 @@
-# hybrid2power
+# crt2power
 
 ## Overview
 
-`hybrid2power` is an R package that allows users to calculate the statistical power or sample size of their hybrid type 2 cluster randomized trials (CRTs), given a set of input parameters. Hybrid 2 studies are studies where there are two co-primary outcomes, namely an implementation outcome (such as fidelity or reach) and a health outcome (such as infection rates, or change from baseline health scores). When powering these studies, cluster correlations and the inflation of the Type I error rate must be accounted for.
+`crt2power` is an R package that allows users to calculate the statistical power or sample size of their cluster randomized trials (CRTs) with two co-primary outcomes, given a set of input parameters. The motivation for this package is to aid in the design of hybrid 2 studies. Hybrid 2 studies are studies where there are two co-primary outcomes, namely an implementation outcome (such as fidelity or reach) and a health outcome (such as infection rates, or change from baseline health scores). When powering these studies, cluster correlations and the inflation of the Type I error rate must be accounted for.
 
 The five key study design approaches are included in this package that can be used to power hybrid 2 CRTs. 
 1. P-Value Adjustments for Multiple Testing
@@ -18,8 +18,8 @@ The five key study design approaches are included in this package that can be us
 ```
 install.packages("devtools")
 require(devtools)
-install_github("https://github.com/melodyaowen/hybrid2power")
-require(hybrid2power)
+install_github("https://github.com/melodyaowen/crt2power")
+require(crt2power)
 ```
 
 ## Required Input Parameters
