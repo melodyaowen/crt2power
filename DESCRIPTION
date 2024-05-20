@@ -1,14 +1,14 @@
-Package: hybrid2power
+Package: crt2power
 Type: Package
-Title: Designing Hybrid Type 2 Cluster Randomized Trials
+Title: Designing Cluster Randomized Trials with Two Co-Primary Outcomes
 Version: 0.1.0
 Author: Melody Owen
 Maintainer: Melody Owen <melody.owen@yale.edu>
-Description: Tools for powering hybrid type 2 cluster randomized trials using five key study design methods.
+Description: Tools for powering cluster-randomized trials with two co-primary outcomes using five key study design methods.
 License: Yale University School of Public Health
 Encoding: UTF-8
 LazyData: true
-URL: https://github.com/melodyaowen/hybrid2power
+URL: https://github.com/melodyaowen/crt2power
 Depends:
     R (>= 4.3.1)
 Imports:
