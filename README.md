@@ -100,11 +100,11 @@ calc_m_conj_test(power = 0.8, K = 15, alpha = 0.05,
                  rho1 = 0.01, rho2  = 0.05, r = 1)
 
 # Example of calculating power based on all five methods
-run_hybrid2_design(output = "power", K = 15, m = 300, alpha = 0.05,
-                   beta1 = 0.1, beta2 = 0.1,
-                   varY1 = 0.23, varY2 = 0.25,
-                   rho01 = 0.025, rho02 = 0.025,
-                   rho1 = 0.01, rho2 = 0.05, r = 1)
+run_crt2_design(output = "power", K = 15, m = 300, alpha = 0.05,
+                beta1 = 0.1, beta2 = 0.1,
+                varY1 = 0.23, varY2 = 0.25,
+                rho01 = 0.025, rho02 = 0.025,
+                rho1 = 0.01, rho2 = 0.05, r = 1)
 ```
 
 ## Contact
