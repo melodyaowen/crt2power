@@ -13,6 +13,7 @@
 #' @import tibble
 #' @import dplyr
 #' @import tidyr
+#' @import stats
 #'
 #' @description
 #' Allows user to calculate the statistical power of a cluster-randomized trial with two co-primary outcomes given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses the disjunctive 2-DF test approach. Code is adapted from "calPower_omnibus()" from https://github.com/siyunyang/coprimary_CRT written by Siyun Yang.

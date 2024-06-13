@@ -13,6 +13,7 @@
 #' @import tibble
 #' @import dplyr
 #' @import tidyr
+#' @import stats
 #'
 #' @description
 #' Allows user to find the corresponding non-centrality parameter for power analysis based on the Type I error rate, statistical power, and degrees of freedom.
@@ -23,6 +24,7 @@
 #' @returns A number.
 #' @examples
 #' calc_ncp_chi2(alpha = 0.05, power = 0.8, df = 1)
+#' @export
 calc_ncp_chi2 <- function(alpha, power, df = 1){
 
   # First compute critical value based on alpha level and DF

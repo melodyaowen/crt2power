@@ -13,6 +13,7 @@
 #' @import tibble
 #' @import dplyr
 #' @import tidyr
+#' @import stats
 #'
 #' @description
 #' Allows user to calculate either statistical power, number of clusters per treatment group (K), or cluster size (m), given a set of input values for all five study design approaches.
