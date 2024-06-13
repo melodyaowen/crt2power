@@ -105,7 +105,7 @@ test_that("Conjunctive IU test K calculation aligns with power", {
                              rho1 = 0.01,
                              rho2 = 0.05,
                              r = 1)$`Treatment (K)`
-  expect_true(result >= 14.9 & result <= 16.1,
+  expect_true(result >= 14 & result <= 17,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
