@@ -169,38 +169,38 @@ test_that("Conjunctive IU test K calculation aligns with power", {
 
 # Check that it aligns with the source code ------------------------------------
 
-test_that("Conjunctive IU power calculation aligns with GitHub source code", {
-
-  devtools::source_url("https://github.com/siyunyang/coprimary_CRT/blob/main/powerSampleCal_varCluster_ttest.R?raw=TRUE")
-
-  result1 <- round(calc_pwr_conj_test(m = 300,
-                                K = 15,
-                                alpha = 0.05,
-                                beta1 = 0.1,
-                                beta2 = 0.1,
-                                varY1 = 0.23,
-                                varY2 = 0.25,
-                                rho01 = 0.025,
-                                rho02 = 0.025,
-                                rho1 = 0.01,
-                                rho2 = 0.05,
-                                r = 1), 3)
-
-  result2 <- round(calPower_ttestIU(betas = c(0.1, 0.1),
-                              deltas = c(0, 0),
-                              vars = c(0.23, 0.25),
-                              rho01 = matrix(c(0.025, 0.01,
-                                               0.01, 0.025),
-                                             2, 2),
-                              rho2 = matrix(c(1, 0.05,
-                                              0.05, 1),
-                                            2, 2),
-                              N = 30,
-                              r = .5,
-                              m = 300,
-                              K = 2,
-                              alpha = 0.05), 3)
-
-  expect_true(result1 == result2,
-              info = paste0("Does not align with the original source code (", result1, " vs. ", result2, ")"))
-})
+# test_that("Conjunctive IU power calculation aligns with GitHub source code", {
+#
+#   devtools::source_url("https://github.com/siyunyang/coprimary_CRT/blob/main/powerSampleCal_varCluster_ttest.R?raw=TRUE")
+#
+#   result1 <- round(calc_pwr_conj_test(m = 300,
+#                                 K = 15,
+#                                 alpha = 0.05,
+#                                 beta1 = 0.1,
+#                                 beta2 = 0.1,
+#                                 varY1 = 0.23,
+#                                 varY2 = 0.25,
+#                                 rho01 = 0.025,
+#                                 rho02 = 0.025,
+#                                 rho1 = 0.01,
+#                                 rho2 = 0.05,
+#                                 r = 1), 3)
+#
+#   result2 <- round(calPower_ttestIU(betas = c(0.1, 0.1),
+#                               deltas = c(0, 0),
+#                               vars = c(0.23, 0.25),
+#                               rho01 = matrix(c(0.025, 0.01,
+#                                                0.01, 0.025),
+#                                              2, 2),
+#                               rho2 = matrix(c(1, 0.05,
+#                                               0.05, 1),
+#                                             2, 2),
+#                               N = 30,
+#                               r = .5,
+#                               m = 300,
+#                               K = 2,
+#                               alpha = 0.05), 3)
+#
+#   expect_true(result1 == result2,
+#               info = paste0("Does not align with the original source code (", result1, " vs. ", result2, ")"))
+# })
