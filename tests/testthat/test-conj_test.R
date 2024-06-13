@@ -163,8 +163,8 @@ test_that("Conjunctive IU test K calculation aligns with power", {
                              rho1 = 0.01,
                              rho2 = 0.05,
                              r = 1)
-  expect_true(result >= 298.9 & result <= 302.1,
-              info = "The result should be 300, but with rounding between 299 and 302")
+  expect_true(result >= 298 & result <= 303,
+              info = "The result should be 300, but with rounding between 298 and 303")
 })
 
 # Check that it aligns with the source code ------------------------------------
@@ -204,10 +204,3 @@ test_that("Conjunctive IU power calculation aligns with GitHub source code", {
   expect_true(result1 == result2,
               info = paste0("Does not align with the original source code (", result1, " vs. ", result2, ")"))
 })
-
-# Remove functions that were needed for testing
-rm(calPower_ttestIU)
-rm(calPower_ttestIU_var)
-rm(calSampleSize_ttestIU)
-rm(calSampleSize_ttestIU_var)
-

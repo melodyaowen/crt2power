@@ -5,7 +5,7 @@ Version: 1.0.0
 Author: Melody Owen
 Maintainer: Melody Owen <melody.owen@yale.edu>
 Description: Tools for powering cluster-randomized trials with two co-primary outcomes using five key study design methods.
-License: Yale University School of Public Health
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/melodyaowen/crt2power
