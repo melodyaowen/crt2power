@@ -2,7 +2,6 @@
 #'
 #' @import devtools
 #' @import knitr
-#' @import pracma
 #' @import rootSolve
 #' @import tidyverse
 #' @import tableone
@@ -11,7 +10,7 @@
 #' @import tibble
 #' @import dplyr
 #' @import tidyr
-#' @import stats
+#' @importFrom stats uniroot dchisq pchisq qchisq rchisq df pf qf rf dt pt qt rt
 #'
 #' @description
 #' Allows user to calculate the statistical power of a cluster-randomized trial with two co-primary outcomes given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses the conjunctive intersection-union test approach. Code is adapted from "calPower_ttestIU()" from https://github.com/siyunyang/coprimary_CRT written by Siyun Yang.

@@ -2,7 +2,6 @@
 #'
 #' @import devtools
 #' @import knitr
-#' @import pracma
 #' @import rootSolve
 #' @import tidyverse
 #' @import tableone
@@ -11,7 +10,7 @@
 #' @import tibble
 #' @import dplyr
 #' @import tidyr
-#' @import stats
+#' @importFrom stats uniroot dchisq pchisq qchisq rchisq df pf qf rf dt pt qt rt
 #'
 #' @description
 #' Allows user to calculate either statistical power, number of clusters per treatment group (K), or cluster size (m), given a set of input values for all five study design approaches.
