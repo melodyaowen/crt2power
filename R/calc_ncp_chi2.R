@@ -10,7 +10,7 @@
 #' @import tibble
 #' @import dplyr
 #' @import tidyr
-#' @importFrom stats uniroot dchisq pchisq qchisq rchisq df pf qf rf dt pt qt rt
+#' @importFrom stats uniroot dchisq pchisq qchisq rchisq df pf qf rf dt pt qt rt dnorm pnorm qnorm rnorm
 #'
 #' @description
 #' Allows user to find the corresponding non-centrality parameter for power analysis based on the Type I error rate, statistical power, and degrees of freedom.
