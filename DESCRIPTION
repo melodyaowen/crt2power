@@ -13,7 +13,6 @@ Depends:
     R (>= 4.3)
 Imports:
     devtools (>= 2.4.5),
-    kableExtra (>= 1.3.4),
     knitr (>= 1.43),
     pracma (>= 2.4.2),
     rootSolve (>= 1.8.2.3),

@@ -1,7 +1,6 @@
 #' Find the non-centrality parameter corresponding to Type I error rate and statistical power
 #'
 #' @import devtools
-#' @import kableExtra
 #' @import knitr
 #' @import pracma
 #' @import rootSolve

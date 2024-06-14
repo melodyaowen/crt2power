@@ -1,7 +1,6 @@
 #' Calculate statistical power for a cluster-randomized trial with co-primary endpoints using the single 1-DF combined test approach.
 #'
 #' @import devtools
-#' @import kableExtra
 #' @import knitr
 #' @import pracma
 #' @import rootSolve

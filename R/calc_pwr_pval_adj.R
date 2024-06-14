@@ -1,7 +1,6 @@
 #' Calculate statistical power for a cluster-randomized trial with co-primary endpoints using three common p-value adjustment methods
 #'
 #' @import devtools
-#' @import kableExtra
 #' @import knitr
 #' @import pracma
 #' @import rootSolve

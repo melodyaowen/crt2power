@@ -1,7 +1,6 @@
 #' Find study design output specifications based on all five CRT co-primary design methods.
 #'
 #' @import devtools
-#' @import kableExtra
 #' @import knitr
 #' @import pracma
 #' @import rootSolve
