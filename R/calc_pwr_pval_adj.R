@@ -3,7 +3,6 @@
 #' @import devtools
 #' @import kableExtra
 #' @import knitr
-#' @import MASS
 #' @import pracma
 #' @import rootSolve
 #' @import tidyverse
