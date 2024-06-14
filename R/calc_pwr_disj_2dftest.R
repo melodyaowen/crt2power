@@ -30,7 +30,9 @@
 #' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
 #' @returns A numerical value.
 #' @examples
-#' calc_pwr_disj_2dftest(K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' calc_pwr_disj_2dftest(K = 15, m = 300, alpha = 0.05,
+#' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
+#' rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
 calc_pwr_disj_2dftest <- function(dist = "Chi2",# Distribution to base calculation from
                                   K,            # Number of clusters in treatment arm
@@ -157,7 +159,9 @@ calc_pwr_disj_2dftest <- function(dist = "Chi2",# Distribution to base calculati
 #' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
 #' @returns A data frame of numerical values.
 #' @examples
-#' calc_K_disj_2dftest(power = 0.8, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' calc_K_disj_2dftest(power = 0.8, m = 300, alpha = 0.05,
+#' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
+#' rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
 calc_K_disj_2dftest <- function(dist = "Chi2",# Distribution to base calculation from
                                 power,        # Desired statistical power
@@ -305,7 +309,9 @@ calc_K_disj_2dftest <- function(dist = "Chi2",# Distribution to base calculation
 #' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
 #' @returns A numerical value.
 #' @examples
-#' calc_m_disj_2dftest(power = 0.8, K = 15, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' calc_m_disj_2dftest(power = 0.8, K = 15, alpha = 0.05,
+#' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
+#' rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
 calc_m_disj_2dftest <- function(dist = "Chi2",# Distribution to base calculation from
                                 power,        # Desired statistical power

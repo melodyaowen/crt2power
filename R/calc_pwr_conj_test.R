@@ -32,7 +32,9 @@
 #' @param dist Specification of which distribution to base calculation on, either 'T' for T-Distribution or 'MVN' for Multivariate Normal Distribution. Default is T-Distribution.
 #' @returns A numerical value.
 #' @examples
-#' calc_pwr_conj_test(K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' calc_pwr_conj_test(K = 15, m = 300, alpha = 0.05,
+#' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
+#' rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
 calc_pwr_conj_test <- function(K,            # Number of clusters in treatment arm
                                m,            # Individuals per cluster
@@ -214,7 +216,9 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
 #' @param dist Specification of which distribution to base calculation on, either 'T' for T-Distribution or 'MVN' for Multivariate Normal Distribution. Default is T-Distribution.
 #' @returns A data frame of numerical values.
 #' @examples
-#' calc_K_conj_test(power = 0.8, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' calc_K_conj_test(power = 0.8, m = 300, alpha = 0.05,
+#' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
+#' rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
 calc_K_conj_test <- function(power,        # Desired statistical power
                              m,            # Individuals per cluster
@@ -330,7 +334,9 @@ calc_K_conj_test <- function(power,        # Desired statistical power
 #' @param dist Specification of which distribution to base calculation on, either 'T' for T-Distribution or 'MVN' for Multivariate Normal Distribution. Default is T-Distribution.
 #' @returns A numerical value.
 #' @examples
-#' calc_m_conj_test(power = 0.8, K = 15, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' calc_m_conj_test(power = 0.8, K = 15, alpha = 0.05,
+#' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
+#' rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
 calc_m_conj_test <- function(power,        # Desired statistical power
                              K,            # Number of clusters in treatment arm

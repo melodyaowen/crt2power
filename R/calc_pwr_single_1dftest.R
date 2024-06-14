@@ -29,7 +29,9 @@
 #' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
 #' @returns A numerical value.
 #' @examples
-#' calc_pwr_single_1dftest(K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' calc_pwr_single_1dftest(K = 15, m = 300, alpha = 0.05,
+#' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
+#' rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
 calc_pwr_single_1dftest <- function(K,            # Number of clusters in treatment arm
                                     m,            # Individuals per cluster
@@ -104,7 +106,9 @@ calc_pwr_single_1dftest <- function(K,            # Number of clusters in treatm
 #' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
 #' @returns A data frame of numerical values.
 #' @examples
-#' calc_K_single_1dftest(power = 0.8, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' calc_K_single_1dftest(power = 0.8, m = 300, alpha = 0.05,
+#' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
+#' rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
 calc_K_single_1dftest <- function(power,        # Desired statistical power
                                   m,            # Individuals per cluster
@@ -185,7 +189,9 @@ calc_K_single_1dftest <- function(power,        # Desired statistical power
 #' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
 #' @returns A numerical value.
 #' @examples
-#' calc_m_single_1dftest(power = 0.8, K = 15, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' calc_m_single_1dftest(power = 0.8, K = 15, alpha = 0.05,
+#' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
+#' rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
 calc_m_single_1dftest <- function(power,        # Desired statistical power
                                   K,            # Number of clusters in treatment arm

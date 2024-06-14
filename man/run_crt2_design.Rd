@@ -57,5 +57,7 @@ A data frame of numerical values.
 Allows user to calculate either statistical power, number of clusters per treatment group (K), or cluster size (m), given a set of input values for all five study design approaches.
 }
 \examples{
-run_crt2_design(output = "power", K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+run_crt2_design(output = "power", K = 15, m = 300, alpha = 0.05,
+beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
+rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 }

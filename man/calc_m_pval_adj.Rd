@@ -49,5 +49,7 @@ A data frame of numerical values.
 Allows user to calculate the cluster size of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses three common p-value adjustment methods.
 }
 \examples{
-calc_m_pval_adj(power = 0.8, K = 15, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho2  = 0.05)
+calc_m_pval_adj(power = 0.8, K = 15, alpha = 0.05,
+beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
+rho01 = 0.025, rho02 = 0.025, rho2  = 0.05)
 }

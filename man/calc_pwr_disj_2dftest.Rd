@@ -54,5 +54,7 @@ A numerical value.
 Allows user to calculate the statistical power of a cluster-randomized trial with two co-primary outcomes given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses the disjunctive 2-DF test approach. Code is adapted from "calPower_omnibus()" from https://github.com/siyunyang/coprimary_CRT written by Siyun Yang.
 }
 \examples{
-calc_pwr_disj_2dftest(K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+calc_pwr_disj_2dftest(K = 15, m = 300, alpha = 0.05,
+beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
+rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 }

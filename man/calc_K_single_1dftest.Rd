@@ -51,5 +51,7 @@ A data frame of numerical values.
 Allows user to calculate the number of clusters per treatment arm of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the statistical power, and cluster size. Uses the single 1-DF combined test approach for clustered data and two outcomes.
 }
 \examples{
-calc_K_single_1dftest(power = 0.8, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+calc_K_single_1dftest(power = 0.8, m = 300, alpha = 0.05,
+beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
+rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 }

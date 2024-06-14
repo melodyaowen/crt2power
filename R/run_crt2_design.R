@@ -31,7 +31,9 @@
 #' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
 #' @returns A data frame of numerical values.
 #' @examples
-#' run_crt2_design(output = "power", K = 15, m = 300, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+#' run_crt2_design(output = "power", K = 15, m = 300, alpha = 0.05,
+#' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
+#' rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
 run_crt2_design <- function(output,       # Parameter to calculate
                             power = NA,   # Desired statistical power

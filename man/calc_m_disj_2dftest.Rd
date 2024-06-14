@@ -54,5 +54,7 @@ A numerical value.
 Allows user to calculate the cluster size of a cluster-randomized trial with two co-primary outcomes given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses the disjunctive 2-DF test approach.
 }
 \examples{
-calc_m_disj_2dftest(power = 0.8, K = 15, alpha = 0.05, beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25, rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
+calc_m_disj_2dftest(power = 0.8, K = 15, alpha = 0.05,
+beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
+rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 }
