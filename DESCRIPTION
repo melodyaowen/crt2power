@@ -3,7 +3,7 @@ Type: Package
 Title: Designing Cluster-Randomized Trials with Two Co-Primary Outcomes
 Version: 1.0.0
 Authors@R: c(person("Melody", "Owen", email = "melody.owen@yale.edu", role = c("aut", "cre")))
-Description: Provides methods for powering cluster-randomized trials with two co-primary outcomes using five key design techniques. Includes functions for calculating required sample size and statistical power. For more details on methodology, see Li et al. (2020) <doi:10.1111/biom.13212>, Pocock et al. (1987) <https:https://doi.org/10.2307/2531989>, Vickerstaff et al. (2019) <doi:10.1186/s12874-019-0754-4>, and Yang et al. (2022) <doi:10.1111/biom.13692>.
+Description: Provides methods for powering cluster-randomized trials with two co-primary outcomes using five key design techniques. Includes functions for calculating required sample size and statistical power. For more details on methodology, see Li et al. (2020) <doi:10.1111/biom.13212>, Pocock et al. (1987) <https:www.jstor.org/stable/2531989>, Vickerstaff et al. (2019) <doi:10.1186/s12874-019-0754-4>, and Yang et al. (2022) <doi:10.1111/biom.13692>.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
