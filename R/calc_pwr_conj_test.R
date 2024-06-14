@@ -50,7 +50,7 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
                                r = 1,        # Treatment allocation ratio
                                cv = 0,       # If equal cluster size, cv=0
                                deltas = c(0,0),
-                               dist = "T"    # Distribution to be used
+                               dist = "T"   # Distribution to be used,
                                ){
 
   # Check that input values are valid
@@ -73,7 +73,6 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
   K_total <- ceiling(K/r_alt)
   betas = c(beta1, beta2)
   Q = 2
-  message("Using ", K_total, " as the total number of clusters for IU test.")
 
   # Variance of trt assignment
   sigmaz.square <- r_alt*(1 - r_alt)
@@ -259,22 +258,22 @@ calc_K_conj_test <- function(power,        # Desired statistical power
   upperBound <- 10000
   repeat{
     middle <- floor((lowerBound + upperBound)/2)
-    power_temp <- suppressMessages(calc_pwr_conj_test(K = middle,
-                                                      m = m,
-                                                      alpha = alpha,
-                                                      beta1 = beta1,
-                                                      beta2 = beta2,
-                                                      varY1 = varY1,
-                                                      varY2 = varY2,
-                                                      rho01 = rho01,
-                                                      rho02 = rho02,
-                                                      rho1 = rho1,
-                                                      rho2 = rho2,
-                                                      r = r,
-                                                      cv = cv,
-                                                      deltas = deltas,
-                                                      dist = dist
-                                                      ))
+    power_temp <- calc_pwr_conj_test(K = middle,
+                                     m = m,
+                                     alpha = alpha,
+                                     beta1 = beta1,
+                                     beta2 = beta2,
+                                     varY1 = varY1,
+                                     varY2 = varY2,
+                                     rho01 = rho01,
+                                     rho02 = rho02,
+                                     rho1 = rho1,
+                                     rho2 = rho2,
+                                     r = r,
+                                     cv = cv,
+                                     deltas = deltas,
+                                     dist = dist
+                                     )
     if(power_temp < power){
       lowerBound <- middle
     }
@@ -373,29 +372,28 @@ calc_m_conj_test <- function(power,        # Desired statistical power
   # so define new ratio variable based on the one that was inputted by user
   r_alt = 1/(r + 1)
   K_total <- ceiling(K/r_alt)
-  message("Using ", K_total, " as the total number of clusters for IU test.")
 
   # Initialize m and predictive power
   m <- 0
   pred.power <- 0
   while(pred.power < power){
     m <- m + 1
-    pred.power <- suppressMessages(calc_pwr_conj_test(K = K,
-                                                      m = m,
-                                                      alpha = alpha,
-                                                      beta1 = beta1,
-                                                      beta2 = beta2,
-                                                      varY1 = varY1,
-                                                      varY2 = varY2,
-                                                      rho01 = rho01,
-                                                      rho02 = rho02,
-                                                      rho1 = rho1,
-                                                      rho2 = rho2,
-                                                      r = r,
-                                                      cv = cv,
-                                                      deltas = deltas,
-                                                      dist = dist
-                                                      ))
+    pred.power <- calc_pwr_conj_test(K = K,
+                                     m = m,
+                                     alpha = alpha,
+                                     beta1 = beta1,
+                                     beta2 = beta2,
+                                     varY1 = varY1,
+                                     varY2 = varY2,
+                                     rho01 = rho01,
+                                     rho02 = rho02,
+                                     rho1 = rho1,
+                                     rho2 = rho2,
+                                     r = r,
+                                     cv = cv,
+                                     deltas = deltas,
+                                     dist = dist
+                                     )
     if(m > 100000){
       m <- Inf
       message("Cannot find large enough 'm' to reach study specifications for IU test. Please lower power or increase value for 'K'.")
