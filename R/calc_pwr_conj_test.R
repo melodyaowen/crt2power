@@ -90,7 +90,7 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
     }
     # Check for matrix positive definite
     if(min(eigen(SigmaE_Matrix)$values) <= 1e-08){
-      print("Warning: the resulting covariance matrix Sigma_E is not positive definite. Check the inputs for the correlation values.")
+      warning("The resulting covariance matrix Sigma_E is not positive definite. Check the inputs for the correlation values.")
     }
   return(SigmaE_Matrix)
   }
@@ -108,7 +108,7 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
     }
     # Check for matrix positive definite
     if(min(eigen(SigmaP_Matrix)$values) <= 1e-08){
-      print("Warning: the resulting covariance matrix Sigma_phi is not positive definite. Check the input of rho01 and rho2.")
+      warning("The resulting covariance matrix Sigma_phi is not positive definite. Check the input of rho01 and rho2.")
     }
   return(SigmaP_Matrix)
   }
