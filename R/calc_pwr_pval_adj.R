@@ -15,6 +15,7 @@
 #' @description
 #' Allows user to calculate the statistical power of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses three common p-value adjustment methods.
 #'
+#' @param dist Specification of which distribution to base calculation on, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.
 #' @param K Number of clusters in treatment arm, and control arm under equal allocation; numeric.
 #' @param m Individuals per cluster; numeric.
 #' @param alpha Type I error rate; numeric.
@@ -32,7 +33,8 @@
 #' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
 #' rho01 = 0.025, rho02 = 0.025, rho2  = 0.05)
 #' @export
-calc_pwr_pval_adj <- function(K,            # Number of clusters in treatment arm
+calc_pwr_pval_adj <- function(dist = "Chi2",# Distribution to base calculation from
+                              K,            # Number of clusters in treatment arm
                               m,            # Individuals per cluster
                               alpha = 0.05, # Significance level
                               beta1,        # Effect for outcome 1
@@ -43,7 +45,7 @@ calc_pwr_pval_adj <- function(K,            # Number of clusters in treatment ar
                               rho02,        # ICC for outcome 2
                               rho2,         # Intra-subject between-endpoint ICC
                               r = 1         # Treatment allocation ratio
-                              ){
+){
 
   # Check that input values are valid
   if(!is.numeric(c(K, m, alpha, beta1, beta2, varY1, varY2, rho01, rho02, rho2, r))){
@@ -59,26 +61,66 @@ calc_pwr_pval_adj <- function(K,            # Number of clusters in treatment ar
     stop("'m' must be a positive whole number.")
   }
 
+  # Defining necessary parameters based on input values
+  r_alt <- 1/(r + 1)
+  Q <- 2 # Number of outcomes, could extend this to more than 2 in the future
+  K_total <- ceiling(K/r_alt) # Total number of clusters
+
   # Adjusted p-values for three methods based on inputted alpha-level
   alpha_B <- alpha/2 # Bonferroni
   alpha_S <- 1 - (1 - alpha)^(1/2) # Sidak
   alpha_D <- 1 - (1 - alpha)^(1/(2^(1 - rho2))) # D/AP
 
-  # Critical values for three p-value adjustment methods
-  cv_B <- qchisq(1 - alpha_B, df = 1, ncp = 0) # Bonferroni
-  cv_S <- qchisq(1 - alpha_S, df = 1, ncp = 0) # Sidak
-  cv_D <- qchisq(1 - alpha_D, df = 1, ncp = 0) # D/AP
-
-  # Power for each p-value adjustment method
+  # lambda for each outcome
   lambda1 <- (beta1^2)/((1 + 1/r)*(varY1/(K*m))*(1 + (m-1)*rho01))
   lambda2 <- (beta2^2)/((1 + 1/r)*(varY2/(K*m))*(1 + (m-1)*rho02))
 
-  pwr_bonf  <- round(c(1 - pchisq(cv_B, 1, ncp = lambda1, lower.tail = TRUE),
-                       1 - pchisq(cv_B, 1, ncp = lambda2, lower.tail = TRUE)), 4)
-  pwr_sidak <- round(c(1 - pchisq(cv_S, 1, ncp = lambda1, lower.tail = TRUE),
-                       1 - pchisq(cv_S, 1, ncp = lambda2, lower.tail = TRUE)), 4)
-  pwr_dap   <- round(c(1 - pchisq(cv_D, 1, ncp = lambda1, lower.tail = TRUE),
-                       1 - pchisq(cv_D, 1, ncp = lambda2, lower.tail = TRUE)), 4)
+  # Power for each adjustment method
+  if(dist == "Chi2"){ # Using Chi2
+    # Critical values for three p-value adjustment methods
+    cv_B <- qchisq(1 - alpha_B, df = 1, ncp = 0) # Bonferroni
+    cv_S <- qchisq(1 - alpha_S, df = 1, ncp = 0) # Sidak
+    cv_D <- qchisq(1 - alpha_D, df = 1, ncp = 0) # D/AP
+
+    pwr_bonf  <- round(c(1 - pchisq(cv_B, 1, ncp = lambda1, lower.tail = TRUE),
+                         1 - pchisq(cv_B, 1, ncp = lambda2, lower.tail = TRUE)), 4)
+    pwr_sidak <- round(c(1 - pchisq(cv_S, 1, ncp = lambda1, lower.tail = TRUE),
+                         1 - pchisq(cv_S, 1, ncp = lambda2, lower.tail = TRUE)), 4)
+    pwr_dap   <- round(c(1 - pchisq(cv_D, 1, ncp = lambda1, lower.tail = TRUE),
+                         1 - pchisq(cv_D, 1, ncp = lambda2, lower.tail = TRUE)), 4)
+  } else if(dist == "F"){ # Using F
+    # Critical values for three p-value adjustment methods
+    Fscore_B <- qf(1 - alpha_B, ncp = 0,
+                   df1 = 1, df2 = K_total - 2*Q,
+                   lower.tail = TRUE, log.p = FALSE) # Bonferroni
+    Fscore_S <- qf(1 - alpha_S, ncp = 0,
+                   df1 = 1, df2 = K_total - 2*Q,
+                   lower.tail = TRUE, log.p = FALSE) # Sidak
+    Fscore_D <- qf(1 - alpha_D, ncp = 0,
+                   df1 = 1, df2 = K_total - 2*Q,
+                   lower.tail = TRUE, log.p = FALSE) # D/AP
+
+    pwr_bonf  <- round(c(1 - pf(Fscore_B, ncp = lambda1,
+                                df1 = 1, df2 = K_total - 2*Q,
+                                lower.tail = TRUE, log.p = FALSE),
+                         1 - pf(Fscore_B, ncp = lambda2,
+                                df1 = 1, df2 = K_total - 2*Q,
+                                lower.tail = TRUE, log.p = FALSE)), 4)
+    pwr_sidak <- round(c(1 - pf(Fscore_S, ncp = lambda1,
+                                df1 = 1, df2 = K_total - 2*Q,
+                                lower.tail = TRUE, log.p = FALSE),
+                         1 - pf(Fscore_S, ncp = lambda2,
+                                df1 = 1, df2 = K_total - 2*Q,
+                                lower.tail = TRUE, log.p = FALSE)), 4)
+    pwr_dap   <- round(c(1 - pf(Fscore_D, ncp = lambda1,
+                                df1 = 1, df2 = K_total - 2*Q,
+                                lower.tail = TRUE, log.p = FALSE),
+                         1 - pf(Fscore_D, ncp = lambda2,
+                                df1 = 1, df2 = K_total - 2*Q,
+                                lower.tail = TRUE, log.p = FALSE)), 4)
+  } else{
+    stop("Please choose a valid input parameter for 'dist', either 'Chi2' for Chi-Square or 'F' for F-distribution.")
+  }
 
   # Final dataframe of power calculations by method and outcome
   pwr_dat <- tibble(`P-Value Adjustment Type` = c("Bonferroni", "Sidak", "D/AP"),
@@ -131,7 +173,7 @@ calc_K_pval_adj <- function(power,        # Desired statistical power
                             rho02,        # ICC for outcome 2
                             rho2,         # Intra-subject between-endpoint ICC
                             r = 1         # Treatment allocation ratio
-                            ){
+){
 
   # Check that input values are valid
   if(!is.numeric(c(power, m, alpha, beta1, beta2, varY1, varY2, rho01, rho02, rho2, r))){
@@ -159,11 +201,11 @@ calc_K_pval_adj <- function(power,        # Desired statistical power
 
   # K1 for each adjustment method
   K1_bonf  <- ceiling(c(((1 + 1/r)*lambda_B*varY1*(1 + (m - 1)*rho01))/(m*(beta1^2)),
-                       ((1 + 1/r)*lambda_B*varY2*(1 + (m - 1)*rho02))/(m*(beta2^2))))
+                        ((1 + 1/r)*lambda_B*varY2*(1 + (m - 1)*rho02))/(m*(beta2^2))))
   K1_sidak <- ceiling(c(((1 + 1/r)*lambda_S*varY1*(1 + (m - 1)*rho01))/(m*(beta1^2)),
-                       ((1 + 1/r)*lambda_S*varY2*(1 + (m - 1)*rho02))/(m*(beta2^2))))
+                        ((1 + 1/r)*lambda_S*varY2*(1 + (m - 1)*rho02))/(m*(beta2^2))))
   K1_dap   <- ceiling(c(((1 + 1/r)*lambda_D*varY1*(1 + (m - 1)*rho01))/(m*(beta1^2)),
-                       ((1 + 1/r)*lambda_D*varY2*(1 + (m - 1)*rho02))/(m*(beta2^2))))
+                        ((1 + 1/r)*lambda_D*varY2*(1 + (m - 1)*rho02))/(m*(beta2^2))))
 
   # K2 for each adjustment method
   K2_bonf <- ceiling(r*K1_bonf)
@@ -179,7 +221,7 @@ calc_K_pval_adj <- function(power,        # Desired statistical power
                     `Control (K) for Y2` = c(K2_bonf[2], K2_sidak[2], K2_dap[2]),
                     `Final Treatment (K)` = c(max(K1_bonf), max(K1_sidak), max(K1_dap)),
                     `Final Control (K)` = c(max(K2_bonf), max(K2_sidak), max(K2_dap))
-                    )
+    )
   } else{
     K_dat <- tibble(`Adjustment Type` = c("Bonferroni", "Sidak", "D/AP"),
                     `Treatment (K1) for Y1`= c(K1_bonf[1], K1_sidak[1], K1_dap[1]),
@@ -234,7 +276,7 @@ calc_m_pval_adj <- function(power,        # Desired statistical power
                             rho02,        # ICC for outcome 2
                             rho2,         # Intra-subject between-endpoint ICC
                             r = 1         # Treatment allocation ratio
-                            ){
+){
 
   # Check that input values are valid
   if(!is.numeric(c(power, K, alpha, beta1, beta2, varY1, varY2, rho01, rho02, rho2, r))){

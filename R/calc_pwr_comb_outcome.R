@@ -14,6 +14,7 @@
 #' @description
 #' Allows user to calculate the statistical power of a cluster-randomized trial with two co-primary outcomes given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses a combined outcomes approach where the two outcome effects are summed together.
 #'
+#' @param dist Specification of which distribution to base calculation on, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.
 #' @param K Number of clusters in treatment arm, and control arm under equal allocation; numeric.
 #' @param m Individuals per cluster; numeric.
 #' @param alpha Type I error rate; numeric.
@@ -32,7 +33,8 @@
 #' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
 #' rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
-calc_pwr_comb_outcome <- function(K,            # Number of clusters in treatment arm
+calc_pwr_comb_outcome <- function(dist = "Chi2",# Distribution to base calculation from
+                                  K,            # Number of clusters in treatment arm
                                   m,            # Individuals per cluster
                                   alpha = 0.05, # Significance level
                                   beta1,        # Effect for outcome 1
@@ -59,6 +61,11 @@ calc_pwr_comb_outcome <- function(K,            # Number of clusters in treatmen
     stop("'m' must be a positive whole number.")
   }
 
+  # Defining necessary parameters based on input values
+  r_alt <- 1/(r + 1)
+  Q <- 2 # Number of outcomes, could extend this to more than 2 in the future
+  K_total <- ceiling(K/r_alt) # Total number of clusters
+
   # Calculate combined outcome effect size
   betaC <- beta1 + beta2
 
@@ -69,12 +76,23 @@ calc_pwr_comb_outcome <- function(K,            # Number of clusters in treatmen
   rho0C  <- (rho01*varY1 + rho02*varY2 + 2*rho1*sqrt(varY1*varY2))/
     (varY1 + varY2 + 2*rho2*sqrt(varY1*varY2))
 
-  # Find critical value
-  cv <- qchisq(p = alpha, df = 1, lower.tail = FALSE)
-
-  # Power for Method 2
+  # Lambda value for the combined outcome
   lambda <- (betaC^2)/((1 + 1/r)*(varYC/(K*m))*(1 + (m - 1)*rho0C))
-  power <- round(1 - pchisq(cv, 1, ncp = lambda, lower.tail = TRUE), 4)
+
+  if(dist == "Chi2"){
+    # Find critical value
+    cv <- qchisq(p = alpha, df = 1, lower.tail = FALSE)
+    # Calculate power
+    power <- round(1 - pchisq(cv, 1, ncp = lambda, lower.tail = TRUE), 4)
+  } else if(dist == "F"){
+    Fscore <- qf(1 - alpha, df1 = 1, df2 = K_total - 2*Q, ncp = 0,
+                 lower.tail = TRUE, log.p = FALSE)
+    power <- round(1 - pf(Fscore, ncp = lambda,
+                          df1 = 1, df2 = K_total - 2*Q,
+                          lower.tail = TRUE, log.p = FALSE), 4)
+  } else{
+    stop("Please choose a valid input parameter for 'dist', either 'Chi2' for Chi-Square or 'F' for F-distribution.")
+  }
 
   return(power)
 } # End calc_pwr_comb_outcome()

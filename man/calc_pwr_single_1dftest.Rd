@@ -5,6 +5,7 @@
 \title{Calculate statistical power for a cluster-randomized trial with co-primary endpoints using the single 1-DF combined test approach.}
 \usage{
 calc_pwr_single_1dftest(
+  dist = "Chi2",
   K,
   m,
   alpha = 0.05,
@@ -20,6 +21,8 @@ calc_pwr_single_1dftest(
 )
 }
 \arguments{
+\item{dist}{Specification of which distribution to base calculation on, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.}
+
 \item{K}{Number of clusters in treatment arm, and control arm under equal allocation; numeric.}
 
 \item{m}{Individuals per cluster; numeric.}
