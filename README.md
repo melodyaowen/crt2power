@@ -15,6 +15,15 @@ The five key study design approaches are included in this package that can be us
 
 ## Installation
 
+This package is available on CRAN, so we recommend just running the following code:
+
+```
+install.packages("crt2power")
+require(crt2power)
+```
+
+If you wish to directly install it from the GitHub repository instead, you can run the following code:
+
 ```
 install.packages("devtools")
 require(devtools)
