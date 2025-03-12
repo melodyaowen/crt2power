@@ -114,159 +114,250 @@ run_crt2_design <- function(output,       # Parameter to calculate
   # When desired output is power
   if(output == "power"){
     # Method 1: P-Value Adjustments
-    out1 <- calc_pwr_pval_adj(K = K, m = m, alpha = alpha,
-                              beta1 = beta1, beta2 = beta2,
-                              varY1 = varY1, varY2 = varY2,
-                              rho01 = rho01, rho02 = rho02,
-                              rho2  = rho2, r = r)
-
-    # Method 2: Combined Outcome
-    out2 <- calc_pwr_comb_outcome(K = K, m = m, alpha = alpha,
-                                  beta1 = beta1, beta2 = beta2,
-                                  varY1 = varY1, varY2 = varY2,
-                                  rho01 = rho01, rho02 = rho02,
-                                  rho1  = rho1, rho2  = rho2, r = r)
-
-    # Method 3: Single 1-DF Test
-    out3 <- calc_pwr_single_1dftest(K = K, m = m, alpha = alpha,
-                                    beta1 = beta1, beta2 = beta2,
-                                    varY1 = varY1, varY2 = varY2,
-                                    rho01 = rho01, rho02 = rho02,
-                                    rho1  = rho1, rho2  = rho2, r = r)
-
-    # Method 4: Disjunctive 2-DF Test
-    out4.Chi2 <- calc_pwr_disj_2dftest(dist = "Chi2",
-                                       K = K, m = m, alpha = alpha,
-                                       beta1 = beta1, beta2 = beta2,
-                                       varY1 = varY1, varY2 = varY2,
-                                       rho01 = rho01, rho02 = rho02,
-                                       rho1  = rho1, rho2  = rho2, r = r)
-    out4.F <- calc_pwr_disj_2dftest(dist = "F",
-                                    K = K, m = m, alpha = alpha,
-                                    beta1 = beta1, beta2 = beta2,
-                                    varY1 = varY1, varY2 = varY2,
-                                    rho01 = rho01, rho02 = rho02,
-                                    rho1  = rho1, rho2  = rho2, r = r)
-
-    # Method 5: Conjunctive IU Test
-    out5.T <- calc_pwr_conj_test(dist = "T",
-                                 K = K, m = m, alpha = alpha,
-                                 beta1 = beta1, beta2 = beta2,
-                                 varY1 = varY1, varY2 = varY2,
-                                 rho01 = rho01, rho02 = rho02,
-                                 rho1  = rho1, rho2  = rho2, r = r)
-    out5.MVN <- calc_pwr_conj_test(dist = "MVN",
-                                   K = K, m = m, alpha = alpha,
+    out1_Chi2 <- calc_pwr_pval_adj(K = K, m = m, alpha = alpha,
                                    beta1 = beta1, beta2 = beta2,
                                    varY1 = varY1, varY2 = varY2,
                                    rho01 = rho01, rho02 = rho02,
-                                   rho1  = rho1, rho2  = rho2, r = r)
+                                   rho2  = rho2, r = r, dist = "Chi2")
+    out1_F <- calc_pwr_pval_adj(K = K, m = m, alpha = alpha,
+                                beta1 = beta1, beta2 = beta2,
+                                varY1 = varY1, varY2 = varY2,
+                                rho01 = rho01, rho02 = rho02,
+                                rho2  = rho2, r = r, dist = "F")
 
+    # Method 2: Combined Outcome
+    out2_Chi2 <- calc_pwr_comb_outcome(K = K, m = m, alpha = alpha,
+                                       beta1 = beta1, beta2 = beta2,
+                                       varY1 = varY1, varY2 = varY2,
+                                       rho01 = rho01, rho02 = rho02,
+                                       rho1  = rho1, rho2 = rho2,
+                                       r = r, dist = "Chi2")
+    out2_F <- calc_pwr_comb_outcome(K = K, m = m, alpha = alpha,
+                                    beta1 = beta1, beta2 = beta2,
+                                    varY1 = varY1, varY2 = varY2,
+                                    rho01 = rho01, rho02 = rho02,
+                                    rho1  = rho1, rho2 = rho2,
+                                    r = r, dist = "F")
+
+    # Method 3: Single 1-DF Test
+    out3_Chi2 <- calc_pwr_single_1dftest(K = K, m = m, alpha = alpha,
+                                         beta1 = beta1, beta2 = beta2,
+                                         varY1 = varY1, varY2 = varY2,
+                                         rho01 = rho01, rho02 = rho02,
+                                         rho1  = rho1, rho2  = rho2,
+                                         r = r, dist = "Chi2")
+    out3_F <- calc_pwr_single_1dftest(K = K, m = m, alpha = alpha,
+                                      beta1 = beta1, beta2 = beta2,
+                                      varY1 = varY1, varY2 = varY2,
+                                      rho01 = rho01, rho02 = rho02,
+                                      rho1  = rho1, rho2  = rho2,
+                                      r = r, dist = "F")
+
+    # Method 4: Disjunctive 2-DF Test
+    out4_Chi2 <- calc_pwr_disj_2dftest(K = K, m = m, alpha = alpha,
+                                       beta1 = beta1, beta2 = beta2,
+                                       varY1 = varY1, varY2 = varY2,
+                                       rho01 = rho01, rho02 = rho02,
+                                       rho1  = rho1, rho2  = rho2,
+                                       r = r, dist = "Chi2")
+    out4_F <- calc_pwr_disj_2dftest(K = K, m = m, alpha = alpha,
+                                    beta1 = beta1, beta2 = beta2,
+                                    varY1 = varY1, varY2 = varY2,
+                                    rho01 = rho01, rho02 = rho02,
+                                    rho1  = rho1, rho2  = rho2,
+                                    r = r, dist = "F")
+
+    # Method 5: Conjunctive IU Test
+    out5_T_1sided <- calc_pwr_conj_test(K = K, m = m, alpha = alpha,
+                                        beta1 = beta1, beta2 = beta2,
+                                        varY1 = varY1, varY2 = varY2,
+                                        rho01 = rho01, rho02 = rho02,
+                                        rho1  = rho1, rho2  = rho2,
+                                        r = r, dist = "T", two_sided = FALSE)
+    out5_T_2sided <- calc_pwr_conj_test(K = K, m = m, alpha = alpha,
+                                        beta1 = beta1, beta2 = beta2,
+                                        varY1 = varY1, varY2 = varY2,
+                                        rho01 = rho01, rho02 = rho02,
+                                        rho1  = rho1, rho2  = rho2,
+                                        r = r, dist = "T", two_sided = TRUE)
+    out5_MVN_1sided <- calc_pwr_conj_test(K = K, m = m, alpha = alpha,
+                                          beta1 = beta1, beta2 = beta2,
+                                          varY1 = varY1, varY2 = varY2,
+                                          rho01 = rho01, rho02 = rho02,
+                                          rho1  = rho1, rho2  = rho2,
+                                          r = r, dist = "MVN", two_sided = FALSE)
+    out5_MVN_2sided <- calc_pwr_conj_test(K = K, m = m, alpha = alpha,
+                                          beta1 = beta1, beta2 = beta2,
+                                          varY1 = varY1, varY2 = varY2,
+                                          rho01 = rho01, rho02 = rho02,
+                                          rho1  = rho1, rho2  = rho2,
+                                          r = r, dist = "MVN", two_sided = TRUE)
   }
-
 
   # When desired output is K
   if(output == "K"){
     # Method 1: P-Value Adjustments
-    out1 <- calc_K_pval_adj(power = power, m = m, alpha = alpha,
-                            beta1 = beta1, beta2 = beta2,
-                            varY1 = varY1, varY2 = varY2,
-                            rho01 = rho01, rho02 = rho02,
-                            rho2  = rho2, r = r)
-
-    # Method 2: Combined Outcome
-    out2 <- calc_K_comb_outcome(power = power, m = m, alpha = alpha,
-                                beta1 = beta1, beta2 = beta2,
-                                varY1 = varY1, varY2 = varY2,
-                                rho01 = rho01, rho02 = rho02,
-                                rho1  = rho1, rho2  = rho2, r = r)
-
-    # Method 3: Single 1-DF Test
-    out3 <- calc_K_single_1dftest(power = power, m = m, alpha = alpha,
-                                  beta1 = beta1, beta2 = beta2,
-                                  varY1 = varY1, varY2 = varY2,
-                                  rho01 = rho01, rho02 = rho02,
-                                  rho1  = rho1, rho2  = rho2, r = r)
-
-    # Method 4: Disjunctive 2-DF Test
-    out4.Chi2 <- calc_K_disj_2dftest(dist = "Chi2",
-                                     power = power, m = m, alpha = alpha,
-                                     beta1 = beta1, beta2 = beta2,
-                                     varY1 = varY1, varY2 = varY2,
-                                     rho01 = rho01, rho02 = rho02,
-                                     rho1  = rho1, rho2  = rho2, r = r)
-    out4.F <- calc_K_disj_2dftest(dist = "F",
-                                  power = power, m = m, alpha = alpha,
-                                  beta1 = beta1, beta2 = beta2,
-                                  varY1 = varY1, varY2 = varY2,
-                                  rho01 = rho01, rho02 = rho02,
-                                  rho1  = rho1, rho2  = rho2, r = r)
-
-    # Method 5: Conjunctive IU Test
-    out5.T <- calc_K_conj_test(dist = "T",
-                               power = power, m = m, alpha = alpha,
-                               beta1 = beta1, beta2 = beta2,
-                               varY1 = varY1, varY2 = varY2,
-                               rho01 = rho01, rho02 = rho02,
-                               rho1  = rho1, rho2  = rho2, r = r)
-    out5.MVN <- calc_K_conj_test(dist = "MVN",
-                                 power = power, m = m, alpha = alpha,
+    out1_Chi2 <- calc_K_pval_adj(power = power, m = m, alpha = alpha,
                                  beta1 = beta1, beta2 = beta2,
                                  varY1 = varY1, varY2 = varY2,
                                  rho01 = rho01, rho02 = rho02,
-                                 rho1  = rho1, rho2  = rho2, r = r)
+                                 rho2  = rho2, r = r, dist = "Chi2")
+    out1_F <- calc_K_pval_adj(power = power, m = m, alpha = alpha,
+                              beta1 = beta1, beta2 = beta2,
+                              varY1 = varY1, varY2 = varY2,
+                              rho01 = rho01, rho02 = rho02,
+                              rho2  = rho2, r = r, dist = "F")
+
+    # Method 2: Combined Outcome
+    out2_Chi2 <- calc_K_comb_outcome(power = power, m = m, alpha = alpha,
+                                     beta1 = beta1, beta2 = beta2,
+                                     varY1 = varY1, varY2 = varY2,
+                                     rho01 = rho01, rho02 = rho02,
+                                     rho1  = rho1, rho2 = rho2,
+                                     r = r, dist = "Chi2")
+    out2_F <- calc_K_comb_outcome(power = power, m = m, alpha = alpha,
+                                  beta1 = beta1, beta2 = beta2,
+                                  varY1 = varY1, varY2 = varY2,
+                                  rho01 = rho01, rho02 = rho02,
+                                  rho1  = rho1, rho2 = rho2,
+                                  r = r, dist = "F")
+
+    # Method 3: Single 1-DF Test
+    out3_Chi2 <- calc_K_single_1dftest(power = power, m = m, alpha = alpha,
+                                       beta1 = beta1, beta2 = beta2,
+                                       varY1 = varY1, varY2 = varY2,
+                                       rho01 = rho01, rho02 = rho02,
+                                       rho1  = rho1, rho2  = rho2,
+                                       r = r, dist = "Chi2")
+    out3_F <- calc_K_single_1dftest(power = power, m = m, alpha = alpha,
+                                    beta1 = beta1, beta2 = beta2,
+                                    varY1 = varY1, varY2 = varY2,
+                                    rho01 = rho01, rho02 = rho02,
+                                    rho1  = rho1, rho2  = rho2,
+                                    r = r, dist = "F")
+
+    # Method 4: Disjunctive 2-DF Test
+    out4_Chi2 <- calc_K_disj_2dftest(power = power, m = m, alpha = alpha,
+                                     beta1 = beta1, beta2 = beta2,
+                                     varY1 = varY1, varY2 = varY2,
+                                     rho01 = rho01, rho02 = rho02,
+                                     rho1  = rho1, rho2  = rho2,
+                                     r = r, dist = "Chi2")
+    out4_F <- calc_K_disj_2dftest(power = power, m = m, alpha = alpha,
+                                  beta1 = beta1, beta2 = beta2,
+                                  varY1 = varY1, varY2 = varY2,
+                                  rho01 = rho01, rho02 = rho02,
+                                  rho1  = rho1, rho2  = rho2,
+                                  r = r, dist = "F")
+
+    # Method 5: Conjunctive IU Test
+    out5_T_1sided <- calc_K_conj_test(power = power, m = m, alpha = alpha,
+                                      beta1 = beta1, beta2 = beta2,
+                                      varY1 = varY1, varY2 = varY2,
+                                      rho01 = rho01, rho02 = rho02,
+                                      rho1  = rho1, rho2  = rho2,
+                                      r = r, dist = "T", two_sided = FALSE)
+    out5_T_2sided <- calc_K_conj_test(power = power, m = m, alpha = alpha,
+                                      beta1 = beta1, beta2 = beta2,
+                                      varY1 = varY1, varY2 = varY2,
+                                      rho01 = rho01, rho02 = rho02,
+                                      rho1  = rho1, rho2  = rho2,
+                                      r = r, dist = "T", two_sided = TRUE)
+    out5_MVN_1sided <- calc_K_conj_test(power = power, m = m, alpha = alpha,
+                                        beta1 = beta1, beta2 = beta2,
+                                        varY1 = varY1, varY2 = varY2,
+                                        rho01 = rho01, rho02 = rho02,
+                                        rho1  = rho1, rho2  = rho2,
+                                        r = r, dist = "MVN", two_sided = FALSE)
+    out5_MVN_2sided <- calc_K_conj_test(power = power, m = m, alpha = alpha,
+                                        beta1 = beta1, beta2 = beta2,
+                                        varY1 = varY1, varY2 = varY2,
+                                        rho01 = rho01, rho02 = rho02,
+                                        rho1  = rho1, rho2  = rho2,
+                                        r = r, dist = "MVN", two_sided = TRUE)
   }
 
   # When desired output is m
   if(output == "m"){
     # Method 1: P-Value Adjustments
-    out1 <- calc_m_pval_adj(power = power, K = K, alpha = alpha,
-                            beta1 = beta1, beta2 = beta2,
-                            varY1 = varY1, varY2 = varY2,
-                            rho01 = rho01, rho02 = rho02,
-                            rho2  = rho2, r = r)
-
-    # Method 2: Combined Outcome
-    out2 <- calc_m_comb_outcome(power = power, K = K, alpha = alpha,
-                                beta1 = beta1, beta2 = beta2,
-                                varY1 = varY1, varY2 = varY2,
-                                rho01 = rho01, rho02 = rho02,
-                                rho1  = rho1, rho2  = rho2, r = r)
-
-    # Method 3: Single 1-DF Test
-    out3 <- calc_m_single_1dftest(power = power, K = K, alpha = alpha,
-                                  beta1 = beta1, beta2 = beta2,
-                                  varY1 = varY1, varY2 = varY2,
-                                  rho01 = rho01, rho02 = rho02,
-                                  rho1  = rho1, rho2  = rho2, r = r)
-
-    # Method 4: Disjunctive 2-DF Test
-    out4.Chi2 <- calc_m_disj_2dftest(dist = "Chi2",
-                                     power = power, K = K, alpha = alpha,
-                                     beta1 = beta1, beta2 = beta2,
-                                     varY1 = varY1, varY2 = varY2,
-                                     rho01 = rho01, rho02 = rho02,
-                                     rho1  = rho1, rho2  = rho2, r = r)
-    out4.F <- calc_m_disj_2dftest(dist = "F",
-                                  power = power, K = K, alpha = alpha,
-                                  beta1 = beta1, beta2 = beta2,
-                                  varY1 = varY1, varY2 = varY2,
-                                  rho01 = rho01, rho02 = rho02,
-                                  rho1  = rho1, rho2  = rho2, r = r)
-
-    # Method 5: Conjunctive IU Test
-    out5.T <- calc_m_conj_test(dist = "T",
-                               power = power, K = K, alpha = alpha,
-                               beta1 = beta1, beta2 = beta2,
-                               varY1 = varY1, varY2 = varY2,
-                               rho01 = rho01, rho02 = rho02,
-                               rho1  = rho1, rho2  = rho2, r = r)
-    out5.MVN <- calc_m_conj_test(dist = "MVN",
-                                 power = power, K = K, alpha = alpha,
+    out1_Chi2 <- calc_m_pval_adj(K = K, power = power, alpha = alpha,
                                  beta1 = beta1, beta2 = beta2,
                                  varY1 = varY1, varY2 = varY2,
                                  rho01 = rho01, rho02 = rho02,
-                                 rho1  = rho1, rho2  = rho2, r = r)
+                                 rho2  = rho2, r = r, dist = "Chi2")
+    out1_F <- calc_m_pval_adj(K = K, power = power, alpha = alpha,
+                              beta1 = beta1, beta2 = beta2,
+                              varY1 = varY1, varY2 = varY2,
+                              rho01 = rho01, rho02 = rho02,
+                              rho2  = rho2, r = r, dist = "F")
+
+    # Method 2: Combined Outcome
+    out2_Chi2 <- calc_m_comb_outcome(K = K, power = power, alpha = alpha,
+                                     beta1 = beta1, beta2 = beta2,
+                                     varY1 = varY1, varY2 = varY2,
+                                     rho01 = rho01, rho02 = rho02,
+                                     rho1  = rho1, rho2 = rho2,
+                                     r = r, dist = "Chi2")
+    out2_F <- calc_m_comb_outcome(K = K, power = power, alpha = alpha,
+                                  beta1 = beta1, beta2 = beta2,
+                                  varY1 = varY1, varY2 = varY2,
+                                  rho01 = rho01, rho02 = rho02,
+                                  rho1  = rho1, rho2 = rho2,
+                                  r = r, dist = "F")
+
+    # Method 3: Single 1-DF Test
+    out3_Chi2 <- calc_m_single_1dftest(K = K, power = power, alpha = alpha,
+                                       beta1 = beta1, beta2 = beta2,
+                                       varY1 = varY1, varY2 = varY2,
+                                       rho01 = rho01, rho02 = rho02,
+                                       rho1  = rho1, rho2  = rho2,
+                                       r = r, dist = "Chi2")
+    out3_F <- calc_m_single_1dftest(K = K, power = power, alpha = alpha,
+                                    beta1 = beta1, beta2 = beta2,
+                                    varY1 = varY1, varY2 = varY2,
+                                    rho01 = rho01, rho02 = rho02,
+                                    rho1  = rho1, rho2  = rho2,
+                                    r = r, dist = "F")
+
+    # Method 4: Disjunctive 2-DF Test
+    out4_Chi2 <- calc_m_disj_2dftest(K = K, power = power, alpha = alpha,
+                                     beta1 = beta1, beta2 = beta2,
+                                     varY1 = varY1, varY2 = varY2,
+                                     rho01 = rho01, rho02 = rho02,
+                                     rho1  = rho1, rho2  = rho2,
+                                     r = r, dist = "Chi2")
+    out4_F <- calc_m_disj_2dftest(K = K, power = power, alpha = alpha,
+                                  beta1 = beta1, beta2 = beta2,
+                                  varY1 = varY1, varY2 = varY2,
+                                  rho01 = rho01, rho02 = rho02,
+                                  rho1  = rho1, rho2  = rho2,
+                                  r = r, dist = "F")
+
+    # Method 5: Conjunctive IU Test
+    out5_T_1sided <- calc_m_conj_test(K = K, power = power, alpha = alpha,
+                                      beta1 = beta1, beta2 = beta2,
+                                      varY1 = varY1, varY2 = varY2,
+                                      rho01 = rho01, rho02 = rho02,
+                                      rho1  = rho1, rho2  = rho2,
+                                      r = r, dist = "T", two_sided = FALSE)
+    out5_T_2sided <- calc_m_conj_test(K = K, power = power, alpha = alpha,
+                                      beta1 = beta1, beta2 = beta2,
+                                      varY1 = varY1, varY2 = varY2,
+                                      rho01 = rho01, rho02 = rho02,
+                                      rho1  = rho1, rho2  = rho2,
+                                      r = r, dist = "T", two_sided = TRUE)
+    out5_MVN_1sided <- calc_m_conj_test(K = K, power = power, alpha = alpha,
+                                        beta1 = beta1, beta2 = beta2,
+                                        varY1 = varY1, varY2 = varY2,
+                                        rho01 = rho01, rho02 = rho02,
+                                        rho1  = rho1, rho2  = rho2,
+                                        r = r, dist = "MVN", two_sided = FALSE)
+    out5_MVN_2sided <- calc_m_conj_test(K = K, power = power, alpha = alpha,
+                                        beta1 = beta1, beta2 = beta2,
+                                        varY1 = varY1, varY2 = varY2,
+                                        rho01 = rho01, rho02 = rho02,
+                                        rho1  = rho1, rho2  = rho2,
+                                        r = r, dist = "MVN", two_sided = TRUE)
   }
 
 
@@ -278,48 +369,70 @@ run_crt2_design <- function(output,       # Parameter to calculate
                                               "b. Sidak",
                                               "c. D/AP",
                                               "2. Combined Outcomes",
-                                              "3. Single 1-df Combined Test",
-                                              "4. Disjunctive 2-df Test",
-                                              "a. Chi-Squared Distribution",
-                                              "b. F Distribution",
-                                              "5. Conjunctive IU Test",
-                                              "a. T Distribution",
-                                              "b. MVN Distribution"),
-                          `Power`  = c(NA, pull(out1[, ncol(out1)]),
-                                        out2, out3,
-                                       NA, out4.Chi2, out4.F,
-                                       NA, out5.T, out5.MVN))
+                                              "3. Single Weighted 1-DF Combined Test",
+                                              "4. Disjunctive 2-DF Test",
+                                              "5. Conjunctive IU Test (MVN and t-dist.)",
+                                              "a. 1-Sided Hypothesis",
+                                              "b. 2-Sided Hypothesis"),
+                          `Power (Chi2-distribution)` = c(NA,
+                                                          pull(out1_Chi2[, ncol(out1_Chi2)]),
+                                                          out2_Chi2,
+                                                          out3_Chi2,
+                                                          out4_Chi2,
+                                                          NA,
+                                                          out5_MVN_1sided,
+                                                          out5_MVN_2sided),
+                          `Power (F-distribution)` = c(NA,
+                                                       pull(out1_F[, ncol(out1_F)]),
+                                                       out2_F,
+                                                       out3_F,
+                                                       out4_F,
+                                                       NA,
+                                                       out5_T_1sided,
+                                                       out5_T_2sided))
   } else if(output == "K"){
     outputTable <- tibble(`Design Method` = c("1. P-Value Adjustments",
                                               "a. Bonferroni",
                                               "b. Sidak",
                                               "c. D/AP",
                                               "2. Combined Outcomes",
-                                              "3. Single 1-df Combined Test",
-                                              "4. Disjunctive 2-df Test",
-                                              "a. Chi-Squared Distribution",
-                                              "b. F Distribution",
-                                              "5. Conjunctive IU Test",
-                                              "a. T Distribution",
-                                              "b. MVN Distribution"),
-                          `K1` = c(NA, pull(dplyr::select(out1, contains("Final Treatment"))),
-                                   pull(dplyr::select(out2, contains("Treatment"))),
-                                   pull(dplyr::select(out3, contains("Treatment"))),
+                                              "3. Single Weighted 1-DF Combined Test",
+                                              "4. Disjunctive 2-DF Test",
+                                              "5. Conjunctive IU Test (MVN and t-dist.)",
+                                              "a. 1-Sided Hypothesis",
+                                              "b. 2-Sided Hypothesis"),
+                          `Treatment K1 (Chi2-Distribution)` = c(NA,
+                                   pull(dplyr::select(out1_Chi2, contains("Final Treatment"))),
+                                   pull(dplyr::select(out2_Chi2, contains("Treatment"))),
+                                   pull(dplyr::select(out3_Chi2, contains("Treatment"))),
+                                   pull(dplyr::select(out4_Chi2, contains("Treatment"))),
                                    NA,
-                                   pull(dplyr::select(out4.Chi2, contains("Treatment"))),
-                                   pull(dplyr::select(out4.F, contains("Treatment"))),
+                                   pull(dplyr::select(out5_MVN_1sided, contains("Treatment"))),
+                                   pull(dplyr::select(out5_MVN_2sided, contains("Treatment")))),
+                          `Control K2 (Chi2-Distribution)` = c(NA,
+                                   pull(dplyr::select(out1_Chi2, contains("Final Control"))),
+                                   pull(dplyr::select(out2_Chi2, contains("Control"))),
+                                   pull(dplyr::select(out3_Chi2, contains("Control"))),
+                                   pull(dplyr::select(out4_Chi2, contains("Control"))),
                                    NA,
-                                   pull(dplyr::select(out5.T, contains("Treatment"))),
-                                   pull(dplyr::select(out5.MVN, contains("Treatment")))),
-                          `K2` = c(NA, pull(dplyr::select(out1, contains("Final Control"))),
-                                   pull(dplyr::select(out2, contains("Control"))),
-                                   pull(dplyr::select(out3, contains("Control"))),
+                                   pull(dplyr::select(out5_MVN_1sided, contains("Control"))),
+                                   pull(dplyr::select(out5_MVN_2sided, contains("Control")))),
+                          `Treatment K1 (F-Distribution)` = c(NA,
+                                   pull(dplyr::select(out1_F, contains("Final Treatment"))),
+                                   pull(dplyr::select(out2_F, contains("Treatment"))),
+                                   pull(dplyr::select(out3_F, contains("Treatment"))),
+                                   pull(dplyr::select(out4_F, contains("Treatment"))),
                                    NA,
-                                   pull(dplyr::select(out4.Chi2, contains("Control"))),
-                                   pull(dplyr::select(out4.F, contains("Control"))),
+                                   pull(dplyr::select(out5_T_1sided, contains("Treatment"))),
+                                   pull(dplyr::select(out5_T_2sided, contains("Treatment")))),
+                          `Control K2 (F-Distribution)` = c(NA,
+                                   pull(dplyr::select(out1_F, contains("Final Control"))),
+                                   pull(dplyr::select(out2_F, contains("Control"))),
+                                   pull(dplyr::select(out3_F, contains("Control"))),
+                                   pull(dplyr::select(out4_F, contains("Control"))),
                                    NA,
-                                   pull(dplyr::select(out5.T, contains("Control"))),
-                                   pull(dplyr::select(out5.MVN, contains("Control"))))
+                                   pull(dplyr::select(out5_T_1sided, contains("Control"))),
+                                   pull(dplyr::select(out5_T_2sided, contains("Control"))))
                           )
 
   } else if(output == "m"){
@@ -328,17 +441,27 @@ run_crt2_design <- function(output,       # Parameter to calculate
                                               "b. Sidak",
                                               "c. D/AP",
                                               "2. Combined Outcomes",
-                                              "3. Single 1-df Combined Test",
-                                              "4. Disjunctive 2-df Test",
-                                              "a. Chi-Squared Distribution",
-                                              "b. F Distribution",
-                                              "5. Conjunctive IU Test",
-                                              "a. T Distribution",
-                                              "b. MVN Distribution"),
-                          `m`  = c(NA, pull(out1[, ncol(out1)]),
-                                       out2, out3,
-                                   NA, out4.Chi2, out4.F,
-                                   NA, out5.T, out5.MVN))
+                                              "3. Single Weighted 1-DF Combined Test",
+                                              "4. Disjunctive 2-DF Test",
+                                              "5. Conjunctive IU Test (MVN and t-dist.)",
+                                              "a. 1-Sided Hypothesis",
+                                              "b. 2-Sided Hypothesis"),
+                          `m (Chi2-distribution)` = c(NA,
+                                                      pull(out1_Chi2[, ncol(out1_Chi2)]),
+                                                      out2_Chi2,
+                                                      out3_Chi2,
+                                                      out4_Chi2,
+                                                      NA,
+                                                      out5_MVN_1sided,
+                                                      out5_MVN_2sided),
+                          `m (F-distribution)` = c(NA,
+                                                   pull(out1_F[, ncol(out1_F)]),
+                                                   out2_F,
+                                                   out3_F,
+                                                   out4_F,
+                                                   NA,
+                                                   out5_T_1sided,
+                                                   out5_T_2sided))
   }
 
   return(outputTable)

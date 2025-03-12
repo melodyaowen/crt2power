@@ -109,6 +109,7 @@ calc_pwr_comb_outcome <- function(dist = "Chi2",# Distribution to base calculati
 #' @description
 #' Allows user to calculate the number of clusters per treatment arm of a cluster-randomized trial with two co-primary outcomes given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses a combined outcomes approach where the two outcome effects are summed together.
 #'
+#' @param dist Specification of which distribution to base calculation on, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.
 #' @param power Desired statistical power in decimal form; numeric.
 #' @param m Individuals per cluster; numeric.
 #' @param alpha Type I error rate; numeric.
@@ -127,7 +128,8 @@ calc_pwr_comb_outcome <- function(dist = "Chi2",# Distribution to base calculati
 #' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
 #' rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
-calc_K_comb_outcome <- function(power,        # Desired statistical power
+calc_K_comb_outcome <- function(dist = "Chi2",# Distribution to base calculation from
+                                power,        # Desired statistical power
                                 m,            # Individuals per cluster
                                 alpha = 0.05, # Significance level
                                 beta1,        # Effect for outcome 1
@@ -155,30 +157,90 @@ calc_K_comb_outcome <- function(power,        # Desired statistical power
     stop("'m' must be a positive whole number.")
   }
 
-  # Calculate combined outcome effect size
-  betaC <- beta1 + beta2
+  if(dist == "Chi2"){ # Using Chi2
 
-  # Calculate variance for combined outcome
-  varYC <- round(varY1 + varY2 + 2*rho2*sqrt(varY1)*sqrt(varY2), 4)
+    # Calculate combined outcome effect size
+    betaC <- beta1 + beta2
 
-  # Calculate ICC for combined outcome
-  rho0C  <- (rho01*varY1 + rho02*varY2 + 2*rho1*sqrt(varY1*varY2))/
-    (varY1 + varY2 + 2*rho2*sqrt(varY1*varY2))
+    # Calculate variance for combined outcome
+    varYC <- round(varY1 + varY2 + 2*rho2*sqrt(varY1)*sqrt(varY2), 4)
 
-  # Find non-centrality parameter corresponding to desired power
-  ncp <- calc_ncp_chi2(alpha, power, df = 1)
+    # Calculate ICC for combined outcome
+    rho0C  <- (rho01*varY1 + rho02*varY2 + 2*rho1*sqrt(varY1*varY2))/
+      (varY1 + varY2 + 2*rho2*sqrt(varY1*varY2))
 
-  # K for Method 2
-  if(r == 1){ # When treatment allocation is even
-    K1 <- ceiling((2*ncp*varYC*(1 + (m - 1)*rho0C))/(m*(betaC^2)))
-    K <- tibble(`Treatment (K)` = K1,
-                `Control (K)` = K1)
-  } else{ # Unequal treatment allocation
-    K1 <- ceiling(((1 + 1/r)*ncp*varYC*(1 + (m - 1)*rho0C))/(m*(betaC^2)))
-    #K2 <- ceiling(((1 + r)*ncp*varYC*(1 + (m - 1)*rho0C))/(m*(betaC^2)))
-    K2 <- ceiling(r*K1)
-    K <- tibble(`Treatment (K1)` = K1,
-                `Control (K2)` = K2)
+    # Find non-centrality parameter corresponding to desired power
+    ncp <- calc_ncp_chi2(alpha, power, df = 1)
+
+    # K for Method 2
+    if(r == 1){ # When treatment allocation is even
+      K1 <- ceiling((2*ncp*varYC*(1 + (m - 1)*rho0C))/(m*(betaC^2)))
+      K <- tibble(`Treatment (K)` = K1,
+                  `Control (K)` = K1)
+    } else{ # Unequal treatment allocation
+      K1 <- ceiling(((1 + 1/r)*ncp*varYC*(1 + (m - 1)*rho0C))/(m*(betaC^2)))
+      #K2 <- ceiling(((1 + r)*ncp*varYC*(1 + (m - 1)*rho0C))/(m*(betaC^2)))
+      K2 <- ceiling(r*K1)
+      K <- tibble(`Treatment (K1)` = K1,
+                  `Control (K2)` = K2)
+    }
+
+  } else if(dist == "F"){ # Using F
+
+    # Initialize a wide range of values for m
+    K_options <- 3:5000
+
+    # Retrieve power for all choices of m
+    res_list <- lapply(K_options, function(K) {
+      out_vector <- calc_pwr_comb_outcome(
+        m     = m,
+        dist  = dist,
+        K     = K,
+        alpha = alpha,
+        beta1 = beta1,
+        beta2 = beta2,
+        varY1 = varY1,
+        varY2 = varY2,
+        rho01 = rho01,
+        rho02 = rho02,
+        rho1  = rho1,
+        rho2  = rho2,
+        r     = r
+      )
+
+      # Add a column 'K'.
+      out_K <- tibble(`Final Power` = out_vector, K)
+
+      out_K
+    })
+
+    # Flatten to make one dataframe
+    res_df <- do.call(rbind, res_list) %>%
+      dplyr::rename(K1 = K) %>%
+      mutate(K2 = ceiling(r*K1)) %>%
+      mutate(K_total = K1 + K2)
+    K_results <- dplyr::filter(res_df, `Final Power` >= power)
+
+    # If there are no choices of "K" where the desired power is met, throw an error
+    if(nrow(K_results) == 0){
+      stop("Cannot find large enough 'K' to reach study specifications for combined outcome method. Please lower power or increase value for 'm'.")
+    }
+
+    K_final <- dplyr::filter(K_results, K_total == min(K_total))
+    K1_final <- K_final$K1
+    K2_final <- K_final$K2
+
+    # K for Method 2
+    if(r == 1){ # When treatment allocation is even
+      K <- tibble(`Treatment (K)` = K1_final,
+                  `Control (K)` = K2_final)
+    } else{ # Unequal treatment allocation
+      K <- tibble(`Treatment (K1)` = K1_final,
+                  `Control (K2)` = K2_final)
+    }
+
+  } else{
+    stop("Please choose a valid input parameter for 'dist', either 'Chi2' for Chi-Square or 'F' for F-distribution.")
   }
 
   return(K)
@@ -197,6 +259,7 @@ calc_K_comb_outcome <- function(power,        # Desired statistical power
 #' @description
 #' Allows user to calculate the cluster size of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses a combined outcomes approach where the two outcome effects are summed together.
 #'
+#' @param dist Specification of which distribution to base calculation on, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.
 #' @param power Desired statistical power in decimal form; numeric.
 #' @param K Number of clusters in treatment arm, and control arm under equal allocation; numeric.
 #' @param alpha Type I error rate; numeric.
@@ -215,7 +278,8 @@ calc_K_comb_outcome <- function(power,        # Desired statistical power
 #' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
 #' rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
-calc_m_comb_outcome <- function(power,        # Desired statistical power
+calc_m_comb_outcome <- function(dist = "Chi2",# Distribution to base calculation from
+                                power,        # Desired statistical power
                                 K,            # Number of clusters in treatment arm
                                 alpha = 0.05, # Significance level
                                 beta1,        # Effect for outcome 1
@@ -243,21 +307,73 @@ calc_m_comb_outcome <- function(power,        # Desired statistical power
     stop("'K' must be a positive whole number.")
   }
 
-  # Calculate combined outcome effect size
-  betaC <- beta1 + beta2
+  if(dist == "Chi2"){ # Using Chi2
 
-  # Calculate variance for combined outcome
-  varYC <- round(varY1 + varY2 + 2*rho2*sqrt(varY1)*sqrt(varY2), 4)
+    # Calculate combined outcome effect size
+    betaC <- beta1 + beta2
 
-  # Calculate ICC for combined outcome
-  rho0C  <- (rho01*varY1 + rho02*varY2 + 2*rho1*sqrt(varY1*varY2))/
-    (varY1 + varY2 + 2*rho2*sqrt(varY1*varY2))
+    # Calculate variance for combined outcome
+    varYC <- round(varY1 + varY2 + 2*rho2*sqrt(varY1)*sqrt(varY2), 4)
 
-  # Find non-centrality parameter corresponding to desired power
-  ncp <- calc_ncp_chi2(alpha, power, df = 1)
+    # Calculate ICC for combined outcome
+    rho0C  <- (rho01*varY1 + rho02*varY2 + 2*rho1*sqrt(varY1*varY2))/
+      (varY1 + varY2 + 2*rho2*sqrt(varY1*varY2))
 
-  # m for Method 2
-  m <- ceiling(((1 + 1/r)*ncp*varYC*(1 - rho0C))/((betaC^2)*K - ((1 + 1/r)*ncp*varYC*rho0C)))
+    # Find non-centrality parameter corresponding to desired power
+    ncp <- calc_ncp_chi2(alpha, power, df = 1)
+
+    # m for Method 2
+    m <- ceiling(((1 + 1/r)*ncp*varYC*(1 - rho0C))/((betaC^2)*K - ((1 + 1/r)*ncp*varYC*rho0C)))
+
+    if(m < 1){
+      stop("Cannot find large enough 'm' to reach study specifications for combined outcome method. Please lower power or increase value for 'K'.")
+    }
+
+  } else if(dist == "F"){ # Using F
+
+    # Initialize a wide range of values for m
+    m_options <- 1:10000
+
+    # Retrieve power for all choices of m
+    res_list <- lapply(m_options, function(m) {
+      out_vector <- calc_pwr_comb_outcome(
+        m     = m,
+        dist  = dist,
+        K     = K,
+        alpha = alpha,
+        beta1 = beta1,
+        beta2 = beta2,
+        varY1 = varY1,
+        varY2 = varY2,
+        rho01 = rho01,
+        rho02 = rho02,
+        rho1  = rho1,
+        rho2  = rho2,
+        r     = r
+      )
+
+      # Add a column 'm'.
+      out_m <- tibble(`Final Power` = out_vector, m)
+
+      out_m
+    })
+
+    # Flatten to make one dataframe
+    res_df <- do.call(rbind, res_list)
+
+    # Get vector of all "m" values that meet the desired power
+    m_results <- dplyr::filter(res_df, `Final Power` >= power)
+
+    # If there are no choices of "m" where the desired power is met, throw an error
+    if(nrow(m_results) == 0){
+      stop("Cannot find large enough 'm' to reach study specifications for combined outcome method. Please lower power or increase value for 'K'.")
+    }
+
+    m <- min(m_results$m)
+
+  } else{
+    stop("Please choose a valid input parameter for 'dist', either 'Chi2' for Chi-Square or 'F' for F-distribution.")
+  }
 
   return(m)
 } # End calc_m_comb_outcome()

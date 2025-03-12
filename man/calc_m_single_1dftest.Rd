@@ -5,6 +5,7 @@
 \title{Calculate cluster size for a cluster-randomized trial with co-primary endpoints using the single 1-DF combined test approach.}
 \usage{
 calc_m_single_1dftest(
+  dist = "Chi2",
   power,
   K,
   alpha = 0.05,
@@ -20,6 +21,8 @@ calc_m_single_1dftest(
 )
 }
 \arguments{
+\item{dist}{Specification of which distribution to base calculation on, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.}
+
 \item{power}{Desired statistical power in decimal form; numeric.}
 
 \item{K}{Number of clusters in treatment arm, and control arm under equal allocation; numeric.}

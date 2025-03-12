@@ -5,9 +5,10 @@
 
 # `calc_pwr_conj_test()` ----------------------------------------------------
 
-# Test for Conjunctive IU test power
-test_that("Conjunctive IU test power works", {
-  result <- calc_pwr_conj_test(K = 15,
+# Test for Conjunctive IU test power for t distribution
+test_that("Conjunctive IU test power works (t dist)", {
+  result <- calc_pwr_conj_test(dist = "T",
+                               K = 15,
                                m = 300,
                                alpha = 0.05,
                                beta1 = 0.1,
@@ -22,11 +23,30 @@ test_that("Conjunctive IU test power works", {
   expect_true(round(result, 3) == 0.899, info = paste(result))
 })
 
+# Test for Conjunctive IU test power for MVN distribution
+test_that("Conjunctive IU test power works (MVN dist)", {
+  result <- calc_pwr_conj_test(dist = "MVN",
+                               K = 15,
+                               m = 300,
+                               alpha = 0.05,
+                               beta1 = 0.1,
+                               beta2 = 0.1,
+                               varY1 = 0.23,
+                               varY2 = 0.25,
+                               rho01 = 0.025,
+                               rho02 = 0.025,
+                               rho1 = 0.01,
+                               rho2 = 0.05,
+                               r = 1)
+  expect_true(round(result, 4) == 0.9143, info = paste(result))
+})
+
 # `calc_K_conj_test()` ------------------------------------------------------
 
-# Test for Conjunctive IU test treatment group K
-test_that("Conjunctive IU test treatment group 'K' works", {
-  expect_equal(calc_K_conj_test(power = 0.8,
+# Test for Conjunctive IU test treatment group K for t distribution
+test_that("Conjunctive IU test treatment group 'K' works (t dist)", {
+  expect_equal(calc_K_conj_test(dist = "T",
+                                power = 0.8,
                                 m = 300,
                                 alpha = 0.05,
                                 beta1 = 0.1,
@@ -41,9 +61,10 @@ test_that("Conjunctive IU test treatment group 'K' works", {
                12)
 })
 
-# Test for Conjunctive IU test control group K
-test_that("Conjunctive IU test control group 'K' works", {
-  expect_equal(calc_K_conj_test(power = 0.8,
+# Test for Conjunctive IU test control group K for t distribution
+test_that("Conjunctive IU test control group 'K' works (t dist)", {
+  expect_equal(calc_K_conj_test(dist = "T",
+                                power = 0.8,
                                 m = 300,
                                 alpha = 0.05,
                                 beta1 = 0.1,
@@ -58,11 +79,48 @@ test_that("Conjunctive IU test control group 'K' works", {
                12)
 })
 
+# Test for Conjunctive IU test treatment group K for MVN distribution
+test_that("Conjunctive IU test treatment group 'K' works (MVN dist)", {
+  expect_equal(calc_K_conj_test(dist = "MVN",
+                                power = 0.8,
+                                m = 300,
+                                alpha = 0.05,
+                                beta1 = 0.1,
+                                beta2 = 0.1,
+                                varY1 = 0.23,
+                                varY2 = 0.25,
+                                rho01 = 0.025,
+                                rho02 = 0.025,
+                                rho1 = 0.01,
+                                rho2 = 0.05,
+                                r = 1)$`Treatment (K)`,
+               11)
+})
+
+# Test for Conjunctive IU test control group K for MVN distribution
+test_that("Conjunctive IU test control group 'K' works (MVN dist)", {
+  expect_equal(calc_K_conj_test(dist = "MVN",
+                                power = 0.8,
+                                m = 300,
+                                alpha = 0.05,
+                                beta1 = 0.1,
+                                beta2 = 0.1,
+                                varY1 = 0.23,
+                                varY2 = 0.25,
+                                rho01 = 0.025,
+                                rho02 = 0.025,
+                                rho1 = 0.01,
+                                rho2 = 0.05,
+                                r = 1)$`Control (K)`,
+               11)
+})
+
 # `calc_m_conj_test()` ------------------------------------------------------
 
-# Test for Conjunctive IU test m
-test_that("Conjunctive IU test 'm' works", {
-  expect_equal(calc_m_conj_test(power = 0.8,
+# Test for Conjunctive IU test m for t distribution
+test_that("Conjunctive IU test 'm' works (t dist)", {
+  expect_equal(calc_m_conj_test(dist = "T",
+                                power = 0.8,
                                 K = 15,
                                 alpha = 0.05,
                                 beta1 = 0.1,
@@ -77,12 +135,32 @@ test_that("Conjunctive IU test 'm' works", {
                86)
 })
 
+# Test for Conjunctive IU test m for MVN distribution
+test_that("Conjunctive IU test 'm' works (MVN dist)", {
+  expect_equal(calc_m_conj_test(dist = "MVN",
+                                power = 0.8,
+                                K = 15,
+                                alpha = 0.05,
+                                beta1 = 0.1,
+                                beta2 = 0.1,
+                                varY1 = 0.23,
+                                varY2 = 0.25,
+                                rho01 = 0.025,
+                                rho02 = 0.025,
+                                rho1 = 0.01,
+                                rho2 = 0.05,
+                                r = 1),
+               74)
+})
+
 
 # Testing that all 3 functions align -------------------------------------------
 
-# K aligns with power
-test_that("Conjunctive IU test K calculation aligns with power", {
-  result <- calc_K_conj_test(power = calc_pwr_conj_test(K = 15,
+# K aligns with power for t distribution
+test_that("Conjunctive IU test K calculation aligns with power (t dist)", {
+  result <- calc_K_conj_test(dist = "T",
+                             power = calc_pwr_conj_test(dist = "T",
+                                                        K = 15,
                                                         m = 300,
                                                         alpha = 0.05,
                                                         beta1 = 0.1,
@@ -109,10 +187,12 @@ test_that("Conjunctive IU test K calculation aligns with power", {
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
-# K aligns with m
-test_that("Conjunctive IU test K calculation aligns with power", {
-  result <- calc_K_conj_test(power = 0.8,
-                             m = calc_m_conj_test(power = 0.8,
+# K aligns with m for t distribution
+test_that("Conjunctive IU test K calculation aligns with power (t dist)", {
+  result <- calc_K_conj_test(dist = "T",
+                             power = 0.8,
+                             m = calc_m_conj_test(dist = "T",
+                                                  power = 0.8,
                                                   K = 15,
                                                   alpha = 0.05,
                                                   beta1 = 0.1,
@@ -138,9 +218,11 @@ test_that("Conjunctive IU test K calculation aligns with power", {
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
-# Power aligns with K
-test_that("Conjunctive IU test K calculation aligns with power", {
-  result <- calc_m_conj_test(power = calc_pwr_conj_test(m = 300,
+# Power aligns with K for t distribution
+test_that("Conjunctive IU test K calculation aligns with power (t dist)", {
+  result <- calc_m_conj_test(dist = "T",
+                             power = calc_pwr_conj_test(dist = "T",
+                                                        m = 300,
                                                         K = 15,
                                                         alpha = 0.05,
                                                         beta1 = 0.1,
@@ -166,6 +248,109 @@ test_that("Conjunctive IU test K calculation aligns with power", {
   expect_true(result >= 297 & result <= 304,
               info = "The result should be 300, but with rounding between 298 and 303")
 })
+
+
+
+
+
+
+
+
+# K aligns with power for MVN distribution
+test_that("Conjunctive IU test K calculation aligns with power (MVN dist)", {
+  result <- calc_K_conj_test(dist = "MVN",
+                             power = calc_pwr_conj_test(dist = "MVN",
+                                                        K = 15,
+                                                        m = 300,
+                                                        alpha = 0.05,
+                                                        beta1 = 0.1,
+                                                        beta2 = 0.1,
+                                                        varY1 = 0.23,
+                                                        varY2 = 0.25,
+                                                        rho01 = 0.025,
+                                                        rho02 = 0.025,
+                                                        rho1 = 0.01,
+                                                        rho2 = 0.05,
+                                                        r = 1),
+                             m = 300,
+                             alpha = 0.05,
+                             beta1 = 0.1,
+                             beta2 = 0.1,
+                             varY1 = 0.23,
+                             varY2 = 0.25,
+                             rho01 = 0.025,
+                             rho02 = 0.025,
+                             rho1 = 0.01,
+                             rho2 = 0.05,
+                             r = 1)[[1]]
+  expect_true(result > 14 & result < 17,
+              info = "The result should be 15, but with rounding between 15 and 16")
+})
+
+# K aligns with m for MVN distribution
+test_that("Conjunctive IU test K calculation aligns with power (MVN dist)", {
+  result <- calc_K_conj_test(dist = "MVN",
+                             power = 0.8,
+                             m = calc_m_conj_test(dist = "MVN",
+                                                  power = 0.8,
+                                                  K = 15,
+                                                  alpha = 0.05,
+                                                  beta1 = 0.1,
+                                                  beta2 = 0.1,
+                                                  varY1 = 0.23,
+                                                  varY2 = 0.25,
+                                                  rho01 = 0.025,
+                                                  rho02 = 0.025,
+                                                  rho1 = 0.01,
+                                                  rho2 = 0.05,
+                                                  r = 1),
+                             alpha = 0.05,
+                             beta1 = 0.1,
+                             beta2 = 0.1,
+                             varY1 = 0.23,
+                             varY2 = 0.25,
+                             rho01 = 0.025,
+                             rho02 = 0.025,
+                             rho1 = 0.01,
+                             rho2 = 0.05,
+                             r = 1)$`Treatment (K)`
+  expect_true(result >= 14.9 & result <= 16.1,
+              info = "The result should be 15, but with rounding between 15 and 16")
+})
+
+# Power aligns with K for t distribution
+test_that("Conjunctive IU test MVN calculation aligns with power (MVN dist)", {
+  result <- calc_m_conj_test(dist = "MVN",
+                             power = calc_pwr_conj_test(dist = "MVN",
+                                                        m = 300,
+                                                        K = 15,
+                                                        alpha = 0.05,
+                                                        beta1 = 0.1,
+                                                        beta2 = 0.1,
+                                                        varY1 = 0.23,
+                                                        varY2 = 0.25,
+                                                        rho01 = 0.025,
+                                                        rho02 = 0.025,
+                                                        rho1 = 0.01,
+                                                        rho2 = 0.05,
+                                                        r = 1),
+                             K = 15,
+                             alpha = 0.05,
+                             beta1 = 0.1,
+                             beta2 = 0.1,
+                             varY1 = 0.23,
+                             varY2 = 0.25,
+                             rho01 = 0.025,
+                             rho02 = 0.025,
+                             rho1 = 0.01,
+                             rho2 = 0.05,
+                             r = 1)
+  expect_true(result >= 297 & result <= 304,
+              info = "The result should be 300, but with rounding between 298 and 303")
+})
+
+
+
 
 # Check that it aligns with the source code ------------------------------------
 

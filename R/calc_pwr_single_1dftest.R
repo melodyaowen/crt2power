@@ -114,6 +114,7 @@ calc_pwr_single_1dftest <- function(dist = "Chi2",# Distribution to base calcula
 #' @description
 #' Allows user to calculate the number of clusters per treatment arm of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the statistical power, and cluster size. Uses the single 1-DF combined test approach for clustered data and two outcomes.
 #'
+#' @param dist Specification of which distribution to base calculation on, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.
 #' @param power Desired statistical power in decimal form; numeric.
 #' @param m Individuals per cluster; numeric.
 #' @param alpha Type I error rate; numeric.
@@ -132,7 +133,8 @@ calc_pwr_single_1dftest <- function(dist = "Chi2",# Distribution to base calcula
 #' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
 #' rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
-calc_K_single_1dftest <- function(power,        # Desired statistical power
+calc_K_single_1dftest <- function(dist = "Chi2",# Distribution to base calculation from
+                                  power,        # Desired statistical power
                                   m,            # Individuals per cluster
                                   alpha = 0.05, # Significance level
                                   beta1,        # Effect for outcome 1
@@ -160,24 +162,84 @@ calc_K_single_1dftest <- function(power,        # Desired statistical power
     stop("'m' must be a positive whole number.")
   }
 
-  # Calculate correlation between test statistics
-  CorrZ1Z2 <- (rho2 + (m - 1)*rho1)/sqrt((1 + (m - 1)*rho01)*(1 + (m - 1)*rho02))
+  if(dist == "Chi2"){ # Using Chi2
 
-  # Non-centrality parameter for given power and alpha level
-  ncp <- calc_ncp_chi2(alpha, power, df = 1)
+    # Calculate correlation between test statistics
+    CorrZ1Z2 <- (rho2 + (m - 1)*rho1)/sqrt((1 + (m - 1)*rho01)*(1 + (m - 1)*rho02))
 
-  # Calculate K
-  K1 <- ceiling((2*ncp*(1 + CorrZ1Z2))/
-                 (sqrt((beta1^2)/(((1 + 1/r)*varY1/m)*(1+(m-1)*rho01))) +
-                    sqrt((beta2^2)/(((1 + 1/r)*varY2/m)*(1+(m-1)*rho02))))^2)
+    # Non-centrality parameter for given power and alpha level
+    ncp <- calc_ncp_chi2(alpha, power, df = 1)
 
-  if(r == 1){
-    K <- tibble(`Treatment (K)` = K1,
-                `Control (K)` = K1)
+    # Calculate K
+    K1 <- ceiling((2*ncp*(1 + CorrZ1Z2))/
+                    (sqrt((beta1^2)/(((1 + 1/r)*varY1/m)*(1+(m-1)*rho01))) +
+                       sqrt((beta2^2)/(((1 + 1/r)*varY2/m)*(1+(m-1)*rho02))))^2)
+
+    if(r == 1){
+      K <- tibble(`Treatment (K)` = K1,
+                  `Control (K)` = K1)
+    } else{
+      K2 <- ceiling(r*K1)
+      K <- tibble(`Treatment (K1)` = K1,
+                  `Control (K2)` = K2)
+    }
+
+  } else if(dist == "F"){ # Using F
+
+    # Initialize a wide range of values for m
+    K_options <- 3:5000
+
+    # Retrieve power for all choices of m
+    res_list <- lapply(K_options, function(K) {
+      out_vector <- calc_pwr_single_1dftest(
+        m     = m,
+        dist  = dist,
+        K     = K,
+        alpha = alpha,
+        beta1 = beta1,
+        beta2 = beta2,
+        varY1 = varY1,
+        varY2 = varY2,
+        rho01 = rho01,
+        rho02 = rho02,
+        rho1  = rho1,
+        rho2  = rho2,
+        r     = r
+      )
+
+      # Add a column 'K'.
+      out_K <- tibble(`Final Power` = out_vector, K)
+
+      out_K
+    })
+
+    # Flatten to make one dataframe
+    res_df <- do.call(rbind, res_list) %>%
+      dplyr::rename(K1 = K) %>%
+      mutate(K2 = ceiling(r*K1)) %>%
+      mutate(K_total = K1 + K2)
+    K_results <- dplyr::filter(res_df, `Final Power` >= power)
+
+    # If there are no choices of "K" where the desired power is met, throw an error
+    if(nrow(K_results) == 0){
+      stop("Cannot find large enough 'K' to reach study specifications for single weighted 1-DF method. Please lower power or increase value for 'm'.")
+    }
+
+    K_final <- dplyr::filter(K_results, K_total == min(K_total))
+    K1_final <- K_final$K1
+    K2_final <- K_final$K2
+
+    # K for Method 2
+    if(r == 1){ # When treatment allocation is even
+      K <- tibble(`Treatment (K)` = K1_final,
+                  `Control (K)` = K2_final)
+    } else{ # Unequal treatment allocation
+      K <- tibble(`Treatment (K1)` = K1_final,
+                  `Control (K2)` = K2_final)
+    }
+
   } else{
-    K2 <- ceiling(r*K1)
-    K <- tibble(`Treatment (K1)` = K1,
-                `Control (K2)` = K2)
+    stop("Please choose a valid input parameter for 'dist', either 'Chi2' for Chi-Square or 'F' for F-distribution.")
   }
 
   return(K)
@@ -197,6 +259,7 @@ calc_K_single_1dftest <- function(power,        # Desired statistical power
 #' @description
 #' Allows user to calculate the cluster size of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses the single 1-DF combined test approach for clustered data and two outcomes.
 #'
+#' @param dist Specification of which distribution to base calculation on, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.
 #' @param power Desired statistical power in decimal form; numeric.
 #' @param K Number of clusters in treatment arm, and control arm under equal allocation; numeric.
 #' @param alpha Type I error rate; numeric.
@@ -215,7 +278,8 @@ calc_K_single_1dftest <- function(power,        # Desired statistical power
 #' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
 #' rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
-calc_m_single_1dftest <- function(power,        # Desired statistical power
+calc_m_single_1dftest <- function(dist = "Chi2",# Distribution to base calculation from
+                                  power,        # Desired statistical power
                                   K,            # Number of clusters in treatment arm
                                   alpha = 0.05, # Significance level
                                   beta1,        # Effect for outcome 1
@@ -243,27 +307,79 @@ calc_m_single_1dftest <- function(power,        # Desired statistical power
     stop("'K' must be a positive whole number.")
   }
 
-  # Non-centrality parameter for given power and alpha level
-  ncp <- calc_ncp_chi2(alpha, power, df = 1)
+  if(dist == "Chi2"){ # Using Chi2
 
-  # Function to solve for m
-  power.eq.m <- function(m, para){ # Function for equation solve for m
-    # Calculate test statistic for first and second outcome
-    Z1.sq <- (para[1]^2)/(((1 + 1/para[11])*para[4]/(m*para[3]))*(1 + (m - 1)*para[6])) # Z1^2
-    Z2.sq <- (para[2]^2)/(((1 + 1/para[11])*para[5]/(m*para[3]))*(1 + (m - 1)*para[7])) # Z1^2
-    # Calculate Corr(Z1, Z2)
-    CorrZ1Z2 <- (para[9] + (m - 1)*para[8])/
-      sqrt((1+(m-1)*para[6])*(1+(m- 1)*para[7]))
-    # Non-centrality parameter
-    lambda <- ((sqrt(Z1.sq) + sqrt(Z2.sq))^2) / (2*(1 + CorrZ1Z2)) - para[10]
+    # Non-centrality parameter for given power and alpha level
+    ncp <- calc_ncp_chi2(alpha, power, df = 1)
+
+    # Function to solve for m
+    power.eq.m <- function(m, para){ # Function for equation solve for m
+      # Calculate test statistic for first and second outcome
+      Z1.sq <- (para[1]^2)/(((1 + 1/para[11])*para[4]/(m*para[3]))*(1 + (m - 1)*para[6])) # Z1^2
+      Z2.sq <- (para[2]^2)/(((1 + 1/para[11])*para[5]/(m*para[3]))*(1 + (m - 1)*para[7])) # Z1^2
+      # Calculate Corr(Z1, Z2)
+      CorrZ1Z2 <- (para[9] + (m - 1)*para[8])/
+        sqrt((1+(m-1)*para[6])*(1+(m- 1)*para[7]))
+      # Non-centrality parameter
+      lambda <- ((sqrt(Z1.sq) + sqrt(Z2.sq))^2) / (2*(1 + CorrZ1Z2)) - para[10]
+    }
+
+    # Find m using multiroot function
+    find.para.m <- multiroot(power.eq.m, start = 10,
+                             para = c(beta1, beta2, K, varY1, varY2,
+                                      rho01, rho02, rho1, rho2, ncp, r),
+                             positive = TRUE)
+    m <- ceiling(find.para.m$root)
+
+    if(m < 1){
+      stop("Cannot find large enough 'm' to reach study specifications for single weighted 1-DF method. Please lower power or increase value for 'K'.")
+    }
+
+  } else if(dist == "F"){ # Using F
+
+    # Initialize a wide range of values for m
+    m_options <- 1:10000
+
+    # Retrieve power for all choices of m
+    res_list <- lapply(m_options, function(m) {
+      out_vector <- calc_pwr_single_1dftest(
+        m     = m,
+        dist  = dist,
+        K     = K,
+        alpha = alpha,
+        beta1 = beta1,
+        beta2 = beta2,
+        varY1 = varY1,
+        varY2 = varY2,
+        rho01 = rho01,
+        rho02 = rho02,
+        rho1  = rho1,
+        rho2  = rho2,
+        r     = r
+      )
+
+      # Add a column 'm'.
+      out_m <- tibble(`Final Power` = out_vector, m)
+
+      out_m
+    })
+
+    # Flatten to make one dataframe
+    res_df <- do.call(rbind, res_list)
+
+    # Get vector of all "m" values that meet the desired power
+    m_results <- dplyr::filter(res_df, `Final Power` >= power)
+
+    # If there are no choices of "m" where the desired power is met, throw an error
+    if(nrow(m_results) == 0){
+      stop("Cannot find large enough 'm' to reach study specifications for single weighted 1-DF method. Please lower power or increase value for 'K'.")
+    }
+
+    m <- min(m_results$m)
+
+  } else{
+    stop("Please choose a valid input parameter for 'dist', either 'Chi2' for Chi-Square or 'F' for F-distribution.")
   }
-
-  # Find m using multiroot function
-  find.para.m <- multiroot(power.eq.m, start = 10,
-                           para = c(beta1, beta2, K, varY1, varY2,
-                                    rho01, rho02, rho1, rho2, ncp, r),
-                           positive = TRUE)
-  m <- ceiling(find.para.m$root)
 
   return(m)
 } # End calc_m_single_1dftest()

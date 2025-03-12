@@ -5,6 +5,7 @@
 \title{Calculate required number of clusters per treatment group for a cluster-randomized trial with co-primary endpoints using a combined outcomes approach.}
 \usage{
 calc_K_comb_outcome(
+  dist = "Chi2",
   power,
   m,
   alpha = 0.05,
@@ -20,6 +21,8 @@ calc_K_comb_outcome(
 )
 }
 \arguments{
+\item{dist}{Specification of which distribution to base calculation on, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.}
+
 \item{power}{Desired statistical power in decimal form; numeric.}
 
 \item{m}{Individuals per cluster; numeric.}

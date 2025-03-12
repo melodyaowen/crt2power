@@ -5,6 +5,7 @@
 \title{Calculate required number of clusters per treatment group for a cluster-randomized trial with co-primary endpoints using three common p-value adjustment methods}
 \usage{
 calc_K_pval_adj(
+  dist = "Chi2",
   power,
   m,
   alpha = 0.05,
@@ -19,6 +20,8 @@ calc_K_pval_adj(
 )
 }
 \arguments{
+\item{dist}{Specification of which distribution to base calculation on, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.}
+
 \item{power}{Desired statistical power in decimal form; numeric.}
 
 \item{m}{Individuals per cluster; numeric.}

@@ -363,7 +363,7 @@ calc_m_disj_2dftest <- function(dist = "Chi2",# Distribution to base calculation
                                         rho2 = rho2,
                                         r = r
                                         )
-    if(m > 100000){
+    if(m > 10000){
       m <- Inf
       message("Cannot find large enough 'm' to reach study specifications for disjunctive 2-DF test. Please lower power or increase value for 'K'.")
       break

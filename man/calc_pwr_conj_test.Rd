@@ -5,6 +5,7 @@
 \title{Calculate statistical power for a cluster-randomized trial with co-primary endpoints using the conjunctive intersection-union test approach.}
 \usage{
 calc_pwr_conj_test(
+  dist = "T",
   K,
   m,
   alpha = 0.05,
@@ -19,10 +20,12 @@ calc_pwr_conj_test(
   r = 1,
   cv = 0,
   deltas = c(0, 0),
-  dist = "T"
+  two_sided = FALSE
 )
 }
 \arguments{
+\item{dist}{Specification of which distribution to base calculation on, either 'T' for T-Distribution or 'MVN' for Multivariate Normal Distribution. Default is T-Distribution.}
+
 \item{K}{Number of clusters in treatment arm, and control arm under equal allocation; numeric.}
 
 \item{m}{Individuals per cluster; numeric.}
@@ -51,7 +54,7 @@ calc_pwr_conj_test(
 
 \item{deltas}{Vector of non-inferiority margins, set to delta_1 = delta_2 = 0; numeric vector.}
 
-\item{dist}{Specification of which distribution to base calculation on, either 'T' for T-Distribution or 'MVN' for Multivariate Normal Distribution. Default is T-Distribution.}
+\item{two_sided}{Specification of whether to conduct two 2-sided tests, 'TRUE', or two 1-sided tests, 'FALSE', default is FALSE; boolean.}
 }
 \value{
 A numerical value.

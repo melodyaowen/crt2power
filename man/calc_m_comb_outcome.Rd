@@ -5,6 +5,7 @@
 \title{Calculate cluster size for a cluster-randomized trial with co-primary endpoints using a combined outcomes approach.}
 \usage{
 calc_m_comb_outcome(
+  dist = "Chi2",
   power,
   K,
   alpha = 0.05,
@@ -20,6 +21,8 @@ calc_m_comb_outcome(
 )
 }
 \arguments{
+\item{dist}{Specification of which distribution to base calculation on, either 'Chi2' for Chi-Squared or 'F' for F-Distribution.}
+
 \item{power}{Desired statistical power in decimal form; numeric.}
 
 \item{K}{Number of clusters in treatment arm, and control arm under equal allocation; numeric.}

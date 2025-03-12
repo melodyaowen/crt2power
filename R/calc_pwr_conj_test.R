@@ -15,6 +15,7 @@
 #' @description
 #' Allows user to calculate the statistical power of a cluster-randomized trial with two co-primary outcomes given a set of study design input values, including the number of clusters in each trial arm, and cluster size. Uses the conjunctive intersection-union test approach. Code is adapted from "calPower_ttestIU()" from https://github.com/siyunyang/coprimary_CRT written by Siyun Yang.
 #'
+#' @param dist Specification of which distribution to base calculation on, either 'T' for T-Distribution or 'MVN' for Multivariate Normal Distribution. Default is T-Distribution.
 #' @param K Number of clusters in treatment arm, and control arm under equal allocation; numeric.
 #' @param m Individuals per cluster; numeric.
 #' @param alpha Type I error rate; numeric.
@@ -29,14 +30,15 @@
 #' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
 #' @param cv Cluster variation parameter, set to 0 if assuming all cluster sizes are equal; numeric.
 #' @param deltas Vector of non-inferiority margins, set to delta_1 = delta_2 = 0; numeric vector.
-#' @param dist Specification of which distribution to base calculation on, either 'T' for T-Distribution or 'MVN' for Multivariate Normal Distribution. Default is T-Distribution.
+#' @param two_sided Specification of whether to conduct two 2-sided tests, 'TRUE', or two 1-sided tests, 'FALSE', default is FALSE; boolean.
 #' @returns A numerical value.
 #' @examples
 #' calc_pwr_conj_test(K = 15, m = 300, alpha = 0.05,
 #' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
 #' rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
-calc_pwr_conj_test <- function(K,            # Number of clusters in treatment arm
+calc_pwr_conj_test <- function(dist = "T",   # Distribution to be used
+                               K,            # Number of clusters in treatment arm
                                m,            # Individuals per cluster
                                alpha = 0.05, # Significance level
                                beta1,        # Effect for outcome 1
@@ -50,7 +52,7 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
                                r = 1,        # Treatment allocation ratio
                                cv = 0,       # If equal cluster size, cv=0
                                deltas = c(0,0),
-                               dist = "T"   # Distribution to be used,
+                               two_sided = FALSE # Denotes 1 or 2-sided test(s)
                                ){
 
   # Check that input values are valid
@@ -65,6 +67,9 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
   }
   if(m < 1 | m != round(m)){
     stop("'m' must be a positive whole number.")
+  }
+  if(two_sided != TRUE & two_sided != FALSE){
+    stop("'two_sided' must either be TRUE or FALSE.")
   }
 
   # Helper functions requires ratio be defined as K1/K rather than K2/K1,
@@ -163,23 +168,118 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
                     Q = Q)
 
   if(dist == "T"){ # Using T-distribution
-    # Calculate critical value and power
-    criticalValue <- qt(p = (1 - alpha),
-                        df = (K_total - 2*Q)) # lower.tail = TRUE is default
-    power <- pmvt(lower = rep(criticalValue, Q),
-                  upper = rep(Inf, Q),
-                  df = (K_total - 2*Q),
-                  sigma = wCor,
-                  delta = meanVector)[1]
+
+    if(two_sided == FALSE){ # Conducting two 1-sided tests
+
+      # Calculate critical value and power for T-distribution, 1-sided
+      criticalValue <- qt(p = (1 - alpha),
+                          df = (K_total - 2*Q)) # lower.tail = TRUE is default
+      power <- pmvt(lower = rep(criticalValue, Q),
+                    upper = rep(Inf, Q),
+                    df = (K_total - 2*Q),
+                    sigma = wCor,
+                    delta = meanVector)[1]
+
+    } else if(two_sided == TRUE){ # Conducting two 2-sided tests
+
+      # Calculate critical value and power for T-distribution, 2-sided
+      criticalValue <- qt(p = (1 - alpha/2),
+                          df = (K_total - 2*Q)) # lower.tail = TRUE is default
+
+      # We want (|T1| > t_{\alpha/2}) AND (|T2| > t_{\alpha/2})
+
+      # Pr(reject) = Pr(T1, T2) in Region1 u Region2 u Region3 u Region 4)
+      #            = \sum_{i=1^4} Pr((T_1, T_2) in Region_i)
+
+      # Region 1. Probability both outcomes > +criticalValue
+      p_upper_upper <- pmvt(lower = c(criticalValue, criticalValue),
+                            upper = c(Inf, Inf),
+                            df    = (K_total - 2*Q),
+                            sigma = wCor,
+                            delta = meanVector)[1]
+
+      # Region 2. Probability outcome1 > +criticalValue and outcome2 < -criticalValue
+      p_upper_lower <- pmvt(lower = c(criticalValue, -Inf),
+                            upper = c(Inf, -criticalValue),
+                            df    = (K_total - 2*Q),
+                            sigma = wCor,
+                            delta = meanVector)[1]
+
+      # Region 3. Probability outcome1 < -criticalValue and outcome2 > +criticalValue
+      p_lower_upper <- pmvt(lower = c(-Inf, criticalValue),
+                            upper = c(-criticalValue, Inf),
+                            df    = (K_total - 2*Q),
+                            sigma = wCor,
+                            delta = meanVector)[1]
+
+      # Region 4. Probability both outcomes < -criticalValue
+      p_lower_lower <- pmvt(lower = c(-Inf, -Inf),
+                            upper = c(-criticalValue, -criticalValue),
+                            df    = (K_total - 2*Q),
+                            sigma = wCor,
+                            delta = meanVector)[1]
+
+      # # Sum them up to get the total probability that both endpoints
+      # are outside of the interval [-criticalValue, +criticalValue]
+      # i.e. 2-sided power
+      power <- p_upper_upper + p_upper_lower + p_lower_upper + p_lower_lower
+    }
+
   } else if(dist == "MVN"){ # Using multivariate normal distribution
-    # Calculate critical value and power
-    criticalValue <- qnorm(p = 1 - alpha,
-                           mean = 0,
-                           sd = 1) # lower.tail = TRUE is default
-    power <- pmvnorm(lower = rep(criticalValue, Q),
-                     upper = rep(Inf, Q),
-                     corr = wCor,
-                     mean = meanVector)[1]
+
+    if(two_sided == FALSE){ # Conducting two 1-sided tests
+
+      # Calculate critical value and power for MVN-distribution, 1-sided
+      criticalValue <- qnorm(p = 1 - alpha,
+                             mean = 0,
+                             sd = 1) # lower.tail = TRUE is default
+      power <- pmvnorm(lower = rep(criticalValue, Q),
+                       upper = rep(Inf, Q),
+                       corr = wCor,
+                       mean = meanVector)[1]
+
+    } else if(two_sided == TRUE){ # Conducting two 2-sided tests
+
+      # Calculate critical value and power for MVN-distribution, 2-sided
+      criticalValue <- qnorm(p = 1 - alpha/2,
+                             mean = 0,
+                             sd = 1) # lower.tail = TRUE is default
+
+      # We want (|Z1| > z_{\alpha/2}) AND (|Z2| > z_{\alpha/2})
+
+      # Pr(reject) = Pr((Z1, Z2) in Region1 u Region2 u Region3 u Region 4)
+      #            = \sum_{i=1^4} Pr((Z_1, Z_2) in Region_i)
+
+      # Region 1. Probability both outcomes > +criticalValue
+      p_upper_upper <- pmvnorm(lower = c(criticalValue, criticalValue),
+                               upper = c(Inf, Inf),
+                               mean = meanVector,
+                               corr = wCor)[1]
+
+      # Region 2. Probability outcome1 > +criticalValue and outcome2 < -criticalValue
+      p_upper_lower <- pmvnorm(lower = c(criticalValue, -Inf),
+                               upper = c(Inf, -criticalValue),
+                               mean = meanVector,
+                               corr = wCor)[1]
+
+      # Region 3. Probability outcome1 < -criticalValue and outcome2 > +criticalValue
+      p_lower_upper <- pmvnorm(lower = c(-Inf, criticalValue),
+                               upper = c(-criticalValue, Inf),
+                               mean = meanVector,
+                               corr = wCor)[1]
+
+      # Region 4. Probability both outcomes < -criticalValue
+      p_lower_lower <- pmvnorm(lower = c(-Inf, -Inf),
+                               upper = c(-criticalValue, -criticalValue),
+                               mean = meanVector,
+                               corr = wCor)[1]
+
+      # Sum them up to get the total probability that both endpoints
+      # are outside of the interval [-criticalValue, +criticalValue]
+      # i.e. 2-sided power
+      power <- p_upper_upper + p_upper_lower + p_lower_upper + p_lower_lower
+    }
+
   } else{
     stop("Please choose a valid input parameter for 'dist', either 'T' for T-distribution or 'MVN' for Multivariate Normal Distribution.")
   }
@@ -198,6 +298,7 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
 #' @description
 #' Allows user to calculate the required number of clusters per treatment group of a cluster-randomized trial with two co-primary outcomes given a set of study design input values, including the statistical power, and cluster size. Uses the conjunctive intersection-union test approach.Code is adapted from "calSampleSize_ttestIU()" from https://github.com/siyunyang/coprimary_CRT written by Siyun Yang.
 #'
+#' @param dist Specification of which distribution to base calculation on, either 'T' for T-Distribution or 'MVN' for Multivariate Normal Distribution. Default is T-Distribution.
 #' @param power Desired statistical power in decimal form; numeric.
 #' @param m Individuals per cluster; numeric.
 #' @param alpha Type I error rate; numeric.
@@ -212,14 +313,15 @@ calc_pwr_conj_test <- function(K,            # Number of clusters in treatment a
 #' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
 #' @param cv Cluster variation parameter, set to 0 if assuming all cluster sizes are equal; numeric.
 #' @param deltas Vector of non-inferiority margins, set to delta_1 = delta_2 = 0; numeric vector.
-#' @param dist Specification of which distribution to base calculation on, either 'T' for T-Distribution or 'MVN' for Multivariate Normal Distribution. Default is T-Distribution.
+#' @param two_sided Specification of whether to conduct two 2-sided tests, 'TRUE', or two 1-sided tests, 'FALSE', default is FALSE; boolean.
 #' @returns A data frame of numerical values.
 #' @examples
 #' calc_K_conj_test(power = 0.8, m = 300, alpha = 0.05,
 #' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
 #' rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
-calc_K_conj_test <- function(power,        # Desired statistical power
+calc_K_conj_test <- function(dist = "T",   # Distribution to be used
+                             power,        # Desired statistical power
                              m,            # Individuals per cluster
                              alpha = 0.05, # Significance level
                              beta1,        # Effect for outcome 1
@@ -233,7 +335,7 @@ calc_K_conj_test <- function(power,        # Desired statistical power
                              r = 1,        # Treatment allocation ratio
                              cv = 0,
                              deltas = c(0,0),
-                             dist = "T"
+                             two_sided = FALSE # Denotes 1 or 2-sided test(s)
                              ){
 
   # Check that input values are valid
@@ -258,7 +360,8 @@ calc_K_conj_test <- function(power,        # Desired statistical power
   upperBound <- 10000
   repeat{
     middle <- floor((lowerBound + upperBound)/2)
-    power_temp <- calc_pwr_conj_test(K = middle,
+    power_temp <- calc_pwr_conj_test(dist = dist,
+                                     K = middle,
                                      m = m,
                                      alpha = alpha,
                                      beta1 = beta1,
@@ -272,7 +375,7 @@ calc_K_conj_test <- function(power,        # Desired statistical power
                                      r = r,
                                      cv = cv,
                                      deltas = deltas,
-                                     dist = dist
+                                     two_sided = two_sided
                                      )
     if(power_temp < power){
       lowerBound <- middle
@@ -316,6 +419,7 @@ calc_K_conj_test <- function(power,        # Desired statistical power
 #' @description
 #' Allows user to calculate the cluster size of a cluster-randomized trial with two co-primary endpoints given a set of study design input values, including the number of clusters in each trial arm, and statistical power. Uses the conjunctive intersection-union test approach.
 #'
+#' @param dist Specification of which distribution to base calculation on, either 'T' for T-Distribution or 'MVN' for Multivariate Normal Distribution. Default is T-Distribution.
 #' @param power Desired statistical power in decimal form; numeric.
 #' @param K Number of clusters in treatment arm, and control arm under equal allocation; numeric.
 #' @param alpha Type I error rate; numeric.
@@ -330,14 +434,15 @@ calc_K_conj_test <- function(power,        # Desired statistical power
 #' @param r Treatment allocation ratio - K2 = rK1 where K1 is number of clusters in experimental group; numeric.
 #' @param cv Cluster variation parameter, set to 0 if assuming all cluster sizes are equal; numeric.
 #' @param deltas Vector of non-inferiority margins, set to delta_1 = delta_2 = 0; numeric vector.
-#' @param dist Specification of which distribution to base calculation on, either 'T' for T-Distribution or 'MVN' for Multivariate Normal Distribution. Default is T-Distribution.
+#' @param two_sided Specification of whether to conduct two 2-sided tests, 'TRUE', or two 1-sided tests, 'FALSE', default is FALSE; boolean.
 #' @returns A numerical value.
 #' @examples
 #' calc_m_conj_test(power = 0.8, K = 15, alpha = 0.05,
 #' beta1 = 0.1, beta2 = 0.1, varY1 = 0.23, varY2 = 0.25,
 #' rho01 = 0.025, rho02 = 0.025, rho1 = 0.01, rho2  = 0.05)
 #' @export
-calc_m_conj_test <- function(power,        # Desired statistical power
+calc_m_conj_test <- function(dist = "T",   # Distribution to be used
+                             power,        # Desired statistical power
                              K,            # Number of clusters in treatment arm
                              alpha = 0.05, # Significance level
                              beta1,        # Effect for outcome 1
@@ -351,7 +456,7 @@ calc_m_conj_test <- function(power,        # Desired statistical power
                              r = 1,        # Treatment allocation ratio
                              cv = 0,
                              deltas = c(0, 0),
-                             dist = "T"
+                             two_sided = FALSE # Denotes 1 or 2-sided test(s)
                              ){
 
   # Check that input values are valid
@@ -378,7 +483,8 @@ calc_m_conj_test <- function(power,        # Desired statistical power
   pred.power <- 0
   while(pred.power < power){
     m <- m + 1
-    pred.power <- calc_pwr_conj_test(K = K,
+    pred.power <- calc_pwr_conj_test(dist = dist,
+                                     K = K,
                                      m = m,
                                      alpha = alpha,
                                      beta1 = beta1,
@@ -392,9 +498,9 @@ calc_m_conj_test <- function(power,        # Desired statistical power
                                      r = r,
                                      cv = cv,
                                      deltas = deltas,
-                                     dist = dist
+                                     two_sided = two_sided
                                      )
-    if(m > 100000){
+    if(m > 10000){
       m <- Inf
       message("Cannot find large enough 'm' to reach study specifications for IU test. Please lower power or increase value for 'K'.")
       break
@@ -403,4 +509,4 @@ calc_m_conj_test <- function(power,        # Desired statistical power
   return(ceiling(m))
 
 } # End calc_m_conj_test()
-
+1
