@@ -2,7 +2,7 @@
 
 ## Overview
 
-`crt2power` is an R package that allows users to calculate the statistical power or sample size of their cluster randomized trials (CRTs) with two co-primary outcomes, given a set of input parameters. The motivation for this package is to aid in the design of hybrid 2 studies. Hybrid 2 studies are studies where there are two co-primary outcomes, namely an implementation outcome (such as fidelity or reach) and a health outcome (such as infection rates, or change from baseline health scores). When powering these studies, cluster correlations and the inflation of the Type I error rate must be accounted for.
+`crt2power` is an R package that allows users to calculate the statistical power or sample size of their cluster randomized trials (CRTs) with two continuous co-primary outcomes, given a set of input parameters. The motivation for this package is to aid in the design of hybrid 2 studies. Hybrid 2 studies are studies where there are two co-primary outcomes, namely an implementation outcome (such as fidelity or reach) and a health outcome (such as infection rates, or change from baseline health scores). When powering these studies, cluster correlations and the inflation of the Type I error rate must be accounted for.
 
 The five key study design approaches are included in this package that can be used to power hybrid 2 CRTs. 
 1. P-Value Adjustments for Multiple Testing
@@ -11,11 +11,11 @@ The five key study design approaches are included in this package that can be us
 4. Disjunctive 2-DF Test for Two Outcomes
 5. Conjunctive Intersection-Union Test for Two outcomes
 
- For details on the methods listed above, please refer to the publication that discusses these methods, available here. (Add link)
+ For details on the methods listed above, please refer to the publication that discusses these methods by Owen et al., available [here](https://onlinelibrary.wiley.com/doi/10.1002/sim.70015).
 
 ## Installation
 
-This package is available on CRAN, so we recommend just running the following code:
+This package is available on CRAN, so it is recommended to run the following code:
 
 ```
 install.packages("crt2power")
