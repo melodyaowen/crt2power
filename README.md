@@ -49,7 +49,7 @@ _Table of Key Required Input Parameters:_
 | Inter-subject between-endpoint ICC | $\rho_1^{(1,2)}$ | `rho1`  | Correlation between $Y_1$ and $Y_2$ for two different individuals in the same cluster |
 | Intra-subject between-endpoint ICC | $\rho_2^{(1,2)}$ | `rho2`  | Correlation between $Y_1$ and $Y_2$ for the same individual |
 | Treatment allocation ratio      | $r$              | `r`      | Treatment allocation ratio; $K_2 = rK_1$ where $K_1$ is number of clusters in experimental group |
-| Statistical distribution      | --              | `dist`      | Specification of which distribution to base calculation on, either the $\chi^2$-distribution or $F$-distribution$^1$
+| Statistical distribution      | --              | `dist`      | Specification of which distribution to base calculation on, either the $\chi^2$-distribution or $F$-distribution<sup>1</sup>
 1. When selecting the $\chi^2$-distribution, all methods will use this distribution with the exception of the conjunctive IU test, which will use the multivariate normal (MVN) distribution; when selecting the $F$-distribution, all methods will use this distribution with the exception of the conjunctive IU test, which will use the $t$-distribution. 
 
 ## Function Description
@@ -96,29 +96,29 @@ Each method has a set of functions for calculating the statistical power ($\pi$)
 
 ```
 # Example of using the combined outcomes approach for calculating power
-calc_pwr_comb_outcome(	dist = "Chi2", K = 8, m = 50, alpha = 0.05, 
-                       beta1 = 0.2, beta2 = 0.4, varY1 = 0.5, varY2 = 1,
-                       rho01 = 0.05, rho02 = 0.1, rho1 = 0.01, rho2 = 0.1, 
-                       r = 1)
+calc_pwr_comb_outcome(dist = "Chi2", K = 8, m = 50, alpha = 0.05,
+                      beta1 = 0.2, beta2 = 0.4, varY1 = 0.5, varY2 = 1,
+                      rho01 = 0.05, rho02 = 0.1, rho1 = 0.01, rho2 = 0.1, 
+                      r = 1)
 
 # Example of using the single weighted 1-DF test for calculating K
-calc_K_single_1dftest(	dist = "F", power = 0.9, m = 70, alpha = 0.05, 
-                       beta1 = 0.4, beta2 = 0.3, varY1 = 1.5, varY2 = 0.5, 
-                       rho01 = 0.1, rho02 = 0.07, rho1 = 0.05, rho2  = 0.3, 
-                       r = 2)
+calc_K_single_1dftest(dist = "F", power = 0.9, m = 70, alpha = 0.05,
+                      beta1 = 0.4, beta2 = 0.3, varY1 = 1.5, varY2 = 0.5,
+                      rho01 = 0.1, rho02 = 0.07, rho1 = 0.05, rho2  = 0.3, 
+                      r = 2)
 
 
 # Example of using conjunctive IU test for m calculation
-calc_m_conj_test(	dist = "MVN", power = 0.8, K = 10, alpha = 0.05, 
-                  beta1 = 0.4, beta2 = 0.4, varY1 = 0.5, varY2 = 1, 
-                  rho01 = 0.05, rho02 = 0.1, rho1 = 0.07, rho2  = 0.9, 
-                  r = 1, two_sided = TRUE)
+calc_m_conj_test(dist = "MVN", power = 0.8, K = 10, alpha = 0.05, 
+                 beta1 = 0.4, beta2 = 0.4, varY1 = 0.5, varY2 = 1, 
+                 rho01 = 0.05, rho02 = 0.1, rho1 = 0.07, rho2  = 0.9, 
+                 r = 1, two_sided = TRUE)
 
 
 # Example of calculating power based on all five methods
-run_crt2_design(	output = "power", K = 6, m = 70, alpha = 0.05, 
-                 beta1 = 0.4, beta2 = 0.4, varY1 = 0.5, varY2 = 0.5, 
-                 rho01 = 0.1, rho02 = 0.1, rho1 = 0.07, rho2 = 0.9, r = 1)
+run_crt2_design(output = "power", K = 6, m = 70, alpha = 0.05, 
+                beta1 = 0.4, beta2 = 0.4, varY1 = 0.5, varY2 = 0.5, 
+                rho01 = 0.1, rho02 = 0.1, rho1 = 0.07, rho2 = 0.9, r = 1)
 ```
 
 ## Contact
