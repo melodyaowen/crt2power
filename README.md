@@ -49,12 +49,14 @@ _Table of Key Required Input Parameters:_
 | Inter-subject between-endpoint ICC | $\rho_1^{(1,2)}$ | `rho1`  | Correlation between $Y_1$ and $Y_2$ for two different individuals in the same cluster |
 | Intra-subject between-endpoint ICC | $\rho_2^{(1,2)}$ | `rho2`  | Correlation between $Y_1$ and $Y_2$ for the same individual |
 | Treatment allocation ratio      | $r$              | `r`      | Treatment allocation ratio; $K_2 = rK_1$ where $K_1$ is number of clusters in experimental group |
+| Statistical distribution      | --              | `dist`      | Specification of which distribution to base calculation on, either the $\chi^2$-distribution or $F$-distribution$^1$
+1. When selecting the $\chi^2$-distribution, all methods will use this distribution with the exception of the conjunctive IU test, which will use the multivariate normal (MVN) distribution; when selecting the $F$-distribution, all methods will use this distribution with the exception of the conjunctive IU test, which will use the $t$-distribution. 
 
 ## Function Description
 
 Each method has a set of functions for calculating the statistical power ($\pi$), required number of clusters per treatment group ($K$), or cluster size ($m$) given a set of input parameters. The names of all functions offered in this package are listed below, organized by study design method.
 
-### 1. P-Value Adjustments for Multiple Testing
+### 1. P-Value Adjustment Methods
 
 - `calc_pwr_pval_adj()` calculates power for this method
 - `calc_K_pval_adj()` calculates number of clusters per treatment group for this method
@@ -66,54 +68,57 @@ Each method has a set of functions for calculating the statistical power ($\pi$)
 - `calc_K_comb_outcome()` calculates number of clusters per treatment group for this method
 - `calc_m_comb_outcome()` calculates cluster size for this method
 
-### 3. Single 1-Degree of Freedom (DF) Combined Test for Two Outcomes
+### 3. Single Weighted 1-DF Combined Test
 
 - `calc_pwr_single_1dftest()` calculates power for this method
 - `calc_K_single_1dftest()` calculates number of clusters per treatment group for this method
 - `calc_m_single_1dftest()` calculates cluster size for this method
 
-### 4. Disjunctive 2-DF Test for Two Outcomes
+### 4. Disjunctive 2-DF Test
 
 - `calc_pwr_disj_2dftest()` calculates power for this method
 - `calc_K_disj_2dftest()` calculates number of clusters per treatment group for this method
 - `calc_m_disj_2dftest()` calculates cluster size for this method
 
-### 5. Conjunctive Intersection-Union Test for Two outcomes
+### 5. Conjunctive Intersection-Union Test
 
 - `calc_pwr_conj_test()` calculates power for this method
 - `calc_K_conj_test()` calculates number of clusters per treatment group for this method
 - `calc_m_conj_test()` calculates cluster size for this method
 
+### 6. Calculations based on all 5 methods
+
+- `run_crt2_design(output = "power", ...)` calculates power for all 5 methods
+- `run_crt2_design(output = "K", ...)` calculates number of clusters per treatment group for all 5 methods
+- `run_crt2_design(output = "m",...)` calculates cluster size for all 5 methods
+
 ## Usage 
 
 ```
-# Example of using Method 1 for a power calculation
-calc_pwr_pval_adj(K = 15, m = 300, alpha = 0.05,
-                  beta1 = 0.1, beta2 = 0.1,
-                  varY1 = 0.23, varY2 = 0.25,
-                  rho01 = 0.025, rho02 = 0.025,
-                  rho2  = 0.05, r = 1)
+# Example of using the combined outcomes approach for calculating power
+calc_pwr_comb_outcome(	dist = "Chi2", K = 8, m = 50, alpha = 0.05, 
+                       beta1 = 0.2, beta2 = 0.4, varY1 = 0.5, varY2 = 1,
+                       rho01 = 0.05, rho02 = 0.1, rho1 = 0.01, rho2 = 0.1, 
+                       r = 1)
 
-# Example of using Method 3 for number of clusters in treatment group (K) calculation
-calc_K_single_1dftest(power = 0.8, m = 300, alpha = 0.05,
-                      beta1 = 0.1, beta2 = 0.1,
-                      varY1 = 0.23, varY2 = 0.25,
-                      rho01 = 0.025, rho02 = 0.025,
-                      rho1 = 0.01, rho2  = 0.05, r = 1)
+# Example of using the single weighted 1-DF test for calculating K
+calc_K_single_1dftest(	dist = "F", power = 0.9, m = 70, alpha = 0.05, 
+                       beta1 = 0.4, beta2 = 0.3, varY1 = 1.5, varY2 = 0.5, 
+                       rho01 = 0.1, rho02 = 0.07, rho1 = 0.05, rho2  = 0.3, 
+                       r = 2)
 
-# Example of using Method 5 for cluster size (m) calculation
-calc_m_conj_test(power = 0.8, K = 15, alpha = 0.05,
-                 beta1 = 0.1, beta2 = 0.1,
-                 varY1 = 0.23, varY2 = 0.25,
-                 rho01 = 0.025, rho02 = 0.025,
-                 rho1 = 0.01, rho2  = 0.05, r = 1)
+
+# Example of using conjunctive IU test for m calculation
+calc_m_conj_test(	dist = "MVN", power = 0.8, K = 10, alpha = 0.05, 
+                  beta1 = 0.4, beta2 = 0.4, varY1 = 0.5, varY2 = 1, 
+                  rho01 = 0.05, rho02 = 0.1, rho1 = 0.07, rho2  = 0.9, 
+                  r = 1, two_sided = TRUE)
+
 
 # Example of calculating power based on all five methods
-run_crt2_design(output = "power", K = 15, m = 300, alpha = 0.05,
-                beta1 = 0.1, beta2 = 0.1,
-                varY1 = 0.23, varY2 = 0.25,
-                rho01 = 0.025, rho02 = 0.025,
-                rho1 = 0.01, rho2 = 0.05, r = 1)
+run_crt2_design(	output = "power", K = 6, m = 70, alpha = 0.05, 
+                 beta1 = 0.4, beta2 = 0.4, varY1 = 0.5, varY2 = 0.5, 
+                 rho01 = 0.1, rho02 = 0.1, rho1 = 0.07, rho2 = 0.9, r = 1)
 ```
 
 ## Contact
