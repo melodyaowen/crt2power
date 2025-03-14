@@ -107,13 +107,11 @@ calc_K_single_1dftest(dist = "F", power = 0.9, m = 70, alpha = 0.05,
                       rho01 = 0.1, rho02 = 0.07, rho1 = 0.05, rho2  = 0.3, 
                       r = 2)
 
-
 # Example of using conjunctive IU test for m calculation
 calc_m_conj_test(dist = "MVN", power = 0.8, K = 10, alpha = 0.05, 
                  beta1 = 0.4, beta2 = 0.4, varY1 = 0.5, varY2 = 1, 
                  rho01 = 0.05, rho02 = 0.1, rho1 = 0.07, rho2  = 0.9, 
                  r = 1, two_sided = TRUE)
-
 
 # Example of calculating power based on all five methods
 run_crt2_design(output = "power", K = 6, m = 70, alpha = 0.05, 
