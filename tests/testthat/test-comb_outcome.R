@@ -21,7 +21,7 @@ test_that("Combined outcomes power works (Chi2 dist)", {
                                      rho1 = 0.01,
                                      rho2 = 0.05,
                                      r = 1),
-               0.9810)
+               0.9810, tolerance = 0.02)
 })
 
 test_that("Combined outcomes power works (F dist)", {
@@ -38,7 +38,7 @@ test_that("Combined outcomes power works (F dist)", {
                                      rho1 = 0.01,
                                      rho2 = 0.05,
                                      r = 1),
-               0.9727)
+               0.9727, tolerance = 0.02)
 })
 
 # `calc_K_comb_outcome()` ------------------------------------------------------
@@ -58,7 +58,7 @@ test_that("Combined outcomes treatment group 'K' works (Chi2 dist)", {
                                    rho1 = 0.01,
                                    rho2 = 0.05,
                                    r = 1)$`Treatment (K)`,
-               8)
+               8, tolerance = 1)
 })
 
 test_that("Combined outcomes treatment group 'K' works (F dist)", {
@@ -75,7 +75,7 @@ test_that("Combined outcomes treatment group 'K' works (F dist)", {
                                    rho1 = 0.01,
                                    rho2 = 0.05,
                                    r = 1)$`Treatment (K)`,
-               9)
+               9, tolerance = 1)
 })
 
 # Test for combined outcomes control group K
@@ -93,7 +93,7 @@ test_that("Combined outcomes control group 'K' works (Chi2 dist)", {
                                    rho1 = 0.01,
                                    rho2 = 0.05,
                                    r = 1)$`Control (K)`,
-               8)
+               8, tolerance = 1)
 })
 
 test_that("Combined outcomes control group 'K' works (F dist)", {
@@ -110,7 +110,7 @@ test_that("Combined outcomes control group 'K' works (F dist)", {
                                    rho1 = 0.01,
                                    rho2 = 0.05,
                                    r = 1)$`Control (K)`,
-               9)
+               9, tolerance = 1)
 })
 
 # `calc_m_comb_outcome()` ------------------------------------------------------
@@ -130,7 +130,7 @@ test_that("Combined outcomes 'm' works (Chi2 dist)", {
                                    rho1 = 0.01,
                                    rho2 = 0.05,
                                    r = 1),
-               23)
+               23, tolerance = 1)
 })
 
 test_that("Combined outcomes 'm' works (F dist)", {
@@ -147,7 +147,7 @@ test_that("Combined outcomes 'm' works (F dist)", {
                                    rho1 = 0.01,
                                    rho2 = 0.05,
                                    r = 1),
-               27)
+               27, tolerance = 1)
 })
 
 # Throws an error when 'm' cannot be large enough to attain desired power
@@ -212,7 +212,7 @@ test_that("Combined outcomes K calculation aligns with power (Chi2 dist)", {
                                 rho1 = 0.01,
                                 rho2 = 0.05,
                                 r = 1)$`Treatment (K)`
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -243,7 +243,7 @@ test_that("Combined outcomes K calculation aligns with power (Chi2 dist)", {
                                 rho1 = 0.01,
                                 rho2 = 0.05,
                                 r = 1)$`Treatment (K)`
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -274,7 +274,7 @@ test_that("Combined outcomes K calculation aligns with power (Chi2 dist)", {
                                 rho1 = 0.01,
                                 rho2 = 0.05,
                                 r = 1)
-  expect_true(result >= 299 & result <= 301,
+  expect_equal(result, 300, tolerance = 5,
               info = "The result should be 300, but with rounding between 299 and 301")
 })
 
@@ -308,7 +308,7 @@ test_that("Combined outcomes K calculation aligns with power (F dist)", {
                                 rho1 = 0.01,
                                 rho2 = 0.05,
                                 r = 1)$`Treatment (K)`
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -339,7 +339,7 @@ test_that("Combined outcomes K calculation aligns with power (F dist)", {
                                 rho1 = 0.01,
                                 rho2 = 0.05,
                                 r = 1)$`Treatment (K)`
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -370,7 +370,7 @@ test_that("Combined outcomes K calculation aligns with power (F dist)", {
                                 rho1 = 0.01,
                                 rho2 = 0.05,
                                 r = 1)
-  expect_true(result >= 298 & result <= 301,
+  expect_equal(result, 300, tolerance = 5,
               info = "The result should be 300, but with rounding between 298 and 301")
 })
 

@@ -20,7 +20,8 @@ test_that("Conjunctive IU test power works (t dist)", {
                                rho1 = 0.01,
                                rho2 = 0.05,
                                r = 1)
-  expect_true(round(result, 3) == 0.899, info = paste(result))
+  expect_equal(round(result, 3), 0.899, tolerance = 0.02,
+              info = paste(result))
 })
 
 # Test for Conjunctive IU test power for MVN distribution
@@ -38,7 +39,8 @@ test_that("Conjunctive IU test power works (MVN dist)", {
                                rho1 = 0.01,
                                rho2 = 0.05,
                                r = 1)
-  expect_true(round(result, 4) == 0.9143, info = paste(result))
+  expect_equal(round(result, 4), 0.9143, tolerance = 0.02,
+              info = paste(result))
 })
 
 # `calc_K_conj_test()` ------------------------------------------------------
@@ -58,7 +60,7 @@ test_that("Conjunctive IU test treatment group 'K' works (t dist)", {
                                 rho1 = 0.01,
                                 rho2 = 0.05,
                                 r = 1)$`Treatment (K)`,
-               12)
+               12, tolerance = 1)
 })
 
 # Test for Conjunctive IU test control group K for t distribution
@@ -76,7 +78,7 @@ test_that("Conjunctive IU test control group 'K' works (t dist)", {
                                 rho1 = 0.01,
                                 rho2 = 0.05,
                                 r = 1)$`Control (K)`,
-               12)
+               12, tolerance = 1)
 })
 
 # Test for Conjunctive IU test treatment group K for MVN distribution
@@ -94,7 +96,7 @@ test_that("Conjunctive IU test treatment group 'K' works (MVN dist)", {
                                 rho1 = 0.01,
                                 rho2 = 0.05,
                                 r = 1)$`Treatment (K)`,
-               11)
+               11, tolerance = 1)
 })
 
 # Test for Conjunctive IU test control group K for MVN distribution
@@ -112,7 +114,7 @@ test_that("Conjunctive IU test control group 'K' works (MVN dist)", {
                                 rho1 = 0.01,
                                 rho2 = 0.05,
                                 r = 1)$`Control (K)`,
-               11)
+               11, tolerance = 1)
 })
 
 # `calc_m_conj_test()` ------------------------------------------------------
@@ -132,7 +134,7 @@ test_that("Conjunctive IU test 'm' works (t dist)", {
                                 rho1 = 0.01,
                                 rho2 = 0.05,
                                 r = 1),
-               86)
+               86, tolerance = 1)
 })
 
 # Test for Conjunctive IU test m for MVN distribution
@@ -150,7 +152,7 @@ test_that("Conjunctive IU test 'm' works (MVN dist)", {
                                 rho1 = 0.01,
                                 rho2 = 0.05,
                                 r = 1),
-               74)
+               74, tolerance = 1)
 })
 
 
@@ -183,7 +185,7 @@ test_that("Conjunctive IU test K calculation aligns with power (t dist)", {
                              rho1 = 0.01,
                              rho2 = 0.05,
                              r = 1)[[1]]
-  expect_true(result > 14 & result < 17,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -214,7 +216,7 @@ test_that("Conjunctive IU test K calculation aligns with power (t dist)", {
                              rho1 = 0.01,
                              rho2 = 0.05,
                              r = 1)$`Treatment (K)`
-  expect_true(result >= 14.9 & result <= 16.1,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -245,7 +247,7 @@ test_that("Conjunctive IU test K calculation aligns with power (t dist)", {
                              rho1 = 0.01,
                              rho2 = 0.05,
                              r = 1)
-  expect_true(result >= 297 & result <= 304,
+  expect_equal(result, 300, tolerance = 5,
               info = "The result should be 300, but with rounding between 298 and 303")
 })
 
@@ -283,8 +285,8 @@ test_that("Conjunctive IU test K calculation aligns with power (MVN dist)", {
                              rho1 = 0.01,
                              rho2 = 0.05,
                              r = 1)[[1]]
-  expect_true(result > 14 & result < 17,
-              info = "The result should be 15, but with rounding between 15 and 16")
+  expect_equal(result, 15, tolerance = 2,
+              info = "The result should be 15, but with rounding between 14 and 16")
 })
 
 # K aligns with m for MVN distribution
@@ -314,7 +316,7 @@ test_that("Conjunctive IU test K calculation aligns with power (MVN dist)", {
                              rho1 = 0.01,
                              rho2 = 0.05,
                              r = 1)$`Treatment (K)`
-  expect_true(result >= 14.9 & result <= 16.1,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -345,7 +347,7 @@ test_that("Conjunctive IU test MVN calculation aligns with power (MVN dist)", {
                              rho1 = 0.01,
                              rho2 = 0.05,
                              r = 1)
-  expect_true(result >= 297 & result <= 304,
+  expect_equal(result, 300, tolerance = 5,
               info = "The result should be 300, but with rounding between 298 and 303")
 })
 

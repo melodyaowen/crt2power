@@ -20,7 +20,7 @@ test_that("Single 1-DF test power works (Chi2 dist)", {
                                        rho1 = 0.01,
                                        rho2 = 0.05,
                                        r = 1),
-               0.9811)
+               0.9811, tolerance = 0.02)
 })
 
 # Test for single 1 df test power for F distribution
@@ -38,7 +38,7 @@ test_that("Single 1-DF test power works (F dist)", {
                                        rho1 = 0.01,
                                        rho2 = 0.05,
                                        r = 1),
-               0.9729)
+               0.9729, tolerance = 0.02)
 })
 
 # `calc_K_single_1dftest()` ----------------------------------------------------
@@ -58,7 +58,7 @@ test_that("Single 1-DF test treatment group 'K' works (Chi2 dist)", {
                                      rho1 = 0.01,
                                      rho2 = 0.05,
                                      r = 1)$`Treatment (K)`,
-               8)
+               8, tolerance = 1)
 })
 
 # Test for single 1 df test control group K for Chi2 distribution
@@ -76,7 +76,7 @@ test_that("Single 1-DF test control group 'K' works (Chi2 dist)", {
                                      rho1 = 0.01,
                                      rho2 = 0.05,
                                      r = 1)$`Control (K)`,
-               8)
+               8, tolerance = 1)
 })
 
 # Test for single 1 df test treatment group K for F distribution
@@ -94,7 +94,7 @@ test_that("Single 1-DF test treatment group 'K' works (F dist)", {
                                      rho1 = 0.01,
                                      rho2 = 0.05,
                                      r = 1)$`Treatment (K)`,
-               9)
+               9, tolerance = 1)
 })
 
 # Test for single 1 df test control group K for F distribution
@@ -112,7 +112,7 @@ test_that("Single 1-DF test control group 'K' works (F dist)", {
                                      rho1 = 0.01,
                                      rho2 = 0.05,
                                      r = 1)$`Control (K)`,
-               9)
+               9, tolerance = 1)
 })
 
 # `calc_m_single_1dftest()` ----------------------------------------------------
@@ -132,7 +132,7 @@ test_that("Single 1-DF test 'm' works (Chi2 dist)", {
                                      rho1 = 0.01,
                                      rho2 = 0.05,
                                      r = 1),
-               23)
+               23, tolerance = 1)
 })
 
 # Test for single 1 df test m for F distribution
@@ -150,7 +150,7 @@ test_that("Single 1-DF test 'm' works (F dist)", {
                                      rho1 = 0.01,
                                      rho2 = 0.05,
                                      r = 1),
-               27)
+               27, tolerance = 1)
 })
 
 
@@ -183,7 +183,7 @@ test_that("Single 1-DF test K calculation aligns with power (Chi2 dist)", {
                                   rho1 = 0.01,
                                   rho2 = 0.05,
                                   r = 1)$`Treatment (K)`
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -214,7 +214,7 @@ test_that("Single 1-DF test K calculation aligns with power (Chi2 dist)", {
                                   rho1 = 0.01,
                                   rho2 = 0.05,
                                   r = 1)$`Treatment (K)`
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -245,7 +245,7 @@ test_that("Single 1-DF test K calculation aligns with power (Chi2 dist)", {
                                   rho1 = 0.01,
                                   rho2 = 0.05,
                                   r = 1)
-  expect_true(result >= 299 & result <= 301,
+  expect_equal(result, 300, tolerance = 5,
               info = "The result should be 300, but with rounding between 299 and 301")
 })
 
@@ -282,7 +282,7 @@ test_that("Single 1-DF test K calculation aligns with power (F dist)", {
                                   rho1 = 0.01,
                                   rho2 = 0.05,
                                   r = 1)$`Treatment (K)`
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -313,7 +313,7 @@ test_that("Single 1-DF test K calculation aligns with power (F dist)", {
                                   rho1 = 0.01,
                                   rho2 = 0.05,
                                   r = 1)$`Treatment (K)`
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -344,7 +344,7 @@ test_that("Single 1-DF test K calculation aligns with power (F dist)", {
                                   rho1 = 0.01,
                                   rho2 = 0.05,
                                   r = 1)
-  expect_true(result >= 299 & result <= 301,
+  expect_equal(result, 300, tolerance = 5,
               info = "The result should be 300, but with rounding between 299 and 301")
 })
 

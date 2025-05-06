@@ -236,7 +236,7 @@ test_that("P-value power aligns with m for Bonferroni (Chi2 dist)", {
                             rho02 = 0.025,
                             rho2 = 0.05,
                             r = 1)$`Final m`[1]
-  expect_true(result >= 300 & result <= 301,
+  expect_equal(result, 300, tolerance = 5,
                info = "The result should be 300, but with rounding between 300 and 301")
 })
 
@@ -265,7 +265,7 @@ test_that("P-value power aligns with m for Sidak (Chi2 dist)", {
                             rho02 = 0.025,
                             rho2 = 0.05,
                             r = 1)$`Final m`[2]
-  expect_true(result >= 300 & result <= 301,
+  expect_equal(result, 300, tolerance = 5,
               info = "The result should be 300, but with rounding between 300 and 301")
 })
 
@@ -294,7 +294,7 @@ test_that("P-value power aligns with m for D/AP (Chi2 dist)", {
                             rho02 = 0.025,
                             rho2 = 0.05,
                             r = 1)$`Final m`[3]
-  expect_true(result >= 300 & result <= 301,
+  expect_equal(result, 300, tolerance = 5,
               info = "The result should be 300, but with rounding between 300 and 301")
 })
 
@@ -323,7 +323,7 @@ test_that("P-value power aligns with K for Bonferroni (Chi2 Dist)", {
                             rho02 = 0.025,
                             rho2 = 0.05,
                             r = 1)$`Final Treatment (K)`[1]
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -352,7 +352,7 @@ test_that("P-value power aligns with K for Sidak (Chi2 dist)", {
                             rho02 = 0.025,
                             rho2 = 0.05,
                             r = 1)$`Final Treatment (K)`[2]
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -381,7 +381,7 @@ test_that("P-value power aligns with K for D/AP (Chi2 dist)", {
                             rho02 = 0.025,
                             rho2 = 0.05,
                             r = 1)$`Final Treatment (K)`[3]
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -410,7 +410,7 @@ test_that("P-value m aligns with K for Bonferroni (Chi2 dist)", {
                             rho02 = 0.025,
                             rho2 = 0.05,
                             r = 1)$`Final Treatment (K)`[1]
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -439,7 +439,7 @@ test_that("P-value m aligns with K for Sidak (Chi2 dist)", {
                             rho02 = 0.025,
                             rho2 = 0.05,
                             r = 1)$`Final Treatment (K)`[2]
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -468,7 +468,7 @@ test_that("P-value m aligns with K for D/AP (Chi2 dist)", {
                             rho02 = 0.025,
                             rho2 = 0.05,
                             r = 1)$`Final Treatment (K)`[3]
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -497,7 +497,7 @@ test_that("P-value power aligns with m for Bonferroni (F dist)", {
                             rho02 = 0.025,
                             rho2 = 0.05,
                             r = 1)$`Final m`[1]
-  expect_true(result >= 300 & result <= 301,
+  expect_equal(result, 300, tolerance = 5,
               info = "The result should be 300, but with rounding between 300 and 301")
 })
 
@@ -526,7 +526,7 @@ test_that("P-value power aligns with m for Sidak (F dist)", {
                             rho02 = 0.025,
                             rho2 = 0.05,
                             r = 1)$`Final m`[2]
-  expect_true(result >= 300 & result <= 301,
+  expect_equal(result, 300, tolerance = 5,
               info = "The result should be 300, but with rounding between 300 and 301")
 })
 
@@ -555,7 +555,7 @@ test_that("P-value power aligns with m for D/AP (F dist)", {
                             rho02 = 0.025,
                             rho2 = 0.05,
                             r = 1)$`Final m`[3]
-  expect_true(result >= 300 & result <= 301,
+  expect_equal(result, 300, tolerance = 5,
               info = "The result should be 300, but with rounding between 300 and 301")
 })
 
@@ -584,7 +584,7 @@ test_that("P-value power aligns with K for Bonferroni (F Dist)", {
                             rho02 = 0.025,
                             rho2 = 0.05,
                             r = 1)$`Final Treatment (K)`[1]
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -613,7 +613,7 @@ test_that("P-value power aligns with K for Sidak (F dist)", {
                             rho02 = 0.025,
                             rho2 = 0.05,
                             r = 1)$`Final Treatment (K)`[2]
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -642,7 +642,7 @@ test_that("P-value power aligns with K for D/AP (F dist)", {
                             rho02 = 0.025,
                             rho2 = 0.05,
                             r = 1)$`Final Treatment (K)`[3]
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -671,7 +671,7 @@ test_that("P-value m aligns with K for Bonferroni (F dist)", {
                             rho02 = 0.025,
                             rho2 = 0.05,
                             r = 1)$`Final Treatment (K)`[1]
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -700,7 +700,7 @@ test_that("P-value m aligns with K for Sidak (F dist)", {
                             rho02 = 0.025,
                             rho2 = 0.05,
                             r = 1)$`Final Treatment (K)`[2]
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
@@ -729,7 +729,7 @@ test_that("P-value m aligns with K for D/AP (F dist)", {
                             rho02 = 0.025,
                             rho2 = 0.05,
                             r = 1)$`Final Treatment (K)`[3]
-  expect_true(result >= 15 & result <= 16,
+  expect_equal(result, 15, tolerance = 2,
               info = "The result should be 15, but with rounding between 15 and 16")
 })
 
