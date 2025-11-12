@@ -62,6 +62,15 @@ calc_pwr_disj_2dftest <- function(dist = "Chi2",# Distribution to base calculati
   if(m < 1 | m != round(m)){
     stop("'m' must be a positive whole number.")
   }
+  if(varY1 <= 0){
+    stop("'varY1' must be positive.")
+  }
+  if(varY2 <= 0){
+    stop("'varY2' must be positive.")
+  }
+  if(alpha <= 0 | alpha >= 1){
+    stop("'alpha' must be between 0 and 1.")
+  }
 
   # Define small dependent functions -------------------------------------------
   # Dependent Function 1: Calculates covariance between betas
@@ -190,6 +199,15 @@ calc_K_disj_2dftest <- function(dist = "Chi2",# Distribution to base calculation
   }
   if(m < 1 | m != round(m)){
     stop("'m' must be a positive whole number.")
+  }
+  if(varY1 <= 0){
+    stop("'varY1' must be positive.")
+  }
+  if(varY2 <= 0){
+    stop("'varY2' must be positive.")
+  }
+  if(alpha <= 0 | alpha >= 1){
+    stop("'alpha' must be between 0 and 1.")
   }
 
   # Define small dependent functions -------------------------------------------
@@ -340,6 +358,15 @@ calc_m_disj_2dftest <- function(dist = "Chi2",# Distribution to base calculation
   }
   if(K < 1 | K != round(K)){
     stop("'K' must be a positive whole number.")
+  }
+  if(varY1 <= 0){
+    stop("'varY1' must be positive.")
+  }
+  if(varY2 <= 0){
+    stop("'varY2' must be positive.")
+  }
+  if(alpha <= 0 | alpha >= 1){
+    stop("'alpha' must be between 0 and 1.")
   }
 
   m <- 0 # Initializing a small cluster size

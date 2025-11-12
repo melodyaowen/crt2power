@@ -111,6 +111,16 @@ run_crt2_design <- function(output,       # Parameter to calculate
     stop("All input parameters must be numeric (with the exception of 'output').")
   }
 
+  if(varY1 <= 0){
+    stop("'varY1' must be positive.")
+  }
+  if(varY2 <= 0){
+    stop("'varY2' must be positive.")
+  }
+  if(alpha <= 0 | alpha >= 1){
+    stop("'alpha' must be between 0 and 1.")
+  }
+
   # When desired output is power
   if(output == "power"){
     # Method 1: P-Value Adjustments

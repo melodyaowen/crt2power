@@ -71,6 +71,15 @@ calc_pwr_conj_test <- function(dist = "T",   # Distribution to be used
   if(two_sided != TRUE & two_sided != FALSE){
     stop("'two_sided' must either be TRUE or FALSE.")
   }
+  if(varY1 <= 0){
+    stop("'varY1' must be positive.")
+  }
+  if(varY2 <= 0){
+    stop("'varY2' must be positive.")
+  }
+  if(alpha <= 0 | alpha >= 1){
+    stop("'alpha' must be between 0 and 1.")
+  }
 
   # Helper functions requires ratio be defined as K1/K rather than K2/K1,
   # so define new ratio variable based on the one that was inputted by user
@@ -95,7 +104,7 @@ calc_pwr_conj_test <- function(dist = "T",   # Distribution to be used
     }
     # Check for matrix positive definite
     if(min(eigen(SigmaE_Matrix)$values) <= 1e-08){
-      warning("The resulting covariance matrix Sigma_E is not positive definite. Check the inputs for the correlation values.")
+      stop("The resulting covariance matrix Sigma_E is not positive definite. Check the inputs for the correlation values.")
     }
   return(SigmaE_Matrix)
   }
@@ -113,7 +122,7 @@ calc_pwr_conj_test <- function(dist = "T",   # Distribution to be used
     }
     # Check for matrix positive definite
     if(min(eigen(SigmaP_Matrix)$values) <= 1e-08){
-      warning("The resulting covariance matrix Sigma_phi is not positive definite. Check the input of rho01 and rho2.")
+      stop("The resulting covariance matrix Sigma_phi is not positive definite. Check the input of rho01 and rho2.")
     }
   return(SigmaP_Matrix)
   }
@@ -351,6 +360,15 @@ calc_K_conj_test <- function(dist = "T",   # Distribution to be used
   if(m < 1 | m != round(m)){
     stop("'m' must be a positive whole number.")
   }
+  if(varY1 <= 0){
+    stop("'varY1' must be positive.")
+  }
+  if(varY2 <= 0){
+    stop("'varY2' must be positive.")
+  }
+  if(alpha <= 0 | alpha >= 1){
+    stop("'alpha' must be between 0 and 1.")
+  }
 
   # Some calculations require ratio be defined as K1/K rather than K2/K1,
   # so define new ratio variable based on the one that was inputted by user
@@ -471,6 +489,15 @@ calc_m_conj_test <- function(dist = "T",   # Distribution to be used
   }
   if(K < 1 | K != round(K)){
     stop("'K' must be a positive whole number.")
+  }
+  if(varY1 <= 0){
+    stop("'varY1' must be positive.")
+  }
+  if(varY2 <= 0){
+    stop("'varY2' must be positive.")
+  }
+  if(alpha <= 0 | alpha >= 1){
+    stop("'alpha' must be between 0 and 1.")
   }
 
   # Function below requires ratio be defined as K1/K rather than K2/K1,

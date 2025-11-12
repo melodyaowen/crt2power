@@ -60,6 +60,15 @@ calc_pwr_comb_outcome <- function(dist = "Chi2",# Distribution to base calculati
   if(m < 1 | m != round(m)){
     stop("'m' must be a positive whole number.")
   }
+  if(varY1 <= 0){
+    stop("'varY1' must be positive.")
+  }
+  if(varY2 <= 0){
+    stop("'varY2' must be positive.")
+  }
+  if(alpha <= 0 | alpha >= 1){
+    stop("'alpha' must be between 0 and 1.")
+  }
 
   # Defining necessary parameters based on input values
   r_alt <- 1/(r + 1)
@@ -155,6 +164,15 @@ calc_K_comb_outcome <- function(dist = "Chi2",# Distribution to base calculation
   }
   if(m < 1 | m != round(m)){
     stop("'m' must be a positive whole number.")
+  }
+  if(varY1 <= 0){
+    stop("'varY1' must be positive.")
+  }
+  if(varY2 <= 0){
+    stop("'varY2' must be positive.")
+  }
+  if(alpha <= 0 | alpha >= 1){
+    stop("'alpha' must be between 0 and 1.")
   }
 
   if(dist == "Chi2"){ # Using Chi2
@@ -305,6 +323,15 @@ calc_m_comb_outcome <- function(dist = "Chi2",# Distribution to base calculation
   }
   if(K < 1 | K != round(K)){
     stop("'K' must be a positive whole number.")
+  }
+  if(varY1 <= 0){
+    stop("'varY1' must be positive.")
+  }
+  if(varY2 <= 0){
+    stop("'varY2' must be positive.")
+  }
+  if(alpha <= 0 | alpha >= 1){
+    stop("'alpha' must be between 0 and 1.")
   }
 
   if(dist == "Chi2"){ # Using Chi2
