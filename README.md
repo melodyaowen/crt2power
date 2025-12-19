@@ -121,4 +121,4 @@ run_crt2_design(output = "power", K = 6, m = 70, alpha = 0.05,
 
 ## Contact
 
-For questions or comments, please email Melody Owen at melody.owen@yale.edu, or submit an issue to this repository. 
+For questions or comments, please submit an issue to this repository. 
